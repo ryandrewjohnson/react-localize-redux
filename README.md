@@ -22,7 +22,7 @@ npm install react-localize-redux --save
 
 Start by adding the `localeReducer` to your app's redux store.
 
-```
+```javascript
 import React from 'react';
 import { createStore, combineReducers } from 'redux';
 import ReactDOM from 'react-dom';
@@ -51,7 +51,7 @@ ReactDOM.render(<App />, ROOT_NODE);
 
 Next set the current language for your app by dispatching the `updateLanguage` action.
 
-```
+```javascript
 import { updateLanguage } from 'react-localize-redux';
 
 store.dispatch(updateLanguage('en'));
@@ -63,7 +63,7 @@ to your store by dispatching the `setGlobalTranslations` action.
 
 > NOTE: The following assumes you are using [webpack](https://webpack.github.io/) with [json-loader](https://github.com/webpack/json-loader)
 
-```
+```javascript
 import { setGlobalTranslations } from 'react-localize-redux';
 
 const json = require('global.locale.json`);
@@ -73,7 +73,7 @@ store.dispatch(setGlobalTranslations(json));
 As mentioned above translations are stored in json files. Each json file requires that there be
 a property for each supported language, where the property name would match the key passed to `updateLanguage`.
 
-```
+```json
 {
   "en": {
     "greeting": "Hello",
@@ -95,9 +95,9 @@ to the `localize` function. It will not modify the component passed to it, but r
 new component with new props `translate` and `currentLanguage` added.
 
 The `translate` prop is a function that takes the unique id from the transaltion file as a param,
-and will return the localized sting based on `currentLanguage`.
+and will return the localized string based on `currentLanguage`.
 
-```
+```javascript
 import React from 'react';
 import { localize } from 'react-localize-redux';
 
@@ -116,7 +116,7 @@ These can be added to your redux store by dispatching the `setLocalTranslations`
 
 Assuming we have a component called `WelcomeView` with translations specific to it stored in a file named `welcome.locale.json`.
 
-```
+```json
 {
   "en": {
     "welcome-body": "Here is some <strong>bold</strong> text."
@@ -130,7 +130,7 @@ Assuming we have a component called `WelcomeView` with translations specific to 
 }
 ```
 
-```
+```javascript
 import { setLocalTranslations } from 'react-localize-redux';
 
 const json = require('welcome.locale.json`);
@@ -142,7 +142,7 @@ but this time passing the id passed to `setLocalTranslations`.
 
 > NOTE: In addition to the `local` translations you will still have access `global` translations as well.
 
-```
+```javascript
 import React from 'react';
 import { localize } from 'react-localize-redux';
 
