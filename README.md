@@ -51,7 +51,7 @@ ReactDOM.render(<App />, ROOT_NODE);
 
 ### Setting the language
 
-Next set the current language for your app by dispatching the `updateLanguage` action.
+Set the current language for your app by dispatching the `updateLanguage` action.
 
 ```javascript
 import { updateLanguage } from 'react-localize-redux';
