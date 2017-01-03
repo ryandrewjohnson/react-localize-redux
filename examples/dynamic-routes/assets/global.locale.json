@@ -1,0 +1,17 @@
+{
+  "en": {
+    "click-here": "Click here",
+    "welcome-page": "Welcome Page",
+    "info-page": "Info Page"
+  },
+  "fr": {
+    "click-here": "Cliquez ici",
+    "welcome-page": "Page d’accueil",
+    "info-page": "Page d’informations"
+  },
+  "es": {
+    "click-here": "Haga clic aquí",
+    "welcome-page": "Página de bienvenida",
+    "info-page": "Página de información"
+  }
+}

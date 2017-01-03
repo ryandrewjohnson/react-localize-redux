@@ -32,13 +32,4 @@ describe('<Localize />', () => {
     expect(translateFn).toBeDefined();
     expect(typeof translateFn === 'function').toBe(true);
   });
-
-  // it('should return translated element when translate function is called', () => {
-  //   const translateFn = wrapper.first().props().translate;
-  //   const TranslatedText: any = React.createElement(
-  //     translateFn('test')
-  //   );
-    
-  //   expect(translateFn('test').type.props.dangerouslySetInnerHTML).toBeDefined();
-  // });
 });

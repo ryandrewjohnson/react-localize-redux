@@ -1,5 +1,12 @@
 import * as actions from 'modules/locale';
-import reducer, { FETCH_LOCALE_REQUEST, FETCH_LOCALE_SUCCESS, FETCH_LOCALE_ERROR } from 'modules/locale';
+import reducer, { 
+  UPDATE_LANGUAGE, 
+  SET_LOCALE_JSON, 
+  SET_GLOBAL_JSON,
+  FETCH_LOCALE_REQUEST, 
+  FETCH_LOCALE_SUCCESS, 
+  FETCH_LOCALE_ERROR 
+} from 'modules/locale';
 
 describe('locale module', () => {
 
@@ -38,36 +45,62 @@ describe('locale module', () => {
     });
   });
 
-  describe('fetchLocaleJson', () => {
+  describe('setLocaleJson', () => {
     it('should return an action object with this structure', () => {
       const json = { test: 'Test JSON' };
       const key = 'test';
-      const action: any = actions.fetchLocaleJson(json, key);
+      const action = actions.setLocaleJson(key, json);
+      expect(action.type).toEqual(SET_LOCALE_JSON);
+      expect(action.payload).toEqual({ key, json });
+    });
+  });
 
-      expect(action.type).toEqual([FETCH_LOCALE_REQUEST, FETCH_LOCALE_SUCCESS, FETCH_LOCALE_ERROR]);
-      expect(action.shouldCallApi()).toBe(true);
-      expect(action.callApi().then).toBeDefined();
-      expect(action.payload).toEqual({ key });
+  describe('setGlobalJson', () => {
+    it('should return an action object with this structure', () => {
+      const json = { test: 'Test JSON' };
+      const action = actions.setGlobalJson(json);
+      expect(action.type).toEqual(SET_GLOBAL_JSON);
+      expect(action.payload).toEqual(json);
     });
   });
 
   describe('reducer', () => {
+    it('should update currentLanguage', () => {
+      const state = { currentLanguage: 'en', translations: null };
+      const action = { 
+        type: UPDATE_LANGUAGE, 
+        payload: 'fr'
+      };
+      const result = reducer(state, action);
+      expect(result.currentLanguage).toBe('fr');
+    });
+
     it('should return unmodified state if action.type does not match', () => {
       const state = { currentLanguage: 'en', translations: null };
-      const emptyAction: any = {};
+      const emptyAction = {};
       const result = reducer(state, emptyAction);
       expect(result).toBe(state);
     });
 
-    it('should add key/value to existing locale data', () => {
-      const state: any = { currentLanguage: 'en', translations: null };
-      const action: any = {
-        type: FETCH_LOCALE_SUCCESS,
-        payload: { key: 'page', response: 'page data' }
+    it('should add json to global key in translations', () => {
+      const state = { currentLanguage: 'en', translations: null };
+      const action = {
+        type: SET_GLOBAL_JSON,
+        payload: mainState.locale.translations.global
       };
-      const result: any = reducer(state, action);
-      expect(result.translations.page).toBe(action.payload.response);
-      expect(result.translations.global).toBe(state.global);
+      const result = reducer(state, action);
+      expect(result.translations.global).toEqual(action.payload);
+    });
+
+    it('should add key/value to existing locale data', () => {
+      const state = mainState.locale;
+      const action = {
+        type: SET_LOCALE_JSON,
+        payload: { key: 'page', json: { test: 'Test JSON' } }
+      };
+      const result = reducer(state, action);
+      expect(result.translations.page).toBe(action.payload.json);
+      expect(result.translations.global).toBe(state.translations.global);
     });
   });
 

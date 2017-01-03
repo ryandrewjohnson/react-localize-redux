@@ -1,3 +1,8 @@
-export { localize } from 'containers/Localize';
+export { localize } from './containers/Localize';
 
-export * from 'modules/locale';
+export localeReducer, { 
+  updateLanguage,
+  setLocalTranslations,
+  setGlobalTranslations,
+  getTranslationsForKey
+} from './modules/locale';
