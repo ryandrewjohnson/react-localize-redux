@@ -133,7 +133,7 @@ Assuming we have a component called `WelcomeView` with translations specific to 
 ```javascript
 import { setLocalTranslations } from 'react-localize-redux';
 
-const json = require('welcome.locale.json`);
+const json = require("welcome.locale.json");
 store.dispatch(setLocalTranslations('welcome', json));
 ```
 
