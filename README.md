@@ -66,7 +66,7 @@ to your store by dispatching the `setGlobalTranslations` action.
 ```javascript
 import { setGlobalTranslations } from 'react-localize-redux';
 
-const json = require('global.locale.json`);
+const json = require("global.locale.json");
 store.dispatch(setGlobalTranslations(json));
 ```
 
