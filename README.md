@@ -49,6 +49,8 @@ const App = props => {
 ReactDOM.render(<App />, ROOT_NODE);
 ```
 
+### Setting the language
+
 Next set the current language for your app by dispatching the `updateLanguage` action.
 
 ```javascript
@@ -56,6 +58,8 @@ import { updateLanguage } from 'react-localize-redux';
 
 store.dispatch(updateLanguage('en'));
 ```
+
+### Set global translations
 
 Translations that are shared throughout the application are called `global` translations.
 Assuming you have global transaltions stored in a file called `global.locale.json` you can add them
@@ -111,7 +115,10 @@ const Greeting = ({ translate, currentLanguage }) => (
 
 export default localize()(Greeting);
 ```
-In addtion to `global` translations you can add additional translations called `local` translations.
+
+### Set local translations
+
+In addtion to `global` translations you can add additional ones called `local` translations.
 These can be added to your redux store by dispatching the `setLocalTranslations` action.
 
 Assuming we have a component called `WelcomeView` with translations specific to it stored in a file named `welcome.locale.json`.
