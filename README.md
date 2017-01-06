@@ -20,7 +20,7 @@ npm install react-localize-redux --save
 
 ## Usage
 
-Start by adding the `localeReducer` to your app's redux store.
+Start by adding the `localeReducer` to your app's redux store. This will contain all your translations and the current language of your app.
 
 ```javascript
 import React from 'react';

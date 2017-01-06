@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watch",
+    "coverage": "jest --coverage",
     "start": "webpack-dev-server --config examples/webpack.config.babel.js --content-base examples --inline --open"
   },
   "repository": {

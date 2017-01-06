@@ -6,9 +6,9 @@ import { isDefinedNested } from '../utils';
 export const DEFUALT_LOCALE           = 'en';
 export const GLOBAL_TRANSLATIONS_KEY  = 'global';
 
-export const FETCH_LOCALE_REQUEST     = '@@localize/FETCH_LOCALE_REQUEST';
-export const FETCH_LOCALE_SUCCESS     = '@@localize/FETCH_LOCALE_SUCCESS';
-export const FETCH_LOCALE_ERROR       = '@@localize/FETCH_LOCALE_ERROR';
+// export const FETCH_LOCALE_REQUEST     = '@@localize/FETCH_LOCALE_REQUEST';
+// export const FETCH_LOCALE_SUCCESS     = '@@localize/FETCH_LOCALE_SUCCESS';
+// export const FETCH_LOCALE_ERROR       = '@@localize/FETCH_LOCALE_ERROR';
 
 export const SET_GLOBAL_TRANSLATIONS  = '@@localize/SET_GLOBAL_TRANSLATIONS';
 export const SET_LOCAL_TRANSLATIONS   = '@@localize/SET_LOCAL_TRANSLATIONS';

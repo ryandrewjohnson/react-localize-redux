@@ -1,11 +1,8 @@
 import * as actions from 'modules/locale';
 import reducer, { 
   UPDATE_LANGUAGE, 
-  SET_LOCALE_JSON, 
-  SET_GLOBAL_JSON,
-  FETCH_LOCALE_REQUEST, 
-  FETCH_LOCALE_SUCCESS, 
-  FETCH_LOCALE_ERROR 
+  SET_LOCAL_TRANSLATIONS, 
+  SET_GLOBAL_TRANSLATIONS,
 } from 'modules/locale';
 
 describe('locale module', () => {
@@ -49,8 +46,8 @@ describe('locale module', () => {
     it('should return an action object with this structure', () => {
       const json = { test: 'Test JSON' };
       const key = 'test';
-      const action = actions.setLocaleJson(key, json);
-      expect(action.type).toEqual(SET_LOCALE_JSON);
+      const action = actions.setLocalTranslations(key, json);
+      expect(action.type).toEqual(SET_LOCAL_TRANSLATIONS);
       expect(action.payload).toEqual({ key, json });
     });
   });
@@ -58,8 +55,8 @@ describe('locale module', () => {
   describe('setGlobalJson', () => {
     it('should return an action object with this structure', () => {
       const json = { test: 'Test JSON' };
-      const action = actions.setGlobalJson(json);
-      expect(action.type).toEqual(SET_GLOBAL_JSON);
+      const action = actions.setGlobalTranslations(json);
+      expect(action.type).toEqual(SET_GLOBAL_TRANSLATIONS);
       expect(action.payload).toEqual(json);
     });
   });
@@ -85,7 +82,7 @@ describe('locale module', () => {
     it('should add json to global key in translations', () => {
       const state = { currentLanguage: 'en', translations: null };
       const action = {
-        type: SET_GLOBAL_JSON,
+        type: SET_GLOBAL_TRANSLATIONS,
         payload: mainState.locale.translations.global
       };
       const result = reducer(state, action);
@@ -95,7 +92,7 @@ describe('locale module', () => {
     it('should add key/value to existing locale data', () => {
       const state = mainState.locale;
       const action = {
-        type: SET_LOCALE_JSON,
+        type: SET_LOCAL_TRANSLATIONS,
         payload: { key: 'page', json: { test: 'Test JSON' } }
       };
       const result = reducer(state, action);
