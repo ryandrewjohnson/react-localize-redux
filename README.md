@@ -2,8 +2,9 @@
 Dead simple localization for your React/Redux components. 
 
 * Supports multiple languages
-* Provide components with global and component specific translations
-* With webpack code splitting translation json data can be bundled with their component 
+* Provides components with global and component specific translations
+* Will render HTML tags included in translation copy
+* With webpack code splitting translation json can be bundled with their component 
 
 ## Installation
 
@@ -166,7 +167,7 @@ export default localize('welcome')(Greeting);
 
 ## API
 
-## localize( [translationId] )( WrappedComponent )
+### localize( [translationId] )( WrappedComponent )
 
 A HoC factory method that returns an enhanced version of the WrappedComponent with the additional props for 
 adding localized copy to your component. 
@@ -187,11 +188,11 @@ export default localize('localId')(MyComponent);
 
 The following additional props are provided to localized components: 
 
-### currentLanguage
+#### currentLanguage
 
 The current language set in your application. See [updateLanguage]() on how to update current language.
 
-### translate( id ) 
+#### translate( id ) 
 
 This function is used to retrieve the localized string for your component for the provided `id` param. This `id` should match the name of 
 the property from the json localization file.
@@ -220,16 +221,16 @@ and you wanted to add this copy to your component...
 
 >NOTE: The json content that `translate` has access to will depend on the `translationId` passed to the `localize` method.
 
-## Redux Actions
+### Redux Actions
 
 These redux actions are used to add any localized json data for your application.
 
-### setGlobalTranslations(json)
+#### setGlobalTranslations(json)
 
 The global json should contain any localized content that will be shared by multiple components. 
 By default all components created by [localize]() will have access to transaltion from this global json.
 
-### setLocalTranslations(id, json)
+#### setLocalTranslations(id, json)
 
 The local json should contain localized content specific to a component. This is especially useful when used 
 in combination with react-router dynamic routing, and webpack code splitting features.
