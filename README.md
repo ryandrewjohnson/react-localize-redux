@@ -6,6 +6,19 @@ Dead simple localization for your React/Redux components.
 * Will render HTML tags included in translation copy
 * With webpack code splitting translation json can be bundled with their component 
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [API](#api)
+  - [localize](#localize-translationid--wrappedcomponent-)
+    - [currentlanguage](#currentlanguage)
+    - [translate](#translate-id-)
+  - [Redux Actions](#redux-actions)
+    - [setGlobalTranslations](#setglobaltranslationsjson)
+    - [setLocalTranslations](#setlocaltranslationsid-json)
+  
+
 ## Installation
 
 The following dependencies are required:
