@@ -11,13 +11,6 @@ Dead simple localization for your React/Redux components.
 - [Installation](#installation)
 - [Usage](#usage)
 - [API](#api)
-  - [localize](#localize-translationid--wrappedcomponent-)
-    - [currentlanguage](#currentlanguage)
-    - [translate](#translate-id-)
-  - [Redux Actions](#redux-actions)
-    - [setGlobalTranslations](#setglobaltranslationsjson)
-    - [setLocalTranslations](#setlocaltranslationsid-json)
-  
 
 ## Installation
 
