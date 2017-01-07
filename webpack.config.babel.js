@@ -1,28 +1,37 @@
 import webpack from 'webpack';
 import { resolve } from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 import { getIfUtils, removeEmpty } from 'webpack-config-utils';
 
 export default env => {
   const { ifProd, ifNotProd } = getIfUtils(env);
+  const reactExternal = {
+    root: 'React',
+    commonjs2: 'react',
+    commonjs: 'react',
+    amd: 'react'
+  };
+  const reduxExternal = {
+    root: 'Redux',
+    commonjs2: 'redux',
+    commonjs: 'redux',
+    amd: 'redux'
+  };
+  const reactReduxExternal = {
+    root: 'ReactRedux',
+    commonjs2: 'react-redux',
+    commonjs: 'react-redux',
+    amd: 'react-redux'
+  };
+  const reselectExternal = {
+    root: 'Reselect',
+    commonjs2: 'reselect',
+    commonjs: 'reselect',
+    amd: 'reselect'
+  };
   return {
-    // ------------------------------------
-    // Entry Points
-    // ------------------------------------
-    entry: {
-      library: resolve(__dirname, 'src/index'),
-      examples: resolve(__dirname, 'examples/index')
-    },
+   entry: './src/index.js',
 
-    // ------------------------------------
-    // Devtool
-    // ------------------------------------
-    devtool: ifProd('source-map', 'eval-source-map'),
-
-    // ------------------------------------
-    // Resolve
-    // ------------------------------------
     resolve: {
       extensions: ['.webpack.js', '.web.js', '.js', '.jsx', '.json'],
       modules: [
@@ -31,34 +40,18 @@ export default env => {
       ]
     },
 
-    // ------------------------------------
-    // Output
-    // ------------------------------------
     output: {
-       filename: '[name].js'
-      // library: 'ReactLocalizeRedux',
-      // libraryTarget: 'umd'
+      library: 'ReactLocalizeRedux',
+      libraryTarget: 'umd'
     },
 
-    // externals: {
-    //   "react": "React",
-    //   "react-redux": true,
-    //   "redux": true
-    // },
-
-    // ------------------------------------
-    // Devserver
-    // ------------------------------------
-    devServer: {
-      historyApiFallback: true,
-      stats: {
-        chunkModules: false
-      }
+    externals: {
+      'react': reactExternal,
+      'redux': reduxExternal,
+      'react-redux': reactReduxExternal,
+      'reselect': reselectExternal
     },
 
-    // ------------------------------------
-    // Module
-    // ------------------------------------
     module: {
       rules: removeEmpty([
         { 
@@ -69,35 +62,22 @@ export default env => {
       ])
     },
 
-    // ------------------------------------
-    // Plugins
-    // ------------------------------------
     plugins: removeEmpty([
       new ProgressBarPlugin(),
-
-      new HtmlWebpackPlugin({
-        template: resolve(__dirname, 'examples/index.html')
-      }),
-
-      // This informs certain dependencies e.g. React that they should be compiled for prod
-      // see https://github.com/facebook/react/issues/6479#issuecomment-211784918
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: ifProd('"production"', '"development"')
         }
       }),
-
       ifProd(new webpack.LoaderOptionsPlugin({
         minimize: true,
         debug: true
       })),
-
       ifProd(new webpack.optimize.UglifyJsPlugin({
         compress: {
           screw_ie8: true,
           warnings: false
-        },
-        sourceMap: true
+        }
       }))
     ])
   }
