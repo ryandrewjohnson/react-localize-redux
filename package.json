@@ -50,7 +50,6 @@
   "devDependencies": {
     "babel-cli": "^6.18.0",
     "babel-core": "^6.21.0",
-    "babel-eslint": "^7.1.1",
     "babel-jest": "^18.0.0",
     "babel-loader": "^6.2.10",
     "babel-plugin-add-module-exports": "^0.2.1",
@@ -60,7 +59,6 @@
     "cross-env": "^3.1.4",
     "enzyme": "^2.7.0",
     "express": "^4.14.0",
-    "express-urlrewrite": "^1.2.0",
     "html-webpack-plugin": "^2.24.1",
     "jest": "^18.0.0",
     "json-loader": "^0.5.4",

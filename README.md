@@ -1,5 +1,6 @@
 # react-localize-redux
-Dead simple localization for your React/Redux components. 
+
+A HoC (higher-order component) to add multi-language support to your React/Redux components.
 
 * Supports multiple languages
 * Provides components with global and component specific translations
@@ -27,7 +28,7 @@ npm install react-localize-redux --save
 
 ## Usage
 
-Start by adding the `localeReducer` to your app's redux store. This will contain all your translations and the current language of your app.
+Add the `localeReducer` to your app's redux store. This will contain all translations data as well as the setting for current language.
 
 ```javascript
 import React from 'react';
@@ -58,7 +59,7 @@ ReactDOM.render(<App />, ROOT_NODE);
 
 ### Setting the language
 
-Set the current language for your app by dispatching the `updateLanguage` action.
+Set the current language for your app by dispatching the `updateLanguage` action creator.
 
 ```javascript
 import { updateLanguage } from 'react-localize-redux';
@@ -68,9 +69,9 @@ store.dispatch(updateLanguage('en'));
 
 ### Set global translations
 
-Translations that are shared throughout the application are called `global` translations.
+Translations that are shared between components are called `global` translations.
 Assuming you have global transaltions stored in a file called `global.locale.json` you can add them
-to your store by dispatching the `setGlobalTranslations` action.
+to your store by dispatching the `setGlobalTranslations` action creator.
 
 > NOTE: The following assumes you are using [webpack](https://webpack.github.io/) with [json-loader](https://github.com/webpack/json-loader)
 
@@ -81,8 +82,8 @@ const json = require("global.locale.json");
 store.dispatch(setGlobalTranslations(json));
 ```
 
-As mentioned above translations are stored in json files. Each json file requires that there be
-a property for each supported language, where the property name would match the key passed to `updateLanguage`.
+As mentioned above translation content is stored in json files. Each json file requires that there be
+a property for each supported language, where the property name would match the language key passed to [updateLanguage]().
 
 ```json
 {
@@ -100,10 +101,9 @@ a property for each supported language, where the property name would match the 
   }
 }
 ```
-
-To access global translations in your component pass your component class as a param
-to the `localize` function. It will not modify the component passed to it, but return a 
-new component with new props `translate` and `currentLanguage` added.
+To add translations to a component you will need to decorate it with the `localize` function. By default
+all components decorated with `localize` will have access to `global` translations. It will not modify your
+component class, but instead returns a new localized component with new props `translate` and `currentLanguage` added.
 
 The `translate` prop is a function that takes the unique id from the transaltion file as a param,
 and will return the localized string based on `currentLanguage`.
@@ -120,13 +120,14 @@ const Greeting = ({ translate, currentLanguage }) => (
   </div>
 );
 
+// decorate your component with localize
 export default localize()(Greeting);
 ```
 
 ### Set local translations
 
-In addtion to `global` translations you can add additional ones called `local` translations.
-These can be added to your redux store by dispatching the `setLocalTranslations` action.
+In addtion to `global` translations you can also include translations specific to your component called `local` translations.
+Similar to global translations `local` transaltions are added using an action creator `setLocalTranslations`.
 
 Assuming we have a component called `WelcomeView` with translations specific to it stored in a file named `welcome.locale.json`.
 
@@ -144,6 +145,8 @@ Assuming we have a component called `WelcomeView` with translations specific to 
 }
 ```
 
+First you will load the local json data passing in a `translationId`, in this case `welcome`, followed by the json data.
+
 ```javascript
 import { setLocalTranslations } from 'react-localize-redux';
 
@@ -152,7 +155,7 @@ store.dispatch(setLocalTranslations('welcome', json));
 ```
 
 To access `local` translations in your component you still use the `localize` function, 
-but this time passing the id passed to `setLocalTranslations`.
+but this time passing in the unique id that was used in `setLocalTranslations`.
 
 > NOTE: In addition to the `local` translations you will still have access `global` translations as well.
 
@@ -168,6 +171,7 @@ const WelcomeView = ({ translate }) => (
   </div>
 );
 
+// pass in the unique id for the local content you would like to add
 export default localize('welcome')(Greeting);
 ```
 
@@ -176,20 +180,21 @@ export default localize('welcome')(Greeting);
 ### localize( [translationId] )( WrappedComponent )
 
 A HoC factory method that returns an enhanced version of the WrappedComponent with the additional props for 
-adding localized copy to your component. 
+adding localized content to your component. 
 
-To give your component access to only `global` translations leave `translationId`:
+By calling `localize` with no params your WrappedComponent will only have access to `global` translations.
 
 ```javascript
 const MyComponent = ({ translate }) => <div>{ translate('greeting') }</div>;
 export default localize()(MyComponent);
 ```
 
-To give your component access to both `global` and `local` translations provide a `translationId`. This `translationId` must match the `id` used by the [setLocalTranslations]() action creator.
+By default all components decorated with `localize` will have access to `global` transaltions. To add additional transaltion
+data that was added by [setLocalTranslations(translationId, json)](#setlocaltranslationsid-json) you will need pass the `translationId` as a param to `localize`.
 
 ```javascript
 const MyComponent = ({ translate }) => <div>{ translate('title') }</div>;
-export default localize('localId')(MyComponent);
+export default localize('translationId')(MyComponent);
 ```
 
 The following additional props are provided to localized components: 
@@ -200,10 +205,10 @@ The current language set in your application. See [updateLanguage]() on how to u
 
 #### translate( id ) 
 
-This function is used to retrieve the localized string for your component for the provided `id` param. This `id` should match the name of 
-the property from the json localization file.
+The translate will be used to insert translated copy in your component. The `id` param will need to match the property of the string you wish
+to retrieve from your json translaion data.
 
-For example if this was your json file:
+For example if the below json file was added using either [setGlobalTranslations](#setglobaltranslationsjson) or [setLocalTranslations](#setlocaltranslationsid-json).
 
 ```json
 {
@@ -218,7 +223,7 @@ For example if this was your json file:
 }
 ```
 
-and you wanted to add this copy to your component...
+and this component had been decorated with [localize](#localize-translationid--wrappedcomponent-) you would access the json content like so...
 
 ```html
 <h1>{ translate('title') }</h1>
@@ -227,16 +232,20 @@ and you wanted to add this copy to your component...
 
 >NOTE: The json content that `translate` has access to will depend on the `translationId` passed to the `localize` method.
 
-### Redux Actions
+### Redux Action Creators
 
-These redux actions are used to add any localized json data for your application.
+The following action creators are avaialble:
+
+#### updateLanguage(languageCode)
+
+This will set the current language for your application, where `languageCode` should match the `languageCode` prop used in your translation json data.
 
 #### setGlobalTranslations(json)
 
 The global json should contain any localized content that will be shared by multiple components. 
-By default all components created by [localize]() will have access to transaltion from this global json.
+By default all components created by [localize](#localize-translationid--wrappedcomponent-) will have access to transaltion from this global json.
 
-#### setLocalTranslations(id, json)
+#### setLocalTranslations(translationId, json)
 
 The local json should contain localized content specific to a component. This is especially useful when used 
 in combination with react-router dynamic routing, and webpack code splitting features.
