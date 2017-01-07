@@ -1,5 +1,7 @@
 # react-localize-redux
 
+[![Travis][build-badge]][build]
+
 A HoC (higher-order component) to add multi-language support to your React/Redux components.
 
 * Supports multiple languages
