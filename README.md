@@ -83,7 +83,7 @@ store.dispatch(setGlobalTranslations(json));
 ```
 
 As mentioned above translation content is stored in json files. Each json file requires that there be
-a property for each supported language, where the property name would match the language key passed to [updateLanguage]().
+a property for each supported language, where the property name would match the language key passed to [updateLanguage](#updatelanguagelanguagecode).
 
 ```json
 {
@@ -101,9 +101,9 @@ a property for each supported language, where the property name would match the 
   }
 }
 ```
-To add translations to a component you will need to decorate it with the `localize` function. By default
-all components decorated with `localize` will have access to `global` translations. It will not modify your
-component class, but instead returns a new localized component with new props `translate` and `currentLanguage` added.
+To add translations to a component you will need to decorate it with the [localize](#localize-translationid--wrappedcomponent-) function. By default
+all components decorated with `localize` have access to `global` translations. It will not modify your
+component class, but return a new localized component with additional props `translate` and `currentLanguage`.
 
 The `translate` prop is a function that takes the unique id from the transaltion file as a param,
 and will return the localized string based on `currentLanguage`.
@@ -233,8 +233,6 @@ and this component had been decorated with [localize](#localize-translationid--w
 >NOTE: The json content that `translate` has access to will depend on the `translationId` passed to the `localize` method.
 
 ### Redux Action Creators
-
-The following action creators are avaialble:
 
 #### updateLanguage(languageCode)
 
