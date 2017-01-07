@@ -19,7 +19,8 @@
     "coverage": "jest --coverage",
     "prepublish": "npm run build",
     "start": "webpack-dev-server --config examples/webpack.config.babel.js --content-base examples --inline --open",
-    "test": "jest --watch"
+    "test": "jest",
+    "test:dev": "jest --watch"
   },
   "repository": {
     "type": "git",
