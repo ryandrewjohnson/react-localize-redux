@@ -177,6 +177,12 @@ const WelcomeView = ({ translate }) => (
 export default localize('welcome')(Greeting);
 ```
 
+## Bundle translations with Webpack and react-router
+
+When used with Webpack's [json-loader](https://github.com/webpack/json-loader), and react-router [Dynamic Routing](https://github.com/ReactTraining/react-router/blob/master/docs/guides/DynamicRouting.md) you can leverage code splitting to bundle components with their transaltion data. 
+
+See the `dynamic-routes` folder in the examples forward on a working example of how to implement this setup.
+
 ## API
 
 ### localize( [translationId] )( WrappedComponent )
