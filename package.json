@@ -1,6 +1,6 @@
 {
   "name": "react-localize-redux",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Dead simple localization for your React/Redux components",
   "main": "lib/index",
   "jsnext:main": "es/index",
