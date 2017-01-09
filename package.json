@@ -1,6 +1,6 @@
 {
   "name": "react-localize-redux",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Dead simple localization for your React/Redux components",
   "main": "lib/index",
   "jsnext:main": "es/index",
@@ -8,7 +8,8 @@
     "*.md",
     "es",
     "lib",
-    "umd"
+    "umd",
+    "dist"
   ],
   "scripts": {
     "build": "npm run build-cjs && npm run build-es && npm run build-umd && npm run build-min",
