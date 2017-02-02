@@ -15,6 +15,7 @@ A HoC (higher-order component) to add multi-language support to your React/Redux
 - [Usage](#usage)
 - [Bundle translations with Webpack and react-router](#localize-translationid--wrappedcomponent-)
 - [API](#api)
+- [Introduction to react-localize-redux](https://medium.com/@ryandrewjohnson/adding-multi-language-support-to-your-react-redux-app-cf6e64250050#.jmxxptvpu)
 
 ## Installation
 
