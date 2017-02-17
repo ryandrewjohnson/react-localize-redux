@@ -15,9 +15,12 @@ export const localize = (localeKey) => (Component) => {
     const translations = getTranslationsForKey(localeKey)(state);
     return {
       currentLanugage: state.locale.currentLanguage,
-      translate: (key) => getLocalizedElement(key, translations)
+      translate: (key, data) => getLocalizedElement(key, translations, data)
     };
   };
+
+  // use cases
+  // I have ${ variable } and another ${ variable }
 
   return connect(mapStateToProps, null)(Localize);
 };

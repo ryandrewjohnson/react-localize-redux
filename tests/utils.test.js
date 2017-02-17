@@ -45,5 +45,21 @@ describe('locale utils', () => {
       expect(result).toBe(false);
     });
   });
+
+  describe('templater', () => {
+    it('should replace all variables in the string', () => {
+      const data = { name: 'Ryan', country: 'Canada' };
+      const before = 'Hi my name is ${ name } and I live in ${ country }';
+      const after = 'Hi my name is Ryan and I live in Canada';
+      const result = utils.templater(before, data);
+      expect(result).toEqual(after);
+    });
+
+    it('should not modify string if no data param is provided', () => {
+      const before = 'Hi my name is ${ name } and I live in ${ country }';
+      const result = utils.templater(before);
+      expect(result).toEqual(before);
+    });
+  });
   
 });
