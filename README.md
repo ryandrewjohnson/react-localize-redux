@@ -92,15 +92,15 @@ a property for each supported language, where the property name would match the 
 ```json
 {
   "en": {
-    "greeting": "Hello",
+    "greeting": "Hello ${ firstName }",
     "farwell": "Goodbye"
   },
   "fr": {
-    "greeting": "Bonjour",
+    "greeting": "Bonjour ${ firstName }",
     "farwell": "Au revoir"
   },
   "es": {
-    "greeting": "Hola",
+    "greeting": "Hola ${ firstName }",
     "farwell": "Adiós"
   }
 }
@@ -110,7 +110,7 @@ all components decorated with `localize` have access to `global` translations. I
 component class, but return a new localized component with additional props `translate` and `currentLanguage`.
 
 The `translate` prop is a function that takes the unique id from the transaltion file as a param,
-and will return the localized string based on `currentLanguage`.
+and an optional `data` param for variable substitutions. The function will return the localized string based on `currentLanguage`.
 
 ```javascript
 import React from 'react';
@@ -118,7 +118,7 @@ import { localize } from 'react-localize-redux';
 
 const Greeting = ({ translate, currentLanguage }) => (
   <div>
-    <h1>{ translate('greeting') }</h1>
+    <h1>{ translate('greeting', { name: 'Ryan' }) }</h1>
     <p>The current language is { `${ currentLanguage }` }</p>
     <button>{ translate('farwell') }</button>
   </div>
@@ -213,10 +213,21 @@ The following additional props are provided to localized components:
 
 The current language set in your application. See [updateLanguage]() on how to update current language.
 
-#### translate( id ) 
+#### translate( id, data ) 
 
 The translate will be used to insert translated copy in your component. The `id` param will need to match the property of the string you wish
 to retrieve from your json translaion data.
+
+The `data` param is optional and can be used to insert dynamic data into your translations. The syntax follows the Javascript template
+literal format.
+
+```javascript
+// Here is a string where I want to dynamically insert the user's name, and country
+{ "greet": "Hi here is my ${ name } and ${ country }" }
+
+// With translate you'd do the following
+translate('greet', { name: 'Ryan', country: 'Canada' })
+```
 
 For example if the below json file was added using either [setGlobalTranslations](#setglobaltranslationsjson) or [setLocalTranslations](#setlocaltranslationsid-json).
 
