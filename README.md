@@ -92,15 +92,15 @@ a property for each supported language, where the property name would match the 
 ```json
 {
   "en": {
-    "greeting": "Hello ${ firstName }",
+    "greeting": "Hello ${ name }",
     "farwell": "Goodbye"
   },
   "fr": {
-    "greeting": "Bonjour ${ firstName }",
+    "greeting": "Bonjour ${ name }",
     "farwell": "Au revoir"
   },
   "es": {
-    "greeting": "Hola ${ firstName }",
+    "greeting": "Hola ${ name }",
     "farwell": "Adiós"
   }
 }
