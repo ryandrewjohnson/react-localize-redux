@@ -2,9 +2,15 @@ import React from 'react';
 
 export const getLocalizedElement = (key, translations, data) => {
   const localizedString = translations[key] || `Missing locaized: ${key}`;
-  return React.createElement('span', { 
-    dangerouslySetInnerHTML: { __html: templater(localizedString, data) }
-  }); 
+  const translatedValue = templater(localizedString, data)
+  return hasHtmlTags(translatedValue) 
+    ? React.createElement('span', { dangerouslySetInnerHTML: { __html: translatedValue }})
+    : <span>{ translatedValue }</span>;
+};
+
+export const hasHtmlTags = (value) => {
+  const pattern = /<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)\/?>/;
+  return value.search(pattern) >= 0;
 };
 
 /**
