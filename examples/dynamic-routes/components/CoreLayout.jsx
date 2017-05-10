@@ -2,13 +2,13 @@ import React from 'react';
 import { Link } from 'react-router';
 import { localize } from 'react-localize-redux';
 
-const CoreLayout = ({ children, currentLanugage, translate }) =>
+const CoreLayout = ({ children, currentLanguage, translate }) =>
   <div>
     <nav>
       <ul>
         <li>
-          <Link to={ `${ currentLanugage }/welcome` }>{ translate('welcome-page') }</Link>
-          <Link to={ `${ currentLanugage }/info` }>{ translate('info-page') }</Link>
+          <Link to={ `${ currentLanguage }/welcome` }>{ translate('welcome-page') }</Link>
+          <Link to={ `${ currentLanguage }/info` }>{ translate('info-page') }</Link>
         </li>
       </ul>
     </nav>

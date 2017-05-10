@@ -14,7 +14,7 @@ export const localize = (localeKey) => (Component) => {
   const mapStateToProps = state => {
     const translations = getTranslationsForKey(localeKey)(state);
     return {
-      currentLanugage: state.locale.currentLanguage,
+      currentLanguage: state.locale.currentLanguage,
       translate: (key, data) => getLocalizedElement(key, translations, data)
     };
   };
