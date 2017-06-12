@@ -1,100 +1,120 @@
 import { combineReducers } from 'redux';
-// import { LANG, DEFUALT_LANG } from 'store/constants';
+import { flatten } from 'flat';
 import { createSelector, Selector } from 'reselect';
-import { isDefinedNested } from '../utils';
+import { isDefinedNested, getLocalizedElement, getIndexForLanguageCode } from '../utils';
 
-export const DEFUALT_LOCALE           = 'en';
-export const GLOBAL_TRANSLATIONS_KEY  = 'global';
+export const ADD_TRANSLATION      = '@@localize/ADD_TRANSLATION';
+export const SET_LANGUAGES        = '@@localize/SET_LANGUAGES';
+export const SET_ACTIVE_LANGUAGE  = '@@localize/SET_ACTIVE_LANGUAGE';
+export const TRANSLATE            = '@@localize/TRANSLATE';
 
-// export const FETCH_LOCALE_REQUEST     = '@@localize/FETCH_LOCALE_REQUEST';
-// export const FETCH_LOCALE_SUCCESS     = '@@localize/FETCH_LOCALE_SUCCESS';
-// export const FETCH_LOCALE_ERROR       = '@@localize/FETCH_LOCALE_ERROR';
-
-export const SET_GLOBAL_TRANSLATIONS  = '@@localize/SET_GLOBAL_TRANSLATIONS';
-export const SET_LOCAL_TRANSLATIONS   = '@@localize/SET_LOCAL_TRANSLATIONS';
-export const UPDATE_LANGUAGE          = '@@localize/UPDATE_LANGUAGE';
-
-function translations(state = null, action) { 
+/**
+ * REDUCERS
+ */
+export function languages(state = [], action) {
   switch (action.type) {
-    case SET_LOCAL_TRANSLATIONS:
-      return {
-        ...state,
-        [action.payload.key]: action.payload.json
-      };
-    case SET_GLOBAL_TRANSLATIONS:
-      return {
-        ...state,
-        [GLOBAL_TRANSLATIONS_KEY]: action.payload
-      };
+    case SET_LANGUAGES:
+      const languageCodes = action.payload.languageCodes;
+      return languageCodes.map(code => {
+        return { code, active: false };
+      });
+    case SET_ACTIVE_LANGUAGE:
+      return state.map(language => {
+        return language.code === action.payload.languageCode
+          ? { ...language, active: true }
+          : { ...language, active: false };
+      });
     default:
       return state;
   }
 }
 
-function currentLanguage(state = 'en', action) {
-  return action.type === UPDATE_LANGUAGE ? action.payload : state;
+export function translations(state = {}, action) {
+  switch(action.type) {
+    case ADD_TRANSLATION:
+      return {
+        ...state,
+        ...flatten(action.payload.translation, { safe: true })
+      }
+    default:
+      return state;
+  }
 }
 
-export default combineReducers({
-  currentLanguage,
-  translations
-});
+export const localeReducer = combineReducers({ languages, translations });
 
-export const updateLanguage = (language) => {
-  let selectedLanguage = language;
-  selectedLanguage = selectedLanguage ? selectedLanguage : 'en';
+/**
+ * ACTION CREATORS
+ */
+export const addTranslation = (translation) => {
   return {
-    type: UPDATE_LANGUAGE,
-    payload: selectedLanguage
+    type: ADD_TRANSLATION,
+    payload: { translation }
   };
 };
 
-export const setLocalTranslations = (key, json) => {
+export const setLanguages = (languageCodes) => {
   return {
-    type: SET_LOCAL_TRANSLATIONS,
-    payload: { key, json }
+    type: SET_LANGUAGES,
+    payload: { languageCodes }
   };
 };
 
-export const setGlobalTranslations = (json) => {
+export const setActiveLanguage = (languageCode) => {
   return {
-    type: SET_GLOBAL_TRANSLATIONS,
-    payload: json
+    type: SET_ACTIVE_LANGUAGE,
+    payload: { languageCode }
   };
 };
 
-// export const fetchLocaleJson = (json, key): IApiActionType => {
-//   return {
-//     type: [FETCH_LOCALE_REQUEST, FETCH_LOCALE_SUCCESS, FETCH_LOCALE_ERROR],
-//     shouldCallApi: (state) => true,
-//     callApi: () => Promise.resolve(json),
-//     payload: { key }
-//   };
-// };
+/**
+ * SELECTORS
+ */
+export const getTranslations = state => state.locale.translations;
+export const getLanguages = state => state.locale.languages;
+export const getActiveLanguage = state => getLanguages(state).find(language => language.active === true);
 
-const getCurrentLanguage = (state) => state.locale.currentLanguage;
-const getTranslations = (state) => state.locale.translations;
-
-export const getTranslationsForKey = (key) => {
-  return createSelector(
-    getCurrentLanguage, 
-    getTranslations,
-    (currentLanguage, translations) => {
-      let globalTranslations = {};
-      let localTranslations = {};
-
-      if (translations && isDefinedNested(translations, GLOBAL_TRANSLATIONS_KEY)) {
-        globalTranslations = translations.global[currentLanguage] || {};
-      }
-
-      if (translations && isDefinedNested(translations, key, currentLanguage)) {
-        localTranslations = translations[key][currentLanguage];
-      }
-
-      return {
-        ...globalTranslations,
-        ...localTranslations
-      };
+export const getTranslationsForActiveLanguage = state => {
+  const { code: activeLanguageCode } = getActiveLanguage(state);
+  const translations = getTranslations(state);
+  const languages = getLanguages(state);
+  const activeLanguageIndex = getIndexForLanguageCode(activeLanguageCode, languages);
+  return Object.keys(translations).reduce((prev, key) => {
+    return {
+      ...prev,
+      [key]: translations[key][activeLanguageIndex]
     }
-  );
+  }, {});
 };
+
+
+export const getTranslate = (state) => {
+  const translations = getTranslationsForActiveLanguage(state);
+  return (key, data) => getLocalizedElement(key, translations, data);
+};
+
+
+
+// export const getTranslationsForKey = (key) => {
+//   return createSelector(
+//     getCurrentLanguage, 
+//     getTranslations,
+//     (currentLanguage, translations) => {
+//       let globalTranslations = {};
+//       let localTranslations = {};
+
+//       if (translations && isDefinedNested(translations, GLOBAL_TRANSLATIONS_KEY)) {
+//         globalTranslations = translations.global[currentLanguage] || {};
+//       }
+
+//       if (translations && isDefinedNested(translations, key, currentLanguage)) {
+//         localTranslations = translations[key][currentLanguage];
+//       }
+
+//       return {
+//         ...globalTranslations,
+//         ...localTranslations
+//       };
+//     }
+//   );
+// };

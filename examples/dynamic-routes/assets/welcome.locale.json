@@ -1,14 +1,12 @@
 {
-  "en": {
-    "title": "Hello ${ name } from Welcome Page!",
-    "body": "Here is some body copy for the welcome page that needs to be translated. You can add <strong>strong</strong>, <u>underline</u>, or any other HTML tags you want to include in translations."
-  },
-  "fr": {
-    "title": "Bonjour ${ name } de la Page d’accueil !",
-    "body": "Voici une copie de corps pour la page d’accueil qui doit se traduire. Vous pouvez ajouter fort, soulignement, ou autre éléments HTML tags vous souhaitez inclure dans les traductions."
-  },
-  "es": {
-    "title": "Hola ${ name } desde la página de bienvenida!",
-    "body": "Aquí le damos algunas copia del cuerpo de la página de bienvenida que necesita ser traducido. Usted puede Agregar fuerte, subrayado, o cualquier otro HTML tags te desea incluir en las traducciones."
-  }
+  "title": [
+    "Hello ${ name } from Welcome Page!",
+    "Bonjour ${ name } de la Page d’accueil !",
+    "Hola ${ name } desde la página de bienvenida!"
+  ],
+  "body": [
+    "Here is some body copy for the welcome page that needs to be translated. You can add <strong>strong</strong>, <u>underline</u>, or any other HTML tags you want to include in translations.",
+    "Voici une copie de corps pour la page d’accueil qui doit se traduire. Vous pouvez ajouter fort, soulignement, ou autre éléments HTML tags vous souhaitez inclure dans les traductions.",
+    "Aquí le damos algunas copia del cuerpo de la página de bienvenida que necesita ser traducido. Usted puede Agregar fuerte, subrayado, o cualquier otro HTML tags te desea incluir en las traducciones."
+  ]
 }

@@ -1,4 +1,6 @@
 import React from 'react';
+import { getTranslate } from 'react-localize-redux';
+import { connect } from 'react-redux';
 
 const WelcomeView = ({ translate }) => {
   return (
@@ -10,4 +12,10 @@ const WelcomeView = ({ translate }) => {
   );
 }
 
-export default WelcomeView;
+const mapStateToProps = state => {
+  return {
+    translate: getTranslate(state)
+  };
+};
+
+export default connect(mapStateToProps)(WelcomeView);

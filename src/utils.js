@@ -53,3 +53,7 @@ export const templater = (strings, data = {}) => {
   }
   return strings;
 }
+
+export const getIndexForLanguageCode = (code, languages) => {
+  return languages.map(language => language.code).indexOf(code);
+}

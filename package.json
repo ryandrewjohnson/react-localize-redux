@@ -68,7 +68,7 @@
     "enzyme": "^2.7.0",
     "express": "^4.14.0",
     "html-webpack-plugin": "^2.24.1",
-    "jest": "^18.0.0",
+    "jest": "^20.0.4",
     "json-loader": "^0.5.4",
     "progress-bar-webpack-plugin": "^1.9.1",
     "react": "^15.4.1",
@@ -78,6 +78,7 @@
     "react-router": "^3.0.0",
     "redux": "^3.6.0",
     "redux-devtools": "^3.3.1",
+    "redux-devtools-extension": "^2.13.2",
     "redux-mock-store": "^1.2.1",
     "reselect": "^2.5.4",
     "rimraf": "^2.5.4",
@@ -88,12 +89,15 @@
   },
   "jest": {
     "verbose": true,
-    "testPathDirs": [
+    "roots": [
       "tests/"
     ],
     "modulePaths": [
       "src/",
       "node_modules"
     ]
+  },
+  "dependencies": {
+    "flat": "^2.0.1"
   }
 }

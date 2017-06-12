@@ -79,4 +79,17 @@ describe('locale utils', () => {
     });
   });
   
+  describe('getIndexForLanguageCode', () => {
+    it('should return the index for matching language code', () => {
+      const languages = [{ code: 'en' }, { code: 'fr' }, { code: 'ne' }];
+      const result = utils.getIndexForLanguageCode('fr', languages);
+      expect(result).toBe(1);
+    });
+
+    it('should return -1 when no match is found', () => {
+      const languages = [{ code: 'en' }, { code: 'fr' }, { code: 'ne' }];
+      const result = utils.getIndexForLanguageCode('zw', languages);
+      expect(result).toBe(-1);
+    });
+  });
 });
