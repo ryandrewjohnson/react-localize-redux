@@ -28,32 +28,6 @@ describe('locale utils', () => {
     });
   });
 
-  describe('isDefinedNested', () => {
-    it('should return false on empty first prop', () => {
-      const test = { test: 'this' };
-      const result = utils.isDefinedNested(test, 'empty');
-      expect(result).toBe(false);
-    });
-
-    it('should return first prop', () => {
-      const test = { test: 'this' };
-      const result = utils.isDefinedNested(test, 'test');
-      expect(result).toBe('this');
-    });
-
-    it('should return second prop', () => {
-      const test = { test: { test2: 'this' } };
-      const result = utils.isDefinedNested(test, 'test', 'test2');
-      expect(result).toBe(true);
-    });
-
-    it('should return false nested prop', () => {
-      const test = { test: { test2: 'this' } };
-      const result = utils.isDefinedNested(test, 'test', 'test3');
-      expect(result).toBe(false);
-    });
-  });
-
   describe('hasHtmlTags', () => {
     it('should return true if string contains html tag', () => {
       const value1 = 'Here is some <b>text</b> with html tag';

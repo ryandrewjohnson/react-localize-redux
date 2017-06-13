@@ -70,51 +70,28 @@ export const setActiveLanguage = (languageCode) => {
 /**
  * SELECTORS
  */
-export const getTranslations = state => state.locale.translations;
-export const getLanguages = state => state.locale.languages;
+export const getTranslations = state => state.translations;
+export const getLanguages = state => state.languages;
 export const getActiveLanguage = state => getLanguages(state).find(language => language.active === true);
 
-export const getTranslationsForActiveLanguage = state => {
-  const { code: activeLanguageCode } = getActiveLanguage(state);
-  const translations = getTranslations(state);
-  const languages = getLanguages(state);
-  const activeLanguageIndex = getIndexForLanguageCode(activeLanguageCode, languages);
-  return Object.keys(translations).reduce((prev, key) => {
-    return {
-      ...prev,
-      [key]: translations[key][activeLanguageIndex]
-    }
-  }, {});
-};
-
+export const getTranslationsForActiveLanguage = createSelector(
+  getActiveLanguage,
+  getLanguages,
+  getTranslations,
+  (activeLanguage, languages, translations) => {
+    console.log('getTranslationsForActiveLanguage');
+    const { code: activeLanguageCode } = activeLanguage;
+    const activeLanguageIndex = getIndexForLanguageCode(activeLanguageCode, languages);
+    return Object.keys(translations).reduce((prev, key) => {
+      return {
+        ...prev,
+        [key]: translations[key][activeLanguageIndex]
+      }
+    }, {});
+  }
+);
 
 export const getTranslate = (state) => {
   const translations = getTranslationsForActiveLanguage(state);
   return (key, data) => getLocalizedElement(key, translations, data);
 };
-
-
-
-// export const getTranslationsForKey = (key) => {
-//   return createSelector(
-//     getCurrentLanguage, 
-//     getTranslations,
-//     (currentLanguage, translations) => {
-//       let globalTranslations = {};
-//       let localTranslations = {};
-
-//       if (translations && isDefinedNested(translations, GLOBAL_TRANSLATIONS_KEY)) {
-//         globalTranslations = translations.global[currentLanguage] || {};
-//       }
-
-//       if (translations && isDefinedNested(translations, key, currentLanguage)) {
-//         localTranslations = translations[key][currentLanguage];
-//       }
-
-//       return {
-//         ...globalTranslations,
-//         ...localTranslations
-//       };
-//     }
-//   );
-// };

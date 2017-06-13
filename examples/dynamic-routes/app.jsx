@@ -4,17 +4,12 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, hashHistory } from 'react-router';
 import rootRoute from './routes';
-import { localeReducer, localizeMiddleware } from 'react-localize-redux';
+import { localeReducer } from 'react-localize-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 const ROOT_NODE = document.getElementById('root');
 
-const store = createStore(
-  combineReducers({
-    locale: localeReducer
-  }),
-  composeWithDevTools(applyMiddleware(localizeMiddleware))
-);
+const store = createStore(localeReducer, composeWithDevTools());
 
 const App = props => {
   return (
