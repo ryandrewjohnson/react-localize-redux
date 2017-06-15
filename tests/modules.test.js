@@ -1,13 +1,6 @@
 import * as actions from 'modules/locale';
-import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage } from 'modules/locale';
-import reducer, { 
-  UPDATE_LANGUAGE, 
-  SET_LOCAL_TRANSLATIONS, 
-  SET_GLOBAL_TRANSLATIONS,
-  SET_LANGUAGES,
-  SET_ACTIVE_LANGUAGE,
-  ADD_TRANSLATION
-} from 'modules/locale';
+import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, customeEqualSelector } from 'modules/locale';
+import { SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION } from 'modules/locale';
 
 describe('locale module', () => {
 
@@ -213,4 +206,70 @@ describe('locale module', () => {
     });
   });
 
+  describe('createSelectorCreator', () => {
+    let languages = [];
+    let activeLanguage = {};
+    let translations = {};
+
+    beforeEach(() => {
+      languages = [{ code: 'en', active: false }, { code: 'fr', active: true }];
+      activeLanguage = { code: 'en', active: true };
+      translations = {
+        one: 'one',
+        two: 'two',
+        three: 'three'
+      };
+    });
+
+    it('should call result function when languages changes', () => {
+      const result = jest.fn();
+      const selector = customeEqualSelector(() => languages, result);
+      selector({});
+      languages = [...languages, [...{ code: 'ca', active: false }]];
+      selector({});
+      expect(result).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not call result function when languages haven\'t changed', () => {
+      const result = jest.fn();
+      const selector = customeEqualSelector(() => languages, result);
+      selector({});
+      selector({});
+      expect(result).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call result function when active language changes', () => {
+      const result = jest.fn();
+      const selector = customeEqualSelector(() => activeLanguage, result);
+      selector({});
+      activeLanguage = { code: 'ca', active: false };
+      selector({});
+      expect(result).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not call result function when active language hasn\'t changed', () => {
+      const result = jest.fn();
+      const selector = customeEqualSelector(() => activeLanguage, result);
+      selector({});
+      selector({});
+      expect(result).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call result function when translations change', () => {
+      const result = jest.fn();
+      const selector = customeEqualSelector(() => translations, result);
+      selector({});
+      translations = { ...translations, four: 'four' };
+      selector({});
+      expect(result).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not call result function when translations haven\'t changed', () => {
+      const result = jest.fn();
+      const selector = customeEqualSelector(() => translations, result);
+      selector({});
+      selector({});
+      expect(result).toHaveBeenCalledTimes(1);
+    });
+  });
 });

@@ -1,12 +1,22 @@
 import { combineReducers } from 'redux';
 import { flatten } from 'flat';
-import { createSelector, Selector } from 'reselect';
+import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 import { isDefinedNested, getLocalizedElement, getIndexForLanguageCode } from '../utils';
 
 export const ADD_TRANSLATION      = '@@localize/ADD_TRANSLATION';
 export const SET_LANGUAGES        = '@@localize/SET_LANGUAGES';
 export const SET_ACTIVE_LANGUAGE  = '@@localize/SET_ACTIVE_LANGUAGE';
 export const TRANSLATE            = '@@localize/TRANSLATE';
+
+// TODO:
+// look at custom memoize function for reslect - DONE
+// allow for csv using csv loader
+// pass in options to localeReducer
+// only show missing translation text for dev
+// see if I can use React 15 text element instead of span
+// conversion tool for json
+// rewrite README for v2
+
 
 /**
  * REDUCERS
@@ -74,12 +84,27 @@ export const getTranslations = state => state.translations;
 export const getLanguages = state => state.languages;
 export const getActiveLanguage = state => getLanguages(state).find(language => language.active === true);
 
-export const getTranslationsForActiveLanguage = createSelector(
+
+export const customeEqualSelector = createSelectorCreator(
+  defaultMemoize,
+  (cur, prev) => {
+    const isTranslationsData = !(Array.isArray(cur) || Object.keys(cur).toString() === 'code,active');
+
+    // for translations data use keys for comparison
+    if (isTranslationsData) {
+      prev = Object.keys(prev).toString();
+      cur  = Object.keys(cur).toString();
+    }
+  
+    return prev === cur;
+  }
+)
+
+export const getTranslationsForActiveLanguage = customeEqualSelector(
   getActiveLanguage,
   getLanguages,
   getTranslations,
   (activeLanguage, languages, translations) => {
-    console.log('getTranslationsForActiveLanguage');
     const { code: activeLanguageCode } = activeLanguage;
     const activeLanguageIndex = getIndexForLanguageCode(activeLanguageCode, languages);
     return Object.keys(translations).reduce((prev, key) => {

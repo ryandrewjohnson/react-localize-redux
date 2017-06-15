@@ -1,17 +1,19 @@
 {
-  "title": [
-    "Hello from Info Page!",
-    "Bonjour de la Page d’accueil !",
-    "Hola desde la página de bienvenida!"
-  ],
-  "body": [
-    "You can even render links in your translations <a href='http://google.com' target='_blank'>Google</a>, <a href='http://apple.com' target='_blank'>Apple</a>.",
-    "Vous pouvez même restituer des liens dans vos traductions <a href='http://google.com' target='_blank'>Google</a>, <a href='http://apple.com' target='_blank'>Apple</a>.",
-    "Incluso pueden hacer enlaces en sus traducciones <a href='http://google.com' target='_blank'>Google</a>, <a href='http://apple.com' target='_blank'>Apple</a>."
-  ],
-  "click-here": [
-    "This local translation 'click-here' overrides the global 'click-here' key",
-    "Traductions locales peuvent substituer les étiquettes des traductions globales",
-    "Las traducciones locales pueden reemplazar las etiquetas de traducción global"
-  ]
+  "info": {
+    "title": [
+      "Hello from Info Page!",
+      "Bonjour de la Page d’accueil !",
+      "Hola desde la página de bienvenida!"
+    ],
+    "body": [
+      "You can even render links in your translations <a href='http://google.com' target='_blank'>Google</a>, <a href='http://apple.com' target='_blank'>Apple</a>.",
+      "Vous pouvez même restituer des liens dans vos traductions <a href='http://google.com' target='_blank'>Google</a>, <a href='http://apple.com' target='_blank'>Apple</a>.",
+      "Incluso pueden hacer enlaces en sus traducciones <a href='http://google.com' target='_blank'>Google</a>, <a href='http://apple.com' target='_blank'>Apple</a>."
+    ],
+    "click-here": [
+      "This local translation 'click-here' overrides the global 'click-here' key",
+      "Traductions locales peuvent substituer les étiquettes des traductions globales",
+      "Las traducciones locales pueden reemplazar las etiquetas de traducción global"
+    ]
+  }
 }

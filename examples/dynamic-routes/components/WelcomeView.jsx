@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 const WelcomeView = ({ translate }) => {
   return (
     <div>
-      <h1>{ translate('title', { name: 'Ryan Johsnon' }) }</h1>
-      <p>{ translate('body') }</p>
-      <button>{ translate('click-here') }</button>
+      <h1>{ translate('welcome.title', { name: 'Ryan Johsnon' }) }</h1>
+      <p>{ translate('welcome.body') }</p>
+      <button>{ translate('welcome.click-here') }</button>
     </div>
   );
 }
