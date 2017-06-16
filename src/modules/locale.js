@@ -8,16 +8,6 @@ export const SET_LANGUAGES        = '@@localize/SET_LANGUAGES';
 export const SET_ACTIVE_LANGUAGE  = '@@localize/SET_ACTIVE_LANGUAGE';
 export const TRANSLATE            = '@@localize/TRANSLATE';
 
-// TODO:
-// look at custom memoize function for reslect - DONE
-// allow for csv using csv loader
-// pass in options to localeReducer
-// only show missing translation text for dev
-// see if I can use React 15 text element instead of span
-// conversion tool for json
-// rewrite README for v2
-
-
 /**
  * REDUCERS
  */

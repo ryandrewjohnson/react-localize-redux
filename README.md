@@ -2,53 +2,35 @@
 
 [![Build Status](https://travis-ci.org/ryandrewjohnson/react-localize-redux.svg?branch=master)](https://travis-ci.org/ryandrewjohnson/react-localize-redux)
 
-A HoC (higher-order component) to add multi-language support to your React/Redux components.
+A collection of helpers for managing localized content in your React/Redux application.
 
-* Supports multiple languages
-* Provides components with global and component specific translations
-* Will render HTML tags included in translation copy
-* With webpack code splitting translation json can be bundled with their component 
+* Dynamically load translation data from json files
+* Supports rendering of HTML in translation strings
+* Supports dynamic variable replacement in translation strings
 
 ## Table of Contents
 
 - [Installation](#installation)
-- [Usage](#usage)
+- [Getting Started](#getting-started)
 - [Bundle translations with Webpack and react-router](#localize-translationid--wrappedcomponent-)
 - [API](#api)
 - [Introduction to react-localize-redux](https://medium.com/@ryandrewjohnson/adding-multi-language-support-to-your-react-redux-app-cf6e64250050#.jmxxptvpu)
 
 ## Installation
 
-The following dependencies are required:
-
-* [react](https://facebook.github.io/react/)
-* [redux](https://github.com/reactjs/redux)
-* [react-redux](https://github.com/reactjs/react-redux)
-* [reselect](https://github.com/reactjs/reselect)  
-
 ```
 npm install react-localize-redux --save
 ```
 
-## Usage
+## Getting Started
 
-Add the `localeReducer` to your app's redux store. This will contain all translations data as well as the setting for current language.
+### 1. Add the `localeReducer` to your app's redux store.
 
 ```javascript
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import ReactDOM from 'react-dom';
-import { Store } from 'redux';
-import { Provider } from 'react-redux';
+...
 import { localeReducer } from 'react-localize-redux';
 
-const ROOT_NODE = document.getElementById('root');
-
-const store = createStore(
-  combineReducers({
-    locale: localeReducer
-  }),
-);
+const store = createStore(localeReducer);
 
 const App = props => {
   return (
@@ -57,19 +39,31 @@ const App = props => {
     </Provider>
   );
 };
-
-ReactDOM.render(<App />, ROOT_NODE);
 ```
 
-### Setting the language
+### 2. Set the languages your app supports
 
-Set the current language for your app by dispatching the `updateLanguage` action creator.
+Dispatch `setLanguages` action creator and pass in the languages for your app.
 
 ```javascript
-import { updateLanguage } from 'react-localize-redux';
+import { setLanguages } from 'react-localize-redux';
 
-store.dispatch(updateLanguage('en'));
+const languages = ['en', 'fr', 'es'];
+store.dispatch(setLanguages(languages));
 ```
+
+### 3. Set your app's current language
+
+Dispatch `setActiveLanguage` action creator and pass the language you want to use.
+
+```javascript
+import { setActiveLanguage } from 'react-localize-redux';
+
+store.dispatch(setActiveLanguage('en'));
+```
+
+### 4. Add your app's localized translation data
+
 
 ### Set global translations
 
