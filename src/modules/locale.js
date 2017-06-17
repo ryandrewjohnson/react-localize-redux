@@ -15,8 +15,11 @@ export function languages(state = [], action) {
   switch (action.type) {
     case SET_LANGUAGES:
       const languageCodes = action.payload.languageCodes;
-      return languageCodes.map(code => {
-        return { code, active: false };
+      const activeLanguage = action.payload.activeLanguage || languageCodes[0];
+      const activeIndex = languageCodes.indexOf(activeLanguage);
+      return languageCodes.map((code, index) => {
+        const isActive = index === activeIndex;
+        return { code, active: isActive };
       });
     case SET_ACTIVE_LANGUAGE:
       return state.map(language => {
@@ -53,10 +56,10 @@ export const addTranslation = (translation) => {
   };
 };
 
-export const setLanguages = (languageCodes) => {
+export const setLanguages = (languageCodes, activeLanguage = null) => {
   return {
     type: SET_LANGUAGES,
-    payload: { languageCodes }
+    payload: { languageCodes, activeLanguage }
   };
 };
 

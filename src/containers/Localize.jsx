@@ -2,13 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { getActiveLanguage, getTranslate } from '../modules/locale';
 
-export const localize = (localeKey) => (Component) => {
-
-  const Localize = props => {
-    return (
-      <Component { ...props } />
-    );
-  };
+export const localize = (Component) => {
 
   const mapStateToProps = state => {
     return {
@@ -17,5 +11,5 @@ export const localize = (localeKey) => (Component) => {
     };
   };
 
-  return connect(mapStateToProps, null)(Localize);
+  return connect(mapStateToProps, null)(Component);
 };

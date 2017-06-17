@@ -1,5 +1,5 @@
 import * as actions from 'modules/locale';
-import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, customeEqualSelector } from 'modules/locale';
+import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, customeEqualSelector, setLanguages } from 'modules/locale';
 import { SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION } from 'modules/locale';
 
 describe('locale module', () => {
@@ -44,7 +44,7 @@ describe('locale module', () => {
       ];
     });
 
-    it('should add new languages all set to false', () => {
+    it('should add new languages with first set to active by default', () => {
       const action = {
         type: SET_LANGUAGES,
         payload: {
@@ -54,7 +54,7 @@ describe('locale module', () => {
 
       const result = languages([], action);
       expect(result).toEqual([
-        { code: 'en', active: false },
+        { code: 'en', active: true },
         { code: 'fr', active: false },
         { code: 'ne', active: false }
       ]);
@@ -89,6 +89,26 @@ describe('locale module', () => {
       expect(result).toEqual([
         { code: 'en', active: true },
         { code: 'fr', active: false },
+        { code: 'ne', active: false }
+      ]);
+    });
+
+    it('should set active language to first language in array by default', () => {
+      const result = languages([], setLanguages(['en', 'fr', 'ne']));
+
+      expect(result).toEqual([
+        { code: 'en', active: true },
+        { code: 'fr', active: false },
+        { code: 'ne', active: false }
+      ]);
+    });
+
+    it('should set active language = to activeIndex passed to setLanguages', () => {
+      const result = languages([], setLanguages(['en', 'fr', 'ne'], 'fr'));
+
+      expect(result).toEqual([
+        { code: 'en', active: false },
+        { code: 'fr', active: true },
         { code: 'ne', active: false }
       ]);
     });

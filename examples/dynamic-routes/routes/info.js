@@ -8,7 +8,7 @@ export default (store) => {
     getComponent: (nextState, next) => {
       const json = require('../assets/info.locale.json');
       store.dispatch(addTranslation(json));
-      next(null, localize('info')(InfoView));
+      next(null, localize(InfoView));
     }
   }
 };
