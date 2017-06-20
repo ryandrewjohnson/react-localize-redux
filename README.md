@@ -2,10 +2,11 @@
 
 A collection of helpers for managing localized content in your React/Redux application. 
 
-<p align="center">
+<p>
   <a href="https://www.npmjs.com/package/react-localize-redux"><img src="https://img.shields.io/npm/dm/react-localize-redux.svg?style=flat-square"></a>
   <a href="https://travis-ci.org/ryandrewjohnson/react-localize-redux"><img src="https://img.shields.io/travis/ryandrewjohnson/react-localize-redux/master.svg?style=flat-square"></a>
 </p>
+
 
 ## Table of Contents
 
