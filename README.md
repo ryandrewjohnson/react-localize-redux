@@ -214,7 +214,7 @@ Also If you are using a tool like [webpack](https://webpack.js.org) for bundling
 
 ### `getTranslate(state)`
 
-A selector that takes your redux `state` and returns the translate function. This function will have access to any and all translations that were added with [addTranslation]().
+A selector that takes your redux `state` and returns the translate function. This function will have access to any and all translations that were added with [addTranslation](#addtranslationdata).
 
 returns `(key, data) => LocalizedElement`
 
@@ -227,6 +227,21 @@ returns `(key, data) => LocalizedElement`
 const Greeting = ({ translate }) => <h1>{ translate('greeting', { name: 'Testy McTest' }) }</h1>
 
 const mapStateToProps = state => ({ translate: getTranslate(state) });
+export default connect(mapStateToProps)(Greeting);
+```
+
+### `getActiveLanguage(state)`
+
+A selector that takes your redux `state` and returns the currently active language object.
+
+returns `{ code: 'en', active: true }`;
+
+#### Usage: 
+
+```javascript
+const Greeting = ({ currentLanguage }) => <h1>My language is: { currentLanguage }</h1>
+
+const mapStateToProps = state => ({ currentLanguage: getActiveLanguage(state).code });
 export default connect(mapStateToProps)(Greeting);
 ```
 

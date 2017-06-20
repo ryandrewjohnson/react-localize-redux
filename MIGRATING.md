@@ -15,7 +15,15 @@ store.dispatch(addTranslation(globalJson));
 store.dispatch(addTranslation(welcomeJson));
 ```
 
-2. Use new `getTranslate` and `getActiveLanguage` selectors instead of `localize` for components that are already using connect.
+2. You now have to set which languages you are supporting in your translation data by using the `setLanguages` action creator. 
+
+```javascript
+const languages = ['en', 'fr', 'es'];
+store.dispatch(setLanguages(languages));
+```
+
+
+3. Use new `getTranslate` and `getActiveLanguage` selectors instead of `localize` for components that are already using connect.
 
 ```javascript
 const MyComponent = ({ translate, currentLanguage }) => <div>{ translate('greeting') }</div>;
@@ -28,7 +36,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps)(MyComponent);
 ```
 
-3. If a component is not using connect, you can still use `localize`, but you will need to make the following updates.
+4. If a component is not using connect, you can still use `localize`, but you will need to make the following updates.
 
 ```javascript
 const MyComponent = ({ translate }) => <div>{ translate('greeting') }</div>;
@@ -40,7 +48,7 @@ export default localize('welcome')(MyComponent);
 export default localize(MyComponent);
 ```
 
-4. Update translation data format.
+5. Update translation data format.
 
 ```json
 // old format 
