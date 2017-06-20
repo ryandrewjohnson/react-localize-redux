@@ -17,6 +17,4 @@ const CoreLayout = ({ children, currentLanguage, translate }) =>
     </main>
   </div>;
 
-const CoreLayoutLocalized = localize()(CoreLayout);
-
-export default CoreLayoutLocalized;
+export default localize(CoreLayout);

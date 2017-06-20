@@ -1,54 +1,41 @@
-# react-localize-redux
+<h3 align="center">
+  React Localize Redux
+</h3>
 
-[![Build Status](https://travis-ci.org/ryandrewjohnson/react-localize-redux.svg?branch=master)](https://travis-ci.org/ryandrewjohnson/react-localize-redux)
+<p align="center">
+  A collection of helpers for managing localized content in your React/Redux application. 
+</p>
 
-A HoC (higher-order component) to add multi-language support to your React/Redux components.
 
-* Supports multiple languages
-* Provides components with global and component specific translations
-* Will render HTML tags included in translation copy
-* With webpack code splitting translation json can be bundled with their component 
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/react-localize-redux"><img src="https://img.shields.io/npm/dm/react-localize-redux.svg?style=flat-square"></a>
+  <a href="https://travis-ci.org/ryandrewjohnson/react-localize-redux"><img src="https://img.shields.io/travis/ryandrewjohnson/react-localize-redux/master.svg?style=flat-square"></a>
+</p>
 
 ## Table of Contents
 
 - [Installation](#installation)
-- [Usage](#usage)
-- [Bundle translations with Webpack and react-router](#localize-translationid--wrappedcomponent-)
+- [Getting Started](#getting-started)
+- [Features](#features)
 - [API](#api)
-- [Introduction to react-localize-redux](https://medium.com/@ryandrewjohnson/adding-multi-language-support-to-your-react-redux-app-cf6e64250050#.jmxxptvpu)
+- [Migrating from v1 to v2?](MIGRATING.md)
 
 ## Installation
-
-The following dependencies are required:
-
-* [react](https://facebook.github.io/react/)
-* [redux](https://github.com/reactjs/redux)
-* [react-redux](https://github.com/reactjs/react-redux)
-* [reselect](https://github.com/reactjs/reselect)  
 
 ```
 npm install react-localize-redux --save
 ```
 
-## Usage
+## Getting Started
 
-Add the `localeReducer` to your app's redux store. This will contain all translations data as well as the setting for current language.
+### 1. Add `localeReducer` to redux store.
 
 ```javascript
-import React from 'react';
-import { createStore, combineReducers } from 'redux';
-import ReactDOM from 'react-dom';
-import { Store } from 'redux';
-import { Provider } from 'react-redux';
+...
 import { localeReducer } from 'react-localize-redux';
 
-const ROOT_NODE = document.getElementById('root');
-
-const store = createStore(
-  combineReducers({
-    locale: localeReducer
-  }),
-);
+const store = createStore(localeReducer);
 
 const App = props => {
   return (
@@ -57,214 +44,248 @@ const App = props => {
     </Provider>
   );
 };
-
-ReactDOM.render(<App />, ROOT_NODE);
 ```
 
-### Setting the language
+### 2. Set the supported languages
 
-Set the current language for your app by dispatching the `updateLanguage` action creator.
+Dispatch [setLanguages](#setlanguageslanguages-defaultactivelanguage) action creator and pass in the languages for your app. By default the first language in the array will be set as the active language.
 
 ```javascript
-import { updateLanguage } from 'react-localize-redux';
+import { setLanguages } from 'react-localize-redux';
 
-store.dispatch(updateLanguage('en'));
+const languages = ['en', 'fr', 'es'];
+store.dispatch(setLanguages(languages));
 ```
 
-### Set global translations
-
-Translations that are shared between components are called `global` translations.
-Assuming you have global transaltions stored in a file called `global.locale.json` you can add them
-to your store by dispatching the `setGlobalTranslations` action creator.
-
-> NOTE: The following assumes you are using [webpack](https://webpack.github.io/) with [json-loader](https://github.com/webpack/json-loader)
+To set a different default active language pass in the `language`.
 
 ```javascript
-import { setGlobalTranslations } from 'react-localize-redux';
-
-const json = require("global.locale.json");
-store.dispatch(setGlobalTranslations(json));
+const languages = ['en', 'fr', 'es'];
+store.dispatch(setLanguages(languages, 'fr'));
 ```
 
-As mentioned above translation content is stored in json files. Each json file requires that there be
-a property for each supported language, where the property name would match the language key passed to [updateLanguage](#updatelanguagelanguagecode).
+### 3. Add localized translation data
+
+Typically you will store your translation data in json files, but the data can also be a vanilla JS object. Once your translation data is in the correct format use the [addTranslation](#addtranslationdata) action creator.
+
+> NOTE: The following assumes you are using [webpack](https://webpack.github.io/) to bundle json
+
+```javascript
+import { addTranslation } from 'react-localize-redux';
+
+const json = require('global.locale.json');
+store.dispatch(addTranslation(json));
+```
+
+The json data should enforce the following format, where each translation string is a represented by a `{ key: value }` pair. 
+
+The `value` is an array that should enforce the following...
+
+* Include a translation for each language your app supports.
+* The translation order matches the order of the languages in `setLanguages`.
 
 ```json
 {
-  "en": {
-    "greeting": "Hello ${ name }",
-    "farwell": "Goodbye"
-  },
-  "fr": {
-    "greeting": "Bonjour ${ name }",
-    "farwell": "Au revoir"
-  },
-  "es": {
-    "greeting": "Hola ${ name }",
-    "farwell": "Adiós"
-  }
+  "greeting": [
+    "Hello",      (en)
+    "Bonjour",    (fr)
+    "Hola",       (es)
+  ],
+  "farwell": [
+    "Goodbye",    (en)
+    "Au revoir",  (fr)
+    "Adiós"       (es)
+  ]
 }
 ```
-To add translations to a component you will need to decorate it with the [localize](#localize-translationid--wrappedcomponent-) function. By default
-all components decorated with `localize` have access to `global` translations. It will not modify your
-component class, but return a new localized component with additional props `translate` and `currentLanguage`.
 
-The `translate` prop is a function that takes the unique id from the transaltion file as a param,
-and an optional `data` param for variable substitutions. The function will return the localized string based on `currentLanguage`.
+### 4. Change the current language
+
+Dispatch [setActiveLanguage](#setactivelanguagelanguage) action creator and pass the language.
 
 ```javascript
-import React from 'react';
+import { setActiveLanguage } from 'react-localize-redux';
+
+store.dispatch(setActiveLanguage('fr'));
+```
+
+### 5. Translate components
+
+If you have a component that is already using `connect` you can use the [getTranslate](#gettranslatestate) selector that returns the `translate` function. This function will return the localized string based on active language.
+
+```javascript
+import { getTranslate } from 'react-localize-redux';
+
+const Greeting = ({ translate, currentLanguage }) => (
+  <div>
+    <h1>{ translate('greeting') }</h1>
+    <button>{ translate('farwell') }</button>
+  </div>
+);
+
+const mapStateToProps = state => ({
+  translate: getTranslate(state),
+  currentLanguage: getActiveLanguage(state).code
+});
+
+export default connect(mapStateToProps)(Greeting);
+```
+
+For components not already using `connect` instead use [localize](#localizecomponent). This will automatically connect your component with the `translate` function and `currentLanguage` prop. 
+
+```javascript
 import { localize } from 'react-localize-redux';
 
 const Greeting = ({ translate, currentLanguage }) => (
   <div>
-    <h1>{ translate('greeting', { name: 'Ryan' }) }</h1>
-    <p>The current language is { `${ currentLanguage }` }</p>
+    <h1>{ translate('greeting') }</h1>
     <button>{ translate('farwell') }</button>
   </div>
 );
 
-// decorate your component with localize
-export default localize()(Greeting);
+export default localize(Greeting);
 ```
 
-### Set local translations
+## Features
 
-In addtion to `global` translations you can also include translations specific to your component called `local` translations.
-Similar to global translations `local` transaltions are added using an action creator `setLocalTranslations`.
+### Include HTML in translations
 
-Assuming we have a component called `WelcomeView` with translations specific to it stored in a file named `welcome.locale.json`.
+Include HTML in your translation strings and it will be rendered in your component.
 
 ```json
 {
-  "en": {
-    "welcome-body": "Here is some <strong>bold</strong> text."
+  "google-link": [
+    "<a href='https://www.google.en/'>Google</a>",
+    "<a href='https://www.google.fr/'>Google</a>"
+  ]
+}
+```
+
+### Add dynamic content to translations
+
+You can insert dynamic content into your translation strings by inserting placeholders with the following format `${ placeholder }`.
+
+```json
+{
+  "greeting": [
+    "Hello ${ name }",
+    "Bonjour ${ name }"
+  ]
+}
+```
+
+Then pass in the data you want to swap in for placeholders to the `translate` function.
+
+```javascript
+<h1>{ translate('greeting', { name: 'Testy McTest' }) }</h1>
+```
+
+### Supports nested translation data to avoid naming collisions
+
+```json
+{
+  "welcome": {
+    "greeting": [
+      "Hello ${ name }!",
+      "Bonjour ${ name }!"
+    ]
   },
-  "fr": {
-    "welcome-body": "Voici un texte en <strong>gras</strong>"
-  },
-  "es": {
-    "welcome-body": "Aquí le damos algunos texto en <strong>negrita</strong>"
+  "info": {
+    "greeting": [
+      "Hello",
+      "Bonjour"
+    ]
   }
 }
 ```
 
-First you will load the local json data passing in a `translationId`, in this case `welcome`, followed by the json data.
-
 ```javascript
-import { setLocalTranslations } from 'react-localize-redux';
-
-const json = require("welcome.locale.json");
-store.dispatch(setLocalTranslations('welcome', json));
+<h1>{ translate('welcome.greeting', { name: 'Testy McTest' }) }</h1>
+<h1>{ translate('info.greeting') }</h1>
 ```
 
-To access `local` translations in your component you still use the `localize` function, 
-but this time passing in the unique id that was used in `setLocalTranslations`.
+### Load translation data on demand
 
-> NOTE: In addition to the `local` translations you will still have access `global` translations as well.
+If you have a larger app you may want to break your translation data up into multiple files, or maybe your translation data is being loaded from a service. Either way you can call [addTranslation](#addtranslationdata) for each new translation file/service, and the new translation data will be merged with any existing data.
 
-```javascript
-import React from 'react';
-import { localize } from 'react-localize-redux';
-
-const WelcomeView = ({ translate }) => (
-  <div>
-    <h1>{ translate('greeting') }</h1>
-    <p>{ translate('welcome-body') }</p>
-    <button>{ translate('farwell') }</button>
-  </div>
-);
-
-// pass in the unique id for the local content you would like to add
-export default localize('welcome')(Greeting);
-```
-
-## Bundle translations with Webpack and react-router
-
-When used with Webpack's [json-loader](https://github.com/webpack/json-loader), and react-router [Dynamic Routing](https://github.com/ReactTraining/react-router/blob/master/docs/guides/DynamicRouting.md) you can leverage code splitting to bundle components with their transaltion data. 
-
-See the `dynamic-routes` folder in the examples forward on a working example of how to implement this setup.
+Also If you are using a tool like [webpack](https://webpack.js.org) for bundling, then you can use [async code-splitting](https://webpack.js.org/guides/code-splitting-async/) to split translations across bundles, and async load them when you need them.
 
 ## API
 
-### localize( [translationId] )( WrappedComponent )
+### `getTranslate(state)`
 
-A HoC factory method that returns an enhanced version of the WrappedComponent with the additional props for 
-adding localized content to your component. 
+A selector that takes your redux `state` and returns the translate function. This function will have access to any and all translations that were added with [addTranslation]().
 
-By calling `localize` with no params your WrappedComponent will only have access to `global` translations.
+returns `(key, data) => LocalizedElement`
 
-```javascript
-const MyComponent = ({ translate }) => <div>{ translate('greeting') }</div>;
-export default localize()(MyComponent);
-```
+* `key: string` = The key for the transaltion string e.g. 'greeting'
+* `data: object` = Pass data to your [dynamic translation](#add-dynamic-content-to-translations) string.
 
-By default all components decorated with `localize` will have access to `global` transaltions. To add additional transaltion
-data that was added by [setLocalTranslations(translationId, json)](#setlocaltranslationsid-json) you will need pass the `translationId` as a param to `localize`.
+#### Usage: 
 
 ```javascript
-const MyComponent = ({ translate }) => <div>{ translate('title') }</div>;
-export default localize('translationId')(MyComponent);
+const Greeting = ({ translate }) => <h1>{ translate('greeting', { name: 'Testy McTest' }) }</h1>
+
+const mapStateToProps = state => ({ translate: getTranslate(state) });
+export default connect(mapStateToProps)(Greeting);
 ```
 
-The following additional props are provided to localized components: 
+### `localize(Component)`
 
-#### currentLanguage
+If you have a Component that is not using `connect` you can wrap it with `localize` to automatically add the `translate` function and `currentLanguage` prop.
 
-The current language set in your application. See [updateLanguage]() on how to update current language.
-
-#### translate( id, data ) 
-
-The translate will be used to insert translated copy in your component. The `id` param will need to match the property of the string you wish
-to retrieve from your json translaion data.
-
-The `data` param is optional and can be used to insert dynamic data into your translations. The syntax follows the Javascript template
-literal format.
+#### Usage: 
 
 ```javascript
-// Here is a string where I want to dynamically insert the user's name, and country
-{ "greet": "Hi here is my ${ name } and ${ country }" }
-
-// With translate you'd do the following
-translate('greet', { name: 'Ryan', country: 'Canada' })
+const Greeting = ({ translate, currentLanguage }) => (
+  <span>
+    <h1>languageCode: { currentLanguage }</h1>
+    <h2>{ translate('greeting', { name: 'Testy McTest' }) }</h2>
+  </span>
+);
+export default localize(Greeting);
 ```
 
-For example if the below json file was added using either [setGlobalTranslations](#setglobaltranslationsjson) or [setLocalTranslations](#setlocaltranslationsid-json).
+### `setLanguages(languages, defaultActiveLanguage)`
 
-```json
-{
-  "en": {
-    "title": "My Title",
-    "desc": "My Description"
-  },
-  "fr": {
-    "title": "My Title French",
-    "desc": "My Description French"
-  }
-}
+**Redux action creator** to set which languages you are supporting in your translations. If `defaultActiveLanguage` is not passed then the first language in the `languages` array will be used.
+
+#### Usage: 
+
+```javascript
+const languages = ['en', 'fr', 'es'];
+
+store.dispatch(setLanguages(languages));
+
+// if you wanted 'fr' to be default language instead of 'en'
+store.dispatch(setLanguages(languages, 'fr'));
 ```
 
-and this component had been decorated with [localize](#localize-translationid--wrappedcomponent-) you would access the json content like so...
+### `addTranslation(data)`
 
-```html
-<h1>{ translate('title') }</h1>
-<p>{ translate('desc') }</p>
+**Redux action creator** to add new translation data to your redux store. Typically this data will be loaded from a json file, but can also be a plain JS object as long as it's structured properly.
+
+>**IMPORTANT:** The order of the translation strings in the array matters! The order **MUST** follow the order of the languages array passed to [setLanguages](#setlanguageslanguages-defaultactivelanguage).
+
+#### Usage: 
+
+```javascript
+// assuming your app has set languages ['en', 'fr']
+const welcomePageTranslations = {
+  greeting: ['Hi!', 'Bonjour!'],
+  farwell: ['Bye!', 'Au revoir!']
+};
+
+store.dispatch(addTranslation(welcomePageTranslations));
 ```
 
->NOTE: The json content that `translate` has access to will depend on the `translationId` passed to the `localize` method.
+#### `setActiveLanguage(language)`
 
-### Redux Action Creators
+**Redux action creator** to change the current language being used.
 
-#### updateLanguage(languageCode)
+#### Usage: 
 
-This will set the current language for your application, where `languageCode` should match the `languageCode` prop used in your translation json data.
-
-#### setGlobalTranslations(json)
-
-The global json should contain any localized content that will be shared by multiple components. 
-By default all components created by [localize](#localize-translationid--wrappedcomponent-) will have access to transaltion from this global json.
-
-#### setLocalTranslations(translationId, json)
-
-The local json should contain localized content specific to a component. This is especially useful when used 
-in combination with react-router dynamic routing, and webpack code splitting features.
+```javascript
+// assuming your app has set languages ['en', 'fr']
+store.dispatch(setActiveLanguage('fr'));
+```

@@ -1,26 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { getTranslationsForKey } from '../modules/locale';
-import { getLocalizedElement } from '../utils';
+import { getActiveLanguage, getTranslate } from '../modules/locale';
 
-export const localize = (localeKey) => (Component) => {
-
-  const Localize = props => {
-    return (
-      <Component { ...props } />
-    );
-  };
+export const localize = (Component) => {
 
   const mapStateToProps = state => {
-    const translations = getTranslationsForKey(localeKey)(state);
     return {
-      currentLanguage: state.locale.currentLanguage,
-      translate: (key, data) => getLocalizedElement(key, translations, data)
+      currentLanguage: getActiveLanguage(state).code,
+      translate: getTranslate(state)
     };
   };
 
-  // use cases
-  // I have ${ variable } and another ${ variable }
-
-  return connect(mapStateToProps, null)(Localize);
+  return connect(mapStateToProps, null)(Component);
 };

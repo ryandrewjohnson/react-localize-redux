@@ -10,21 +10,29 @@ describe('<Localize />', () => {
   let testProps = { test: 'test props' };
   const mockStore = configureStore();
   let initialState = {
-    locale: {
-      currentLanguage: 'en'
-    }
+    languages: [
+      { code: 'en', active: true },
+      { code: 'fr', active: false },
+      { code: 'ne', active: false }
+    ],
+    translations: {}
   };
 
   beforeEach(() => {
     const store = mockStore(initialState);
-    MockPageComponent = React.createElement('div', testProps);
-    WrappedComponent = localize('test')(MockPageComponent);
+    const MockPageComponent = props => (<div { ...testProps } />);
+    WrappedComponent = localize(MockPageComponent);
     wrapper = shallow(<WrappedComponent />, { context: { store }});
-    
   });
 
   it('should return Localize component', () => {
-    expect(wrapper.first().name()).toBe('Localize');
+    expect(wrapper.first().name()).toBe('MockPageComponent');
+  });
+
+  it('should have currentLanguage in props', () => {
+    const currentLanguage = wrapper.first().props().currentLanguage;
+    expect(currentLanguage).toBeDefined();
+    expect(currentLanguage).toBe('en');
   });
 
   it('should have translate function in props', () => {

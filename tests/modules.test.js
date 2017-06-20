@@ -1,9 +1,6 @@
 import * as actions from 'modules/locale';
-import reducer, { 
-  UPDATE_LANGUAGE, 
-  SET_LOCAL_TRANSLATIONS, 
-  SET_GLOBAL_TRANSLATIONS,
-} from 'modules/locale';
+import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, customeEqualSelector, setLanguages } from 'modules/locale';
+import { SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION } from 'modules/locale';
 
 describe('locale module', () => {
 
@@ -35,114 +32,264 @@ describe('locale module', () => {
     };
   });
 
-  describe('updateLanguage', () => {
-    it('should set payload to provided language when valid', () => {
-      const action = actions.updateLanguage('fr');
-      expect(action.payload).toEqual('fr');
-    });
-  });
 
-  describe('setLocaleJson', () => {
-    it('should return an action object with this structure', () => {
-      const json = { test: 'Test JSON' };
-      const key = 'test';
-      const action = actions.setLocalTranslations(key, json);
-      expect(action.type).toEqual(SET_LOCAL_TRANSLATIONS);
-      expect(action.payload).toEqual({ key, json });
-    });
-  });
+  describe('reducer: languages', () => {
+    let initialState = [];
 
-  describe('setGlobalJson', () => {
-    it('should return an action object with this structure', () => {
-      const json = { test: 'Test JSON' };
-      const action = actions.setGlobalTranslations(json);
-      expect(action.type).toEqual(SET_GLOBAL_TRANSLATIONS);
-      expect(action.payload).toEqual(json);
-    });
-  });
-
-  describe('reducer', () => {
-    it('should update currentLanguage', () => {
-      const state = { currentLanguage: 'en', translations: null };
-      const action = { 
-        type: UPDATE_LANGUAGE, 
-        payload: 'fr'
-      };
-      const result = reducer(state, action);
-      expect(result.currentLanguage).toBe('fr');
+    beforeEach(() => {
+      initialState = [
+        { code: 'en', active: false },
+        { code: 'fr', active: false },
+        { code: 'ne', active: false }
+      ];
     });
 
-    it('should return unmodified state if action.type does not match', () => {
-      const state = { currentLanguage: 'en', translations: null };
-      const emptyAction = {};
-      const result = reducer(state, emptyAction);
-      expect(result).toBe(state);
-    });
-
-    it('should add json to global key in translations', () => {
-      const state = { currentLanguage: 'en', translations: null };
+    it('should add new languages with first set to active by default', () => {
       const action = {
-        type: SET_GLOBAL_TRANSLATIONS,
-        payload: mainState.locale.translations.global
-      };
-      const result = reducer(state, action);
-      expect(result.translations.global).toEqual(action.payload);
-    });
-
-    it('should add key/value to existing locale data', () => {
-      const state = mainState.locale;
-      const action = {
-        type: SET_LOCAL_TRANSLATIONS,
-        payload: { key: 'page', json: { test: 'Test JSON' } }
-      };
-      const result = reducer(state, action);
-      expect(result.translations.page).toBe(action.payload.json);
-      expect(result.translations.global).toBe(state.translations.global);
-    });
-  });
-
-  describe('getTranslationsForKey', () => {
-    it('should return a function', () => {
-      expect(typeof actions.getTranslationsForKey('test') === 'function').toBe(true);
-    });
-
-    it('should return an empty object when translations are empty', () => {
-      const state = {
-        locale: {
-          currentLanguage: 'en',
-          translations: null
+        type: SET_LANGUAGES,
+        payload: {
+          languageCodes: ['en', 'fr', 'ne']
         }
       };
-      expect(actions.getTranslationsForKey('test')(state)).toEqual({});
+
+      const result = languages([], action);
+      expect(result).toEqual([
+        { code: 'en', active: true },
+        { code: 'fr', active: false },
+        { code: 'ne', active: false }
+      ]);
     });
 
-    it('should return an object with local and global translations merged', () => {
-      expect(actions.getTranslationsForKey('local')(mainState)).toEqual({
-        title: mainState.locale.translations.global.en.title,
-        greeting: mainState.locale.translations.local.en.greeting
+    it('should set active language', () => {
+      const action = {
+        type: SET_ACTIVE_LANGUAGE,
+        payload: {
+          languageCode: 'ne'
+        }
+      };
+
+      const result = languages(initialState, action);
+      expect(result).toEqual([
+        { code: 'en', active: false },
+        { code: 'fr', active: false },
+        { code: 'ne', active: true }
+      ]);
+    });
+
+    it('should update active language', () => {
+      const action = {
+        type: SET_ACTIVE_LANGUAGE,
+        payload: {
+          languageCode: 'en'
+        }
+      };
+
+      initialState[1].active = true;
+      const result = languages(initialState, action);
+      expect(result).toEqual([
+        { code: 'en', active: true },
+        { code: 'fr', active: false },
+        { code: 'ne', active: false }
+      ]);
+    });
+
+    it('should set active language to first language in array by default', () => {
+      const result = languages([], setLanguages(['en', 'fr', 'ne']));
+
+      expect(result).toEqual([
+        { code: 'en', active: true },
+        { code: 'fr', active: false },
+        { code: 'ne', active: false }
+      ]);
+    });
+
+    it('should set active language = to activeIndex passed to setLanguages', () => {
+      const result = languages([], setLanguages(['en', 'fr', 'ne'], 'fr'));
+
+      expect(result).toEqual([
+        { code: 'en', active: false },
+        { code: 'fr', active: true },
+        { code: 'ne', active: false }
+      ]);
+    });
+  });
+
+  describe('reducer: translations', () => {
+    let initialState = {};
+
+    beforeEach(() => {
+      initialState = {
+        'hi': ['hi'],
+        'bye': ['bye']
+      };
+    });
+
+    it('should add new translations',  () => {
+      const action = {
+        type: ADD_TRANSLATION,
+        payload: {
+          translation: {
+            'test': ['test'],
+            'test2': ['test2']
+          }
+        }
+      };
+
+      const result = translations({}, action);
+      expect(result).toEqual({
+        'test': ['test'],
+        'test2': ['test2']
       });
     });
 
-    it('should overwrite the global translation when local has the same key', () => {
-      mainState.locale.translations.local = { en: { title: 'Local Title' } };
-      expect(actions.getTranslationsForKey('local')(mainState)).toEqual({
-        title: mainState.locale.translations.local.en.title
+    it('should merge new translations with existing translations', () => {
+      const action = {
+        type: ADD_TRANSLATION,
+        payload: {
+          translation: { 'new': ['new'] }
+        }
+      };
+
+      const result = translations(initialState, action);
+      expect(result).toEqual({
+        ...initialState,
+        'new': ['new']
       });
     });
 
-    it('should return only global translations when local key is not provided', () => {
-      expect(actions.getTranslationsForKey()(mainState)).toEqual({
-        title: mainState.locale.translations.global.en.title
+    it('should overwrite existing translation key if it already exists', () => {
+      const action = {
+        type: ADD_TRANSLATION,
+        payload: {
+          translation: { 'hi': ['new'] }
+        }
+      };
+
+      const result = translations(initialState, action);
+      expect(result).toEqual({
+        ...initialState,
+        'hi': ['new']
       });
     });
 
-    it('should return french translations', () => {
-      mainState.locale.currentLanguage = 'fr';
-      expect(actions.getTranslationsForKey('local')(mainState)).toEqual({
-        title: mainState.locale.translations.global.fr.title,
-        greeting: mainState.locale.translations.local.fr.greeting
+    it('should flatten nested objects in translation', () => {
+      const action = {
+        type: ADD_TRANSLATION,
+        payload: {
+          translation: {
+            'first': { second: { third: ['nested'] }},
+            'more': { nested: ['one'] }
+          }
+        }
+      };
+
+      const result = translations({}, action);
+      expect(result).toEqual({
+        'first.second.third': ['nested'],
+        'more.nested': ['one']
       });
     });
+  });
 
+  describe('getActiveLanguage', () => {
+    it('should return the active language object', () => {
+      const state = {
+        languages: [{ code: 'en', active: false }, { code: 'fr', active: true }, { code: 'ne', active: false }]
+      };
+      const result = getActiveLanguage(state);
+      expect(result.code).toBe('fr');
+    });
+
+    it('should return undefined if no active language found', () => {
+      const state = {
+        languages: [{ code: 'en', active: false }, { code: 'fr', active: false }]
+      };
+      const result = getActiveLanguage(state);
+      expect(result).toBe(undefined);
+    });
+  });
+
+  describe('getTranslationsForActiveLanguage', () => {
+    it('should return translations only for the active language', () => {
+      const state = {
+        languages: [{ code: 'en', active: false }, { code: 'fr', active: true }],
+        translations: {
+          hi: ['hi-en', 'hi-fr'],
+          bye: ['bye-en', 'bye-fr']
+        }
+      };
+      const result = getTranslationsForActiveLanguage(state);
+      expect(result).toEqual({
+        hi: 'hi-fr',
+        bye: 'bye-fr'
+      });
+    });
+  });
+
+  describe('createSelectorCreator', () => {
+    let languages = [];
+    let activeLanguage = {};
+    let translations = {};
+
+    beforeEach(() => {
+      languages = [{ code: 'en', active: false }, { code: 'fr', active: true }];
+      activeLanguage = { code: 'en', active: true };
+      translations = {
+        one: 'one',
+        two: 'two',
+        three: 'three'
+      };
+    });
+
+    it('should call result function when languages changes', () => {
+      const result = jest.fn();
+      const selector = customeEqualSelector(() => languages, result);
+      selector({});
+      languages = [...languages, [...{ code: 'ca', active: false }]];
+      selector({});
+      expect(result).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not call result function when languages haven\'t changed', () => {
+      const result = jest.fn();
+      const selector = customeEqualSelector(() => languages, result);
+      selector({});
+      selector({});
+      expect(result).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call result function when active language changes', () => {
+      const result = jest.fn();
+      const selector = customeEqualSelector(() => activeLanguage, result);
+      selector({});
+      activeLanguage = { code: 'ca', active: false };
+      selector({});
+      expect(result).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not call result function when active language hasn\'t changed', () => {
+      const result = jest.fn();
+      const selector = customeEqualSelector(() => activeLanguage, result);
+      selector({});
+      selector({});
+      expect(result).toHaveBeenCalledTimes(1);
+    });
+
+    it('should call result function when translations change', () => {
+      const result = jest.fn();
+      const selector = customeEqualSelector(() => translations, result);
+      selector({});
+      translations = { ...translations, four: 'four' };
+      selector({});
+      expect(result).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not call result function when translations haven\'t changed', () => {
+      const result = jest.fn();
+      const selector = customeEqualSelector(() => translations, result);
+      selector({});
+      selector({});
+      expect(result).toHaveBeenCalledTimes(1);
+    });
   });
 });
