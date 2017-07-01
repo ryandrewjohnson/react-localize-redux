@@ -287,6 +287,10 @@ const mapStateToProps = state => ({ languages: getLanguages(state) });
 export default connect(mapStateToProps)(Greeting);
 ```
 
+### `getTranslations(state)`
+
+A selector that takes your redux `state` and returns the raw translation data.
+
 ### `localize(Component)`
 
 If you have a Component that is not using `connect` you can wrap it with `localize` to automatically add the `translate` function and `currentLanguage` prop. When using `combineReducers` to add `localeReducer` you must pass the `slice` param to `localize`, where `slice` is the name of the prop you used with `combineReducers` (e.g. locale).
