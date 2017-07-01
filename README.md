@@ -240,6 +240,27 @@ const mapStateToProps = state => ({ currentLanguage: getActiveLanguage(state).co
 export default connect(mapStateToProps)(Greeting);
 ```
 
+### `getLanguages(state)`
+
+A selector that takes your redux `state` and returns the languages you set.
+
+returns `[{ code: 'en', active: true }, { code: 'fr', active: false }]`;
+
+#### Usage: 
+
+```javascript
+const LanguageSelector = ({ languages }) => (
+  <ul>
+    { languages.map(language => 
+      <a href={ `/${ language.code }` }>{ language.code }</a>
+    )}
+  </ul>
+)
+
+const mapStateToProps = state => ({ languages: getLanguages(state) });
+export default connect(mapStateToProps)(Greeting);
+```
+
 ### `localize(Component)`
 
 If you have a Component that is not using `connect` you can wrap it with `localize` to automatically add the `translate` function and `currentLanguage` prop.

@@ -5,5 +5,8 @@ export {
   addTranslation,
   setLanguages,
   setActiveLanguage,
-  getTranslate
+  getTranslate,
+  getActiveLanguage,
+  getLanguages,
+  getTranslations
 } from './modules/locale';
