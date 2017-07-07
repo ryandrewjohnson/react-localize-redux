@@ -26,11 +26,16 @@ npm install react-localize-redux --save
 
 ### 1. Add `localeReducer` to redux store.
 
+> NOTE: Although the example uses the `locale` prop for the reducer, you can name this prop whatever you like. Just ensure that you use the correct prop name when passing the state to selectors.
+
 ```javascript
 ...
+import { createStore, combineReducers } from 'redux';
 import { localeReducer } from 'react-localize-redux';
 
-const store = createStore(localeReducer);
+const store = createStore(combineReducers({
+  locale: localeReducer
+}));
 
 const App = props => {
   return (
@@ -119,8 +124,8 @@ const Greeting = ({ translate, currentLanguage }) => (
 );
 
 const mapStateToProps = state => ({
-  translate: getTranslate(state),
-  currentLanguage: getActiveLanguage(state).code
+  translate: getTranslate(state.locale),
+  currentLanguage: getActiveLanguage(state.locale).code
 });
 
 export default connect(mapStateToProps)(Greeting);
@@ -138,7 +143,7 @@ const Greeting = ({ translate, currentLanguage }) => (
   </div>
 );
 
-export default localize(Greeting);
+export default localize(Greeting, 'locale');
 ```
 
 ## Features
@@ -209,7 +214,7 @@ Also If you are using a tool like [webpack](https://webpack.js.org) for bundling
 
 ### `getTranslate(state)`
 
-A selector that takes your redux `state` and returns the translate function. This function will have access to any and all translations that were added with [addTranslation](#addtranslationdata).
+A selector that takes the localeReducer slice of your `state` and returns the translate function. This function will have access to any and all translations that were added with [addTranslation](#addtranslationdata).
 
 returns `(key, data) => LocalizedElement`
 
@@ -221,13 +226,13 @@ returns `(key, data) => LocalizedElement`
 ```javascript
 const Greeting = ({ translate }) => <h1>{ translate('greeting', { name: 'Testy McTest' }) }</h1>
 
-const mapStateToProps = state => ({ translate: getTranslate(state) });
+const mapStateToProps = state => ({ translate: getTranslate(state.locale) });
 export default connect(mapStateToProps)(Greeting);
 ```
 
 ### `getActiveLanguage(state)`
 
-A selector that takes your redux `state` and returns the currently active language object.
+A selector that takes the localeReducer slice of your `state` and returns the currently active language object.
 
 returns `{ code: 'en', active: true }`;
 
@@ -236,13 +241,13 @@ returns `{ code: 'en', active: true }`;
 ```javascript
 const Greeting = ({ currentLanguage }) => <h1>My language is: { currentLanguage }</h1>
 
-const mapStateToProps = state => ({ currentLanguage: getActiveLanguage(state).code });
+const mapStateToProps = state => ({ currentLanguage: getActiveLanguage(state.locale).code });
 export default connect(mapStateToProps)(Greeting);
 ```
 
 ### `getLanguages(state)`
 
-A selector that takes your redux `state` and returns the languages you set.
+A selector that takes the localeReducer slice of your `state` and returns the languages you set.
 
 returns `[{ code: 'en', active: true }, { code: 'fr', active: false }]`;
 
@@ -257,13 +262,13 @@ const LanguageSelector = ({ languages }) => (
   </ul>
 )
 
-const mapStateToProps = state => ({ languages: getLanguages(state) });
+const mapStateToProps = state => ({ languages: getLanguages(state.locale) });
 export default connect(mapStateToProps)(Greeting);
 ```
 
-### `localize(Component)`
+### `localize(Component, slice)`
 
-If you have a Component that is not using `connect` you can wrap it with `localize` to automatically add the `translate` function and `currentLanguage` prop.
+If you have a Component that is not using `connect` you can wrap it with `localize` to automatically add the `translate` function and `currentLanguage` prop. When using `combineReducers` to add `localeReducer` you must pass the `slice` param to `localize`, where `slice` is the name of the prop you used with `combineReducers` (e.g. locale).
 
 #### Usage: 
 
@@ -274,7 +279,7 @@ const Greeting = ({ translate, currentLanguage }) => (
     <h2>{ translate('greeting', { name: 'Testy McTest' }) }</h2>
   </span>
 );
-export default localize(Greeting);
+export default localize(Greeting, 'locale');
 ```
 
 ### `setLanguages(languages, defaultActiveLanguage)`

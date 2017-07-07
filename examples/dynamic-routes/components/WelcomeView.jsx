@@ -14,7 +14,7 @@ const WelcomeView = ({ translate }) => {
 
 const mapStateToProps = state => {
   return {
-    translate: getTranslate(state)
+    translate: getTranslate(state.locale)
   };
 };
 

@@ -40,4 +40,20 @@ describe('<Localize />', () => {
     expect(translateFn).toBeDefined();
     expect(typeof translateFn === 'function').toBe(true);
   });
+
+  it('should use state including slice when passed', () => {
+    const store = mockStore({
+      locale: {
+        ...initialState,
+        translations: {
+          hi: ['hello', '', '']
+        }
+      }
+    });
+    const MockPageComponent = props => (<div>{ translate('hi') }</div>);
+    WrappedComponent = localize(MockPageComponent, 'locale');
+    wrapper = shallow(<WrappedComponent />, { context: { store }});
+    expect(wrapper.props().translate).toBeDefined();
+    expect(wrapper.props().translate('hi')).toEqual(<span>hello</span>);
+  });
 });

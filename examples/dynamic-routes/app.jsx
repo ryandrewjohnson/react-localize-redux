@@ -9,7 +9,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 const ROOT_NODE = document.getElementById('root');
 
-const store = createStore(localeReducer, composeWithDevTools());
+const store = createStore(combineReducers({ locale: localeReducer }), composeWithDevTools());
 
 const App = props => {
   return (
