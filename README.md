@@ -180,6 +180,30 @@ Then pass in the data you want to swap in for placeholders to the `translate` fu
 <h1>{ translate('greeting', { name: 'Testy McTest' }) }</h1>
 ```
 
+### Supports nested translation data to avoid naming collisions
+
+```json
+{
+  "welcome": {
+    "greeting": [
+      "Hello ${ name }!",
+      "Bonjour ${ name }!"
+    ]
+  },
+  "info": {
+    "greeting": [
+      "Hello",
+      "Bonjour"
+    ]
+  }
+}
+```
+
+```javascript
+<h1>{ translate('welcome.greeting', { name: 'Testy McTest' }) }</h1>
+<h1>{ translate('info.greeting') }</h1>
+```
+
 ### Pass multiple translations to child components
 
 A parent component that has added the `translate` function by using [getTranslate](#gettranslatestate) or [localize](#localizecomponent-slice) can easily pass multiple translations down to it's child components. Just pass the `translate` function an array of translation keys instead of a single key. 
@@ -212,30 +236,6 @@ const Page = ({ translate }) => (
 );
 ```
 
-### Supports nested translation data to avoid naming collisions
-
-```json
-{
-  "welcome": {
-    "greeting": [
-      "Hello ${ name }!",
-      "Bonjour ${ name }!"
-    ]
-  },
-  "info": {
-    "greeting": [
-      "Hello",
-      "Bonjour"
-    ]
-  }
-}
-```
-
-```javascript
-<h1>{ translate('welcome.greeting', { name: 'Testy McTest' }) }</h1>
-<h1>{ translate('info.greeting') }</h1>
-```
-
 ### Load translation data on demand
 
 If you have a larger app you may want to break your translation data up into multiple files, or maybe your translation data is being loaded from a service. Either way you can call [addTranslation](#addtranslationdata) for each new translation file/service, and the new translation data will be merged with any existing data.
@@ -264,7 +264,7 @@ export default connect(mapStateToProps)(Greeting);
 
 #### Usage (multiple translations): 
 
-See [Pass multiple translations to child components]().
+See [Pass multiple translations to child components](#pass-multiple-translations-to-child-components).
 
 ### `getActiveLanguage(state)`
 
