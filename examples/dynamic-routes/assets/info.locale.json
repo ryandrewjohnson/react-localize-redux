@@ -14,20 +14,6 @@
       "This local translation 'click-here' overrides the global 'click-here' key",
       "Traductions locales peuvent substituer les étiquettes des traductions globales",
       "Las traducciones locales pueden reemplazar las etiquetas de traducción global"
-    ],
-    "article": {
-      "title": ["Jurassic Park", "Le Jurassic Park", "El Jurassic Park"],
-      "plot": [
-        "During a preview tour, a theme park suffers a major power breakdown that allows its cloned dinosaur exhibits to run amok.",
-        "Pretend I'm in French - During a preview tour, a theme park suffers a major power breakdown that allows its cloned dinosaur exhibits to run amok.",
-        "Pretend I'm in Spanish - During a preview tour, a theme park suffers a major power breakdown that allows its cloned dinosaur exhibits to run amok."
-      ],
-      "review": [
-        "Needs more dinosaurs",
-        "Pretend I'm in French - Needs more dinosaurs",
-        "Pretend I'm in Spanish - Needs more dinosaurs"
-      ]
-    }
+    ]
   }
-
 }
