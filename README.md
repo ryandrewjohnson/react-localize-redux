@@ -131,7 +131,7 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps)(Greeting);
 ```
 
-For components not already using `connect` instead use [localize](#localizecomponent). This will automatically connect your component with the `translate` function and `currentLanguage` prop. 
+For components not already using `connect` instead use [localize](#localizecomponent-slice). This will automatically connect your component with the `translate` function and `currentLanguage` prop. 
 
 ```javascript
 import { localize } from 'react-localize-redux';
@@ -204,6 +204,38 @@ Then pass in the data you want to swap in for placeholders to the `translate` fu
 <h1>{ translate('info.greeting') }</h1>
 ```
 
+### Pass multiple translations to child components
+
+A parent component that has added the `translate` function by using [getTranslate](#gettranslatestate) or [localize](#localizecomponent-slice) can easily pass multiple translations down to it's child components. Just pass the `translate` function an array of translation keys instead of a single key. 
+
+```json
+{
+  "heading": ["Heading", "Heading French"],
+  "article": {
+    "title": ["Title", "Title French"],
+    "author": ["By ${ name }", "By French ${ name }"],
+    "desc": ["Description", "Description French"]
+  }
+}
+```
+
+```javascript
+const Article = props => (
+  <div>
+    <h2>{ props['article.title'] }</h2>
+    <h3>{ props['article.author'] }</h3>
+    <p>{ props['article.desc'] }</p>
+  </div>
+);
+
+const Page = ({ translate }) => (
+  <div>
+    <h1>{ translate('heading') }</h1>
+    <Article { ...translate(['article.title', 'article.author', 'article.desc'], { name: 'Ted' }) } />
+  </div>
+);
+```
+
 ### Load translation data on demand
 
 If you have a larger app you may want to break your translation data up into multiple files, or maybe your translation data is being loaded from a service. Either way you can call [addTranslation](#addtranslationdata) for each new translation file/service, and the new translation data will be merged with any existing data.
@@ -216,12 +248,12 @@ Also If you are using a tool like [webpack](https://webpack.js.org) for bundling
 
 A selector that takes the localeReducer slice of your `state` and returns the translate function. This function will have access to any and all translations that were added with [addTranslation](#addtranslationdata).
 
-returns `(key, data) => LocalizedElement`
+returns `(key | key[], data) => LocalizedElement | { [key: string]: LocalizedElement }`
 
-* `key: string` = The key for the transaltion string e.g. 'greeting'
+* `key: string|array` = A translation key or an array of translation keys.
 * `data: object` = Pass data to your [dynamic translation](#add-dynamic-content-to-translations) string.
 
-#### Usage: 
+#### Usage (single translation): 
 
 ```javascript
 const Greeting = ({ translate }) => <h1>{ translate('greeting', { name: 'Testy McTest' }) }</h1>
@@ -229,6 +261,10 @@ const Greeting = ({ translate }) => <h1>{ translate('greeting', { name: 'Testy M
 const mapStateToProps = state => ({ translate: getTranslate(state.locale) });
 export default connect(mapStateToProps)(Greeting);
 ```
+
+#### Usage (multiple translations): 
+
+See [Pass multiple translations to child components](#pass-multiple-translations-to-child-components).
 
 ### `getActiveLanguage(state)`
 
@@ -266,7 +302,32 @@ const mapStateToProps = state => ({ languages: getLanguages(state.locale) });
 export default connect(mapStateToProps)(Greeting);
 ```
 
-### `localize(Component, slice)`
+### `getLanguages(state)`
+
+A selector that takes your redux `state` and returns the languages you set.
+
+returns `[{ code: 'en', active: true }, { code: 'fr', active: false }]`;
+
+#### Usage: 
+
+```javascript
+const LanguageSelector = ({ languages }) => (
+  <ul>
+    { languages.map(language => 
+      <a href={ `/${ language.code }` }>{ language.code }</a>
+    )}
+  </ul>
+)
+
+const mapStateToProps = state => ({ languages: getLanguages(state) });
+export default connect(mapStateToProps)(Greeting);
+```
+
+### `getTranslations(state)`
+
+A selector that takes your redux `state` and returns the raw translation data.
+
+### `localize(Component)`
 
 If you have a Component that is not using `connect` you can wrap it with `localize` to automatically add the `translate` function and `currentLanguage` prop. When using `combineReducers` to add `localeReducer` you must pass the `slice` param to `localize`, where `slice` is the name of the prop you used with `combineReducers` (e.g. locale).
 

@@ -1,37 +1,9 @@
 import * as actions from 'modules/locale';
-import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, customeEqualSelector, setLanguages } from 'modules/locale';
+import { shallow } from 'enzyme';
+import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, customeEqualSelector, setLanguages, getTranslate } from 'modules/locale';
 import { SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION } from 'modules/locale';
 
 describe('locale module', () => {
-
-  let mainState = {};
-
-  beforeEach(() => {
-    mainState = {
-      locale: {
-        currentLanguage: 'en',
-        translations: {
-          global: {
-            en: {
-              title: 'Global Title'
-            },
-            fr: {
-              title: 'FR Global Title'
-            }
-          },
-          local: {
-            en: {
-              greeting: 'Greeting'
-            },
-            fr: {
-              greeting: 'FR Greeting'
-            }
-          }
-        }
-      }
-    };
-  });
-
 
   describe('reducer: languages', () => {
     let initialState = [];
@@ -222,6 +194,68 @@ describe('locale module', () => {
       expect(result).toEqual({
         hi: 'hi-fr',
         bye: 'bye-fr'
+      });
+    });
+  });
+
+  describe('getTranslate', () => {
+    let state = {};
+
+    beforeEach(() => {
+      state = {
+        languages: [{ code: 'en', active: false }, { code: 'fr', active: true }],
+        translations: {
+          hi: ['hi-en', 'hi-fr'],
+          bye: ['bye-en', 'bye-fr'],
+          yo: ['yo ${ name }', 'yo-fr ${ name }'],
+          foo: ['foo ${ bar }', 'foo-fr ${ bar }']
+        }
+      };
+    });
+
+    it('should throw an error when invalid key provided to translate function', () => {
+      const translate = getTranslate(state);
+      expect(() => translate(23)).toThrow();
+    });
+
+    it('should return single translated element when valid key provided', () => {
+      const translate = getTranslate(state);
+      const result = translate('hi');
+      const wrapper = shallow(result);
+      expect(wrapper.text()).toBe('hi-fr');
+      expect(wrapper.type()).toBe('span');
+    });
+
+    it('should return an object of translation keys matched with translated element', () => {
+      const translate = getTranslate(state);
+      const result = translate(['hi', 'bye']);
+      
+      Object.keys(result).map((key, index) => {
+        const element = result[key];
+        const wrapper = shallow(element);
+        expect(wrapper.text()).toBe(state.translations[key][1]);
+      });
+    });
+
+    it('should insert dynamic data for single translation', () => {
+      const translate = getTranslate(state);
+      const element = translate('yo', { name: 'ted' });
+      const wrapper = shallow(element);
+      expect(wrapper.text()).toBe('yo-fr ted');
+    });
+
+    it('should insert dynamic data for multiple translations', () => {
+      const translate = getTranslate(state);
+      const result = translate(['yo', 'foo'], { name: 'ted', bar: 'bar' });
+      const results = [
+        'yo-fr ted',
+        'foo-fr bar'
+      ];
+      
+      Object.keys(result).map((key, index) => {
+        const element = result[key];
+        const wrapper = shallow(element);
+        expect(wrapper.text()).toBe(results[index]);
       });
     });
   });
