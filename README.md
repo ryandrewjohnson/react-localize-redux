@@ -1,4 +1,4 @@
-# React Localize Redux
+![React Localize Redux](https://cdn-images-1.medium.com/max/600/1*3Hg5LMvLmWCmEg-ICeUtjg.png)
 
 A collection of helpers for managing localized content in your React/Redux application. 
 
@@ -314,13 +314,13 @@ returns `[{ code: 'en', active: true }, { code: 'fr', active: false }]`;
 const LanguageSelector = ({ languages }) => (
   <ul>
     { languages.map(language => 
-      <a href={ `/${ language.code }` }>{ language.code }</a>
+      <li><a href={ `/${ language.code }` }>{ language.code }</a></li>
     )}
   </ul>
 )
 
 const mapStateToProps = state => ({ languages: getLanguages(state) });
-export default connect(mapStateToProps)(Greeting);
+export default connect(mapStateToProps)(LanguageSelector);
 ```
 
 ### `getTranslations(state)`
@@ -376,7 +376,7 @@ const welcomePageTranslations = {
 store.dispatch(addTranslation(welcomePageTranslations));
 ```
 
-#### `setActiveLanguage(language)`
+### `setActiveLanguage(language)`
 
 **Redux action creator** to change the current language being used.
 
