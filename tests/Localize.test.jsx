@@ -54,6 +54,6 @@ describe('<Localize />', () => {
     WrappedComponent = localize(MockPageComponent, 'locale');
     wrapper = shallow(<WrappedComponent />, { context: { store }});
     expect(wrapper.props().translate).toBeDefined();
-    expect(wrapper.props().translate('hi')).toEqual(<span>hello</span>);
+    expect(wrapper.props().translate('hi')).toEqual('hello');
   });
 });

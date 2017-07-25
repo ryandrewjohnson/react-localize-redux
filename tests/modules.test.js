@@ -220,10 +220,8 @@ describe('locale module', () => {
 
     it('should return single translated element when valid key provided', () => {
       const translate = getTranslate(state);
-      const result = translate('hi');
-      const wrapper = shallow(result);
-      expect(wrapper.text()).toBe('hi-fr');
-      expect(wrapper.type()).toBe('span');
+      const value = translate('hi');
+      expect(value).toBe('hi-fr');
     });
 
     it('should return an object of translation keys matched with translated element', () => {
@@ -231,17 +229,16 @@ describe('locale module', () => {
       const result = translate(['hi', 'bye']);
       
       Object.keys(result).map((key, index) => {
-        const element = result[key];
-        const wrapper = shallow(element);
-        expect(wrapper.text()).toBe(state.translations[key][1]);
+        const value = result[key];
+        expect(value).toBe(state.translations[key][1]);
       });
     });
 
     it('should insert dynamic data for single translation', () => {
       const translate = getTranslate(state);
-      const element = translate('yo', { name: 'ted' });
-      const wrapper = shallow(element);
-      expect(wrapper.text()).toBe('yo-fr ted');
+      const result = translate('yo', { name: 'ted' });
+      // const wrapper = shallow(element);
+      expect(result).toBe('yo-fr ted');
     });
 
     it('should insert dynamic data for multiple translations', () => {
@@ -253,9 +250,8 @@ describe('locale module', () => {
       ];
       
       Object.keys(result).map((key, index) => {
-        const element = result[key];
-        const wrapper = shallow(element);
-        expect(wrapper.text()).toBe(results[index]);
+        const value = result[key];
+        expect(value).toBe(results[index]);
       });
     });
   });
