@@ -14,6 +14,7 @@ A collection of helpers for managing localized content in your React/Redux appli
 - [Getting Started](#getting-started)
 - [Features](#features)
 - [API](#api)
+- [Dead simple localization for your React components](https://medium.com/@ryandrewjohnson/adding-multi-language-support-to-your-react-redux-app-cf6e64250050)
 - [Migrating from v1 to v2?](MIGRATING.md)
 
 ## Installation
@@ -248,7 +249,15 @@ Also If you are using a tool like [webpack](https://webpack.js.org) for bundling
 
 A selector that takes the localeReducer slice of your `state` and returns the translate function. This function will have access to any and all translations that were added with [addTranslation](#addtranslationdata).
 
-returns `(key | key[], data) => LocalizedElement | { [key: string]: LocalizedElement }`
+For single translation:
+
+returns `(key: string) => LocalizedElement | string`
+
+For multiple translations:
+
+returns `(key: []string) => { [key: string]: LocalizedElement | string`
+
+> Note: If a translation contains HTML a LocalizedElement will be used to render. In all other cases a string will be used.
 
 * `key: string|array` = A translation key or an array of translation keys.
 * `data: object` = Pass data to your [dynamic translation](#add-dynamic-content-to-translations) string.

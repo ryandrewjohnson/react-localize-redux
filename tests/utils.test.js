@@ -6,9 +6,8 @@ describe('locale utils', () => {
   describe('getLocalizedElement', () => {
     it('should return element with localized string', () => {
       const translations = { test: 'Here is my test' };
-      const result = shallow(utils.getLocalizedElement('test', translations));
-      expect(result.find('span').exists()).toBe(true);
-      expect(result.find('span').html()).toEqual(`<span>${translations.test}</span>`);
+      const result = utils.getLocalizedElement('test', translations);
+      expect(result).toBe(translations.test);
     });
 
     it('should return element with HTML from translation rendered', () => {
@@ -22,9 +21,14 @@ describe('locale utils', () => {
     it('should return element with warning when no localized string found', () => {
       const translations = { test: 'Here is my test' };
       const key = 'test2';
-      const result = shallow(utils.getLocalizedElement(key, translations));
-      expect(result.find('span').exists()).toBe(true);
-      expect(result.find('span').html()).toEqual(`<span>Missing locaized: ${key}</span>`);
+      const result = utils.getLocalizedElement(key, translations);
+      expect(result).toEqual(`Missing locaized: ${key}`);
+    });
+
+    it('should replace variables in translation string with data', () => {
+      const translations = { test: 'Hello ${ name }' };
+      const result = utils.getLocalizedElement('test', translations, { name: 'Ted' });
+      expect(result).toEqual('Hello Ted');
     });
   });
 

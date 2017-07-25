@@ -5,7 +5,7 @@ export const getLocalizedElement = (key, translations, data) => {
   const translatedValue = templater(localizedString, data)
   return hasHtmlTags(translatedValue) 
     ? React.createElement('span', { dangerouslySetInnerHTML: { __html: translatedValue }})
-    : <span>{ translatedValue }</span>;
+    : translatedValue;
 };
 
 export const hasHtmlTags = (value) => {
@@ -28,7 +28,7 @@ export const templater = (strings, data = {}) => {
   }
   return strings;
 }
-
+``
 export const getIndexForLanguageCode = (code, languages) => {
   return languages.map(language => language.code).indexOf(code);
 }
