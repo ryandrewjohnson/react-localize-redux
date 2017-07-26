@@ -109,20 +109,22 @@ export const getTranslationsForActiveLanguage = customeEqualSelector(
   }
 );
 
-export const getTranslate = (state) => {
-  const translations = getTranslationsForActiveLanguage(state);
-  return (value, data) => { 
-    if (typeof value === 'string') {
-      return getLocalizedElement(value, translations, data);
-    } else if (Array.isArray(value)) {
-      return value.reduce((prev, cur) => {
-        return {
-          ...prev,
-          [cur]: getLocalizedElement(cur, translations, data)
-        };
-      }, {});
-    } else {
-      throw new Error('react-localize-redux: invalid key passed to translate.');
+export const getTranslate = createSelector(
+  getTranslationsForActiveLanguage,
+  (translations) => {
+    return (value, data) => { 
+      if (typeof value === 'string') {
+        return getLocalizedElement(value, translations, data);
+      } else if (Array.isArray(value)) {
+        return value.reduce((prev, cur) => {
+          return {
+            ...prev,
+            [cur]: getLocalizedElement(cur, translations, data)
+          };
+        }, {});
+      } else {
+        throw new Error('react-localize-redux: invalid key passed to translate.');
+      }
     }
   }
-};
+);

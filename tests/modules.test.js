@@ -1,6 +1,7 @@
 import * as actions from 'modules/locale';
 import { shallow } from 'enzyme';
-import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, customeEqualSelector, setLanguages, getTranslate } from 'modules/locale';
+import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, customeEqualSelector, setLanguages, getTranslate, getTranslateSelector } from 'modules/locale';
+import { getLocalizedElement } from 'utils';
 import { SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION } from 'modules/locale';
 
 describe('locale module', () => {
@@ -256,7 +257,7 @@ describe('locale module', () => {
     });
   });
 
-  describe('createSelectorCreator', () => {
+  describe('customeEqualSelector', () => {
     let languages = [];
     let activeLanguage = {};
     let translations = {};

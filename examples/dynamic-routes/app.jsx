@@ -9,7 +9,17 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 const ROOT_NODE = document.getElementById('root');
 
-const store = createStore(combineReducers({ locale: localeReducer }), composeWithDevTools());
+const store = createStore(combineReducers({ 
+  locale: localeReducer,
+  clicks: (state = 0, action) => {
+    switch(action.type) {
+      case 'CLICKED':
+        return state + 1;
+      default:
+        return state;
+    }
+  }
+}), composeWithDevTools());
 
 const App = props => {
   return (
