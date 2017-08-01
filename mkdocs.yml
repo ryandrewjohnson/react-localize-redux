@@ -1,0 +1,14 @@
+site_name: react-localize-redux
+repo_url: https://github.com/ryandrewjohnson/react-localize-redux
+
+pages:
+- Getting Started: getting-started.md
+- Formatting Translation Data: formatting-translation-data.md
+- Features: features.md
+- API Documentation: 
+  - 'Action Creators': 'api/action-creators.md'
+  - 'Selectors': 'api/selectors.md'
+  - 'Higher Order Component': 'api/higher-order-component.md'
+# - FAQ: index.md
+
+theme: readthedocs
