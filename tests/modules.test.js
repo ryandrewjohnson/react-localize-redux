@@ -2,7 +2,7 @@ import * as actions from 'modules/locale';
 import { shallow } from 'enzyme';
 import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, customeEqualSelector, setLanguages, getTranslate, getTranslateSelector } from 'modules/locale';
 import { getLocalizedElement } from 'utils';
-import { SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION } from 'modules/locale';
+import { SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION, ADD_TRANSLATION_FOR_LANGUGE } from 'modules/locale';
 
 describe('locale module', () => {
 
@@ -160,6 +160,84 @@ describe('locale module', () => {
       expect(result).toEqual({
         'first.second.third': ['nested'],
         'more.nested': ['one']
+      });
+    });
+
+    it('should add translation for specific language', () => {
+      const action = {
+        type: ADD_TRANSLATION_FOR_LANGUGE,
+        payload: { 
+          language: 'en', 
+          translation: { title: 'title', description: 'description' }
+        },
+        languageCodes: ['en', 'fr']
+      };
+
+      const result = translations({}, action);
+      expect(result).toEqual({
+        title: ['title', undefined],
+        description: ['description', undefined]
+      });
+    });
+
+    it('should add nested translation for specific language', () => {
+      const action = {
+        type: ADD_TRANSLATION_FOR_LANGUGE,
+        payload: { 
+          language: 'en', 
+          translation: { 
+            movie: { title: 'title', description: 'description' } 
+          }
+        },
+        languageCodes: ['en', 'fr']
+      };
+
+      const result = translations({}, action);
+      expect(result).toEqual({
+        'movie.title': ['title', undefined],
+        'movie.description': ['description', undefined]
+      });
+    });
+
+    it('should add translation for specific language to existing translation', () => {
+      const action = {
+        type: ADD_TRANSLATION_FOR_LANGUGE,
+        payload: { 
+          language: 'en', 
+          translation: { title: 'title', description: 'description' }
+        },
+        languageCodes: ['en', 'fr']
+      };
+
+      const result = translations({
+        title: [undefined, 'titlefr'],
+        description: [undefined, 'descriptionfr']
+      }, action);
+
+      expect(result).toEqual({
+        title: ['title', 'titlefr'],
+        description: ['description', 'descriptionfr']
+      });
+    });
+
+    it('should add translation for specific language and override existing translation', () => {
+      const action = {
+        type: ADD_TRANSLATION_FOR_LANGUGE,
+        payload: { 
+          language: 'fr', 
+          translation: { title: 'title', description: 'description' }
+        },
+        languageCodes: ['en', 'fr']
+      };
+
+      const result = translations({
+        title: [undefined, 'titlefr'],
+        description: [undefined, 'descriptionfr']
+      }, action);
+
+      expect(result).toEqual({
+        title: [undefined, 'title'],
+        description: [undefined, 'description']
       });
     });
   });

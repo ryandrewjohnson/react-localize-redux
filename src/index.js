@@ -3,6 +3,7 @@ export { localize } from './containers/Localize';
 export { 
   localeReducer,
   addTranslation,
+  addTranslationForLanguage,
   setLanguages,
   setActiveLanguage,
   getTranslate,
