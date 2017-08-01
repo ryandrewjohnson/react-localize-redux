@@ -114,7 +114,11 @@ export const setActiveLanguage = (languageCode) => {
  */
 export const getTranslations = state => state.translations;
 export const getLanguages = state => state.languages;
-export const getActiveLanguage = state => getLanguages(state).find(language => language.active === true);
+export const getActiveLanguage = state => {
+  const languages = getLanguages(state);
+  const activeLanguageIndex = languages.map(language => language.active).indexOf(true);
+  return languages[activeLanguageIndex];
+};
 
 
 export const customeEqualSelector = createSelectorCreator(
