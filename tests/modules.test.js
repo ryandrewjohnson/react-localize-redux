@@ -400,5 +400,30 @@ describe('locale module', () => {
       selector({});
       expect(result).toHaveBeenCalledTimes(1);
     });
+
+    it('should call result function when new value is added to translation', () => {
+      const result = jest.fn();
+      let initialTranslations = {
+        title: ['title', undefined, undefined]
+      };
+
+      const selector = customeEqualSelector(() => initialTranslations, result);
+      selector({});
+      initialTranslations = { title: ['title', 'title FR', undefined] };
+      selector({});
+      expect(result).toHaveBeenCalledTimes(2);
+    });
+
+    it('should not call result function when value has not changed', () => {
+      const result = jest.fn();
+      let initialTranslations = {
+        title: ['title', 'title2', undefined]
+      };
+
+      const selector = customeEqualSelector(() => initialTranslations, result);
+      selector({});
+      selector({});
+      expect(result).toHaveBeenCalledTimes(1);
+    });
   });
 });

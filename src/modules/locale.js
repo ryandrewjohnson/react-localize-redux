@@ -65,11 +65,16 @@ export function translations(state = {}, action) {
   }
 }
 
-export const localeReducer = (state, action) => {
-  const languageCodes = state.languages.map(language => langauge.code);
+const initialState = {
+  languages: [],
+  translations: {}
+};
+
+export const localeReducer = (state = initialState, action) => {
+  const languageCodes = state.languages.map(language => language.code);
   return {
-    langauges: languages(state, action),
-    translations: translations(state, { ...action, languageCodes })
+    languages: languages(state.languages, action),
+    translations: translations(state.translations, { ...action, languageCodes })
   };
 };
 
@@ -117,12 +122,18 @@ export const customeEqualSelector = createSelectorCreator(
   (cur, prev) => {
     const isTranslationsData = !(Array.isArray(cur) || Object.keys(cur).toString() === 'code,active');
 
-    // for translations data use keys for comparison
+    // for translations data use a combination of keys and values for comparison
     if (isTranslationsData) {
-      prev = Object.keys(prev).toString();
-      cur  = Object.keys(cur).toString();
+      const prevKeys = Object.keys(prev).toString();
+      const curKeys = Object.keys(cur).toString();
+
+      const prevValues = Object.values(prev).toString();
+      const curValues = Object.values(cur).toString();
+
+      prev = `${ prevKeys } - ${ prevValues }`;
+      cur  = `${ curKeys } - ${ curValues }`;
     }
-  
+    
     return prev === cur;
   }
 )

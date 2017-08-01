@@ -9,6 +9,13 @@ const WelcomeView = ({ translate, addTranslation, count }) => {
       <h1>{ translate('welcome.title', { name: 'Ryan Johsnon' }) }</h1>
       <p>{ translate('welcome.body') }</p>
       <button onClick={ () => addTranslation({ newstuff: ['newstuff EN', 'newstuff FR', 'newstuff ES']}) }>{ translate('welcome.click-here') }</button>
+
+      <article>
+        <h2>{ translate('title') }</h2>
+        <p>{ translate('description') }</p>
+        <p>{ translate('author') }</p>
+      </article>
+     
     </div>  
   );
 }
