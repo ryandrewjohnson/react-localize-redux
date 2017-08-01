@@ -7,7 +7,7 @@ The translation data for you application will either come from json or vanilla J
 The data is an object where the property name is your translation key, and the value is an array of translations. The translation key is used to identify the translation, and the value is an array that enforces the following...
 
 * Includes a translation for each language your app supports.
-* The order of the translation strings in the array matters! The order **MUST** follow the order of the languages array passed to [setLanguages](../api/action-creators#setlanguageslanguages-defaultactivelanguage).
+* The order of the translation strings in the array matters! The order **MUST** follow the order of the languages array passed to [setLanguages]([addTranslationForLanguage](../api/action-creators#addtranslationforlanguagedata-language)).
 
 Assuming your application has dispatched `setLanguages('en', 'fr', 'es')`:
 
