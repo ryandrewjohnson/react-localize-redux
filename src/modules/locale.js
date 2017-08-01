@@ -3,10 +3,11 @@ import { flatten } from 'flat';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
 import { isDefinedNested, getLocalizedElement, getIndexForLanguageCode } from '../utils';
 
-export const ADD_TRANSLATION      = '@@localize/ADD_TRANSLATION';
-export const SET_LANGUAGES        = '@@localize/SET_LANGUAGES';
-export const SET_ACTIVE_LANGUAGE  = '@@localize/SET_ACTIVE_LANGUAGE';
-export const TRANSLATE            = '@@localize/TRANSLATE';
+export const ADD_TRANSLATION              = '@@localize/ADD_TRANSLATION';
+export const ADD_TRANSLATION_FOR_LANGUGE  = '@@localize/ADD_TRANSLATION_FOR_LANGUGE';
+export const SET_LANGUAGES                = '@@localize/SET_LANGUAGES';
+export const SET_ACTIVE_LANGUAGE          = '@@localize/SET_ACTIVE_LANGUAGE';
+export const TRANSLATE                    = '@@localize/TRANSLATE';
 
 /**
  * REDUCERS
@@ -38,13 +39,39 @@ export function translations(state = {}, action) {
       return {
         ...state,
         ...flatten(action.payload.translation, { safe: true })
-      }
+      };
+    case ADD_TRANSLATION_FOR_LANGUGE:
+      const languageIndex = action.languageCodes.indexOf(action.payload.language);
+      const flattenedTranslations = languageIndex >= 0 ? flatten(action.payload.translation) : {};
+      const languageTranslations = Object.keys(flattenedTranslations).reduce((prev, cur) => {
+        const translationValues = action.languageCodes.map((code, index) => {
+          const existingValues = state[cur] || [];
+          return index === languageIndex
+            ? flattenedTranslations[cur]
+            : existingValues[index]
+        });
+        return {
+          ...prev,
+          [cur]: translationValues
+        };
+      }, {});
+
+      return {
+        ...state,
+        ...languageTranslations
+      };
     default:
       return state;
   }
 }
 
-export const localeReducer = combineReducers({ languages, translations });
+export const localeReducer = (state, action) => {
+  const languageCodes = state.languages.map(language => langauge.code);
+  return {
+    langauges: languages(state, action),
+    translations: translations(state, { ...action, languageCodes })
+  };
+};
 
 /**
  * ACTION CREATORS
@@ -54,6 +81,13 @@ export const addTranslation = (translation) => {
     type: ADD_TRANSLATION,
     payload: { translation }
   };
+};
+
+export const addTranslationForLanguage = (translation, language) => {
+  return {
+    type: ADD_TRANSLATION_FOR_LANGUGE,
+    payload: { translation, language }
+  }
 };
 
 export const setLanguages = (languageCodes, activeLanguage = null) => {
