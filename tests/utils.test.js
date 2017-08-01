@@ -77,4 +77,30 @@ describe('locale utils', () => {
       expect(result).toBe(-1);
     });
   });
+
+  describe('objectValuesToString', () => {
+    let translationData = {};
+    
+    beforeEach(() => {
+      translationData = {
+        one: ['1', '2', '3'],
+        two: ['4', '5', '6']
+      };
+    });
+
+    describe('Object.values defined', () => {
+      it('should return an stingified array of translation array data', () => {
+        const result = utils.objectValuesToString(translationData);
+        expect(result).toEqual('1,2,3,4,5,6');
+      });
+    });
+
+    describe('Object.values undefined', () => {
+      it('should return an stingified array of translation array data', () => {
+        Object.values = undefined;
+        const result = utils.objectValuesToString(translationData);
+        expect(result).toEqual('1,2,3,4,5,6');
+      });
+    });
+  });
 });

@@ -28,8 +28,14 @@ export const templater = (strings, data = {}) => {
 	strings = strings.replace(regex, data[prop]);  	 	
   }
   return strings;
-}
-``
+};
+
 export const getIndexForLanguageCode = (code, languages) => {
   return languages.map(language => language.code).indexOf(code);
-}
+};
+
+export const objectValuesToString = (data) => {
+  return !Object.values
+    ? Object.keys(data).map(key => data[key].toString()).toString()
+    : Object.values(data).toString();
+};

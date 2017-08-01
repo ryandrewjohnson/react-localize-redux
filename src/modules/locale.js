@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { flatten } from 'flat';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
-import { isDefinedNested, getLocalizedElement, getIndexForLanguageCode } from '../utils';
+import { isDefinedNested, getLocalizedElement, getIndexForLanguageCode, objectValuesToString } from '../utils';
 
 export const INITIALIZE                   = '@@localize/INITIALIZE';
 export const ADD_TRANSLATION              = '@@localize/ADD_TRANSLATION';
@@ -149,9 +149,9 @@ export const customeEqualSelector = createSelectorCreator(
     if (isTranslationsData) {
       const prevKeys = Object.keys(prev).toString();
       const curKeys = Object.keys(cur).toString();
-      
-      const prevValues = Object.keys(prev).map(key => prev[key].toString()).toString();
-      const curValues = Object.keys(cur).map(key => cur[key].toString()).toString();
+
+      const prevValues = objectValuesToString(prev);
+      const curValues = objectValuesToString(cur);
 
       prev = `${ prevKeys } - ${ prevValues }`;
       cur  = `${ curKeys } - ${ curValues }`;
