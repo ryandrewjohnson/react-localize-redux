@@ -22,7 +22,7 @@ describe('locale utils', () => {
       const translations = { test: 'Here is my test' };
       const key = 'test2';
       const result = utils.getLocalizedElement(key, translations);
-      expect(result).toEqual(`Missing locaized: ${key}`);
+      expect(result).toEqual(`Missing localized key: ${key}`);
     });
 
     it('should replace variables in translation string with data', () => {

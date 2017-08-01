@@ -123,7 +123,7 @@ export const getTranslate = createSelector(
           };
         }, {});
       } else {
-        throw new Error('react-localize-redux: invalid key passed to translate.');
+        throw new Error('react-localize-redux: Invalid key passed to getTranslate.');
       }
     }
   }
