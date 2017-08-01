@@ -21,7 +21,8 @@
     "prepublish": "npm run build",
     "start": "webpack-dev-server --config examples/webpack.config.babel.js --content-base examples --inline --open",
     "test": "jest",
-    "test:dev": "jest --watch"
+    "test:dev": "jest --watch",
+    "deploy:docs": "mkdocs gh-deploy"
   },
   "repository": {
     "type": "git",
