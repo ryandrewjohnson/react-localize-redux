@@ -126,9 +126,9 @@ export const customeEqualSelector = createSelectorCreator(
     if (isTranslationsData) {
       const prevKeys = Object.keys(prev).toString();
       const curKeys = Object.keys(cur).toString();
-
-      const prevValues = Object.values(prev).toString();
-      const curValues = Object.values(cur).toString();
+      
+      const prevValues = Object.keys(prev).map(key => prev[key].toString()).toString();
+      const curValues = Object.keys(cur).map(key => cur[key].toString()).toString();
 
       prev = `${ prevKeys } - ${ prevValues }`;
       cur  = `${ curKeys } - ${ curValues }`;
