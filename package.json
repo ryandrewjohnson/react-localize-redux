@@ -22,7 +22,8 @@
     "start": "webpack-dev-server --config examples/webpack.config.babel.js --content-base examples --inline --open",
     "test": "jest",
     "test:dev": "jest --watch",
-    "deploy:docs": "mkdocs gh-deploy"
+    "deploy:docs": "mkdocs gh-deploy",
+    "serve:docs": "mkdocs serve"
   },
   "repository": {
     "type": "git",

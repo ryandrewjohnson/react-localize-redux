@@ -12,3 +12,8 @@ pages:
 # - FAQ: index.md
 
 theme: readthedocs
+# theme_dir: cinder
+
+extra_css:
+    - css/highlight-fix.css
+    - css/highlight.css

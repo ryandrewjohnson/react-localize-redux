@@ -1,6 +1,9 @@
 ## 1. Add reducer
 
-> **NOTE:** Although this example uses `locale` for the reducer name, you can change this to a name of your choosing. Just ensure that you use your name when passing the state to selectors.
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">Although this example uses <strong>locale</strong> for the reducer name, you can change this to a name of your choosing. Just ensure that you use your name when passing the state to selectors.</p>
+</div>
 
 ```javascript
 import { createStore, combineReducers } from 'redux';
@@ -22,22 +25,22 @@ const App = props => {
 ---------------
 
 
-## 2. Set languages
+## 2. Initialize languages
 
-Dispatch [setLanguages](api/action-creators#setlanguageslanguages-defaultactivelanguage) action creator and pass in the languages for your app. By default the first language in the array will be set as the active language.
+Dispatch [initialize](api/action-creators#initializelanguages-options) action creator and pass in the languages for your app. By default the first language in the array will be set as the active language.
 
 ```javascript
 import { setLanguages } from 'react-localize-redux';
 
 const languages = ['en', 'fr', 'es'];
-store.dispatch(setLanguages(languages));
+store.dispatch(initialize(languages));
 ```
 
-To set a different default active language pass in the `language`.
+To set a different default active language set the `defaultLanguage` option.
 
 ```javascript
 const languages = ['en', 'fr', 'es'];
-store.dispatch(setLanguages(languages, 'fr'));
+store.dispatch(setLanguages(languages, { defaultLanguage: 'fr' }));
 ```
 
 
@@ -52,7 +55,10 @@ Typically you will store your translation data in json files, but the data can a
 
 In order to add translation data to your application there are two action creators available - [addTranslation](../api/action-creators#addtranslationdata) and [addTranslationForLanguage](../api/action-creators#addtranslationforlanguagedata-language). Which one you use will depend on which format your translation data is in - see [formatting transaltion data]() for more information.
 
-> **NOTE:** The following assumes you are using [webpack](https://webpack.github.io/) to bundle json
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">The following assumes you are using <a href="https://webpack.github.io/" target="_blank">webpack</a> to bundle json</p>
+</div>
 
 ** Multiple language format **
 
@@ -117,7 +123,10 @@ export default connect(mapStateToProps)(Greeting);
 
 For components where you only need access to [translate](../api/selectors#translatekey-string-string-data) and `currentLanguage` you can use [localize](../api/higher-order-component#localizecomponent-reducername). This will automatically connect your component with the `translate` function and `currentLanguage` prop. 
 
-> **IMPORTANT**: Components that use `localize` still use [connect](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) behind the scenes, which means you will want to avoid overusing `localize`. Instead [pass multiple translations to components](../features#pass-multiple-translations-to-components) when possible.
+<div class="admonition warning">
+  <p class="first admonition-title">Warning</p>
+  <p class="last">Components that use <strong>localize</strong> still use <a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options" target="_blank">connect</a> behind the scenes, which means you will want to avoid overusing <strong>localize</strong>. Instead <a href="../features#pass-multiple-translations-to-components">pass multiple translations to components</a> when possible.</p>
+</div>
 
 ```javascript
 import { localize } from 'react-localize-redux';

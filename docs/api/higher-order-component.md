@@ -1,6 +1,9 @@
 ## localize(Component, [reducerName])
 
-> **NOTE:** if your component is already using [connect](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) then you should use the [getTranslate](selectors.md#gettranslatestate), and [getActiveLanguage](selectors.md#getactivelanguagestate) selectors instead of `localize`.
+<div class="admonition important">
+  <p class="first admonition-title">Important</p>
+  <p class="last">if your component is already using <a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options" target="_blank">connect</a> then you should use the <a href="../selectors/#gettranslatestate">getTranslate</a>, and <a href="../selectors#getactivelanguagestate">getActiveLanguage</a> selectors instead of <code>localize</code>.</p>
+</div>
 
 If you have a component that just needs access to translations, and nothing else then you can use the `localize` higher-order function. When you pass your Component to localize it will automatically add [translate](selectors.md#translatekey-string-string-data) and `currentLanguage` to props. 
 
