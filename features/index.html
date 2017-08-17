@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Features - react-localize-redux</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Features";
+    var mkdocs_page_input_path = "features.md";
+    var mkdocs_page_url = "/features/";
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js"></script>
+  <script src="../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../getting-started/" class="icon icon-home"> react-localize-redux</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../getting-started/">Getting Started</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../formatting-translation-data/">Formatting Translation Data</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Features</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#pass-multiple-translations-to-components">Pass multiple translations to components</a></li>
+    
+
+    <li class="toctree-l2"><a href="#insert-dynamic-content-into-translations">Insert dynamic content into translations</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#include-html-in-translations">Include HTML in translations</a></li>
+        
+            <li><a class="toctree-l3" href="#avoid-naming-collisions-with-nested-translation-data">Avoid naming collisions with nested translation data</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#load-translation-data-on-demand">Load translation data on demand</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">API Documentation</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../api/action-creators/">Action Creators</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../api/selectors/">Selectors</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../api/higher-order-component/">Higher Order Component</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../getting-started/">react-localize-redux</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../getting-started/">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Features</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/ryandrewjohnson/react-localize-redux/edit/master/docs/features.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="pass-multiple-translations-to-components">Pass multiple translations to components</h2>
+<p>To avoid connecting every single component that needs translations you should instead pass translations down to child components.
+To retrieve multiple translations using <a href="../../api/selectors#translatekey-string-string-data">translate</a> pass an array of translation keys instead of a single key. This will return an object with translated strings mapped to translation keys.</p>
+<p>Since <code>translate</code> returns an object we can use the object spread operator to pass the translations as props for the <code>&lt;Article&gt;</code> component.</p>
+<pre><code class="javascript">const translationData = {
+  heading: [&quot;Heading&quot;, &quot;Heading French&quot;],
+  article: {
+    title: [&quot;Title&quot;, &quot;Title French&quot;],
+    author: [&quot;By ${ name }&quot;, &quot;By French ${ name }&quot;],
+    desc: [&quot;Description&quot;, &quot;Description French&quot;]
+  }
+};
+
+const Page = ({ translate }) =&gt; (
+  &lt;div&gt;
+    &lt;h1&gt;{ translate('heading') }&lt;/h1&gt;
+    &lt;Article { ...translate(['article.title', 'article.author', 'article.desc'], { name: 'Ted' }) } /&gt;
+  &lt;/div&gt;
+);
+
+const Article = props =&gt; (
+  &lt;div&gt;
+    &lt;h2&gt;{ props['article.title'] }&lt;/h2&gt;
+    &lt;h3&gt;{ props['article.author'] }&lt;/h3&gt;
+    &lt;p&gt;{ props['article.desc'] }&lt;/p&gt;
+  &lt;/div&gt;
+);
+</code></pre>
+
+<hr />
+<h2 id="insert-dynamic-content-into-translations">Insert dynamic content into translations</h2>
+<p>Insert dynamic content into your translation strings by inserting placeholders with the following format <code>${ placeholder }</code>.</p>
+<pre><code class="json">{
+  &quot;greeting&quot;: [
+    &quot;Hello ${ name }&quot;,
+    &quot;Bonjour ${ name }&quot;
+  ]
+}
+</code></pre>
+
+<p>Then pass in the data you want to swap in for placeholders to the <a href="../../api/selectors#translatekey-string-string-data">translate</a> function.</p>
+<pre><code class="javascript">&lt;h1&gt;{ translate('greeting', { name: 'Testy McTest' }) }&lt;/h1&gt;
+</code></pre>
+
+<hr />
+<h3 id="include-html-in-translations">Include HTML in translations</h3>
+<p>Include HTML in your translation strings and it will be rendered in your component.</p>
+<pre><code class="json">{
+  &quot;google-link&quot;: [
+    &quot;&lt;a href='https://www.google.en/'&gt;Google&lt;/a&gt;&quot;,
+    &quot;&lt;a href='https://www.google.fr/'&gt;Google&lt;/a&gt;&quot;
+  ]
+}
+</code></pre>
+
+<hr />
+<h3 id="avoid-naming-collisions-with-nested-translation-data">Avoid naming collisions with nested translation data</h3>
+<p><strong> Multiple language format </strong></p>
+<pre><code class="json">{
+  &quot;welcome&quot;: {
+    &quot;greeting&quot;: [
+      &quot;Hello ${ name }!&quot;,
+      &quot;Bonjour ${ name }!&quot;
+    ]
+  },
+  &quot;info&quot;: {
+    &quot;greeting&quot;: [
+      &quot;Hello&quot;,
+      &quot;Bonjour&quot;
+    ]
+  }
+}
+</code></pre>
+
+<p><strong> Single language format </strong></p>
+<pre><code class="json">{
+  &quot;welcome&quot;: {
+    &quot;greeting&quot;: &quot;Hello ${ name }!&quot;
+  },
+  &quot;info&quot;: {
+    &quot;greeting&quot;: &quot;Hello&quot;
+  }
+}
+</code></pre>
+
+<pre><code class="javascript">&lt;h1&gt;{ translate('welcome.greeting', { name: 'Testy McTest' }) }&lt;/h1&gt;
+&lt;h1&gt;{ translate('info.greeting') }&lt;/h1&gt;
+</code></pre>
+
+<hr />
+<h2 id="load-translation-data-on-demand">Load translation data on demand</h2>
+<p>If you have a larger app you may want to break your translation data up into multiple files, or maybe your translation data is being loaded from a service. You can call <a href="#addtranslationdata">addTranslation</a> for each new translation file/service, and the new translation data will be added to your Redux store.</p>
+<p>Also If you are using a tool like <a href="https://webpack.js.org">webpack</a> for bundling, then you can use <a href="https://webpack.js.org/guides/code-splitting-async/">async code-splitting</a> to split translations across bundles, and async load them when you need them.</p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../api/action-creators/" class="btn btn-neutral float-right" title="Action Creators">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../formatting-translation-data/" class="btn btn-neutral" title="Formatting Translation Data"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/ryandrewjohnson/react-localize-redux" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../formatting-translation-data/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../api/action-creators/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../js/theme.js"></script>
+
+</body>
+</html>

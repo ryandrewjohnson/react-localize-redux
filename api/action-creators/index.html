@@ -35,7 +35,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href="./" class="icon icon-home"> react-localize-redux</a>
+        <a href="../../getting-started/" class="icon icon-home"> react-localize-redux</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -46,6 +46,21 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
 	<ul class="current">
 	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../getting-started/">Getting Started</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../formatting-translation-data/">Formatting Translation Data</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../features/">Features</a>
+	    </li>
           
             <li class="toctree-l1">
 		
@@ -60,6 +75,9 @@
     
 
     <li class="toctree-l3"><a href="#addtranslationdata">addTranslation(data)</a></li>
+    
+
+    <li class="toctree-l3"><a href="#addtranslationforlanguagedata-language">addTranslationForLanguage(data, language)</a></li>
     
 
     <li class="toctree-l3"><a href="#setactivelanguagelanguage">setActiveLanguage(language)</a></li>
@@ -78,11 +96,6 @@
     </ul>
 	    </li>
           
-            <li class="toctree-l1">
-		
-    <a class="" href="../..">FAQ</a>
-	    </li>
-          
         </ul>
       </div>
       &nbsp;
@@ -93,7 +106,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="./">react-localize-redux</a>
+        <a href="../../getting-started/">react-localize-redux</a>
       </nav>
 
       
@@ -101,7 +114,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="./">Docs</a> &raquo;</li>
+    <li><a href="../../getting-started/">Docs</a> &raquo;</li>
     
       
         
@@ -157,10 +170,7 @@ store.dispatch(setLanguages(languages, 'fr'));
 
 <hr />
 <h2 id="addtranslationdata">addTranslation(data)</h2>
-<p>Dispatch this action to add translation data from a json file, or vanilla JS to your redux store. Please see <strong> section </strong> to ensure your translation data is in the proper format. </p>
-<blockquote>
-<p><strong>IMPORTANT:</strong> The order of the translation strings in the array matters! The order <strong>MUST</strong> follow the order of the languages array passed to <a href="#setlanguageslanguages-defaultactivelanguage">setLanguages</a>.</p>
-</blockquote>
+<p>Dispatch this action to add translation data for multiple languages from a json file, or vanilla JS to your redux store. Please see <a href="">formatting transaltion data</a> to ensure your data is in the proper format. </p>
 <p><strong> Arguments </strong></p>
 <table>
 <thead>
@@ -186,6 +196,41 @@ const welcomePageTranslations = {
 };
 
 store.dispatch(addTranslation(welcomePageTranslations));
+</code></pre>
+
+<hr />
+<h2 id="addtranslationforlanguagedata-language">addTranslationForLanguage(data, language)</h2>
+<p>Dispatch this action to add translation data for a single language from a json file, or vanilla JS to your redux store. Please see <a href="">formatting transaltion data</a> to ensure your data is in the proper format. </p>
+<p><strong> Arguments </strong></p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data</td>
+<td>json | object</td>
+<td>Translation data in the <a href="">required format</a></td>
+</tr>
+<tr>
+<td>language</td>
+<td>string</td>
+<td>The language code this translation data belongs to</td>
+</tr>
+</tbody>
+</table>
+<p><strong> Usage: </strong></p>
+<pre><code class="javascript">// assuming your app has set languages ['en', 'fr']
+const welcomePageEnglish = {
+  greeting: 'Hi!',
+  farwell: 'Bye!'
+};
+
+store.dispatch(addTranslationForLanguage(welcomePageEnglish, 'en'));
 </code></pre>
 
 <hr />
@@ -222,6 +267,8 @@ store.dispatch(setActiveLanguage('fr'));
         <a href="../selectors/" class="btn btn-neutral float-right" title="Selectors">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
+        <a href="../../features/" class="btn btn-neutral" title="Features"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
     </div>
   
 
@@ -247,6 +294,8 @@ store.dispatch(setActiveLanguage('fr'));
       
           <a href="https://github.com/ryandrewjohnson/react-localize-redux" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
+      
+        <span><a href="../../features/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
         <span style="margin-left: 15px"><a href="../selectors/" style="color: #fcfcfc">Next &raquo;</a></span>

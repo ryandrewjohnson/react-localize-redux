@@ -2,33 +2,49 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     
+    <url>
+     <loc>/getting-started/</loc>
+     <lastmod>2017-08-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/formatting-translation-data/</loc>
+     <lastmod>2017-08-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/features/</loc>
+     <lastmod>2017-08-16</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
         
     <url>
      <loc>/api/action-creators/</loc>
-     <lastmod>2017-08-13</lastmod>
+     <lastmod>2017-08-16</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/api/selectors/</loc>
-     <lastmod>2017-08-13</lastmod>
+     <lastmod>2017-08-16</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/api/higher-order-component/</loc>
-     <lastmod>2017-08-13</lastmod>
+     <lastmod>2017-08-16</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
-    
-
-    
-    <url>
-     <loc>/</loc>
-     <lastmod>2017-08-13</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
     
 
 </urlset>

@@ -35,7 +35,7 @@
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
       <div class="wy-side-nav-search">
-        <a href="../action-creators/" class="icon icon-home"> react-localize-redux</a>
+        <a href="../../getting-started/" class="icon icon-home"> react-localize-redux</a>
         <div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -46,6 +46,21 @@
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
 	<ul class="current">
 	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../getting-started/">Getting Started</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../formatting-translation-data/">Formatting Translation Data</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../features/">Features</a>
+	    </li>
           
             <li class="toctree-l1">
 		
@@ -72,11 +87,6 @@
     </ul>
 	    </li>
           
-            <li class="toctree-l1">
-		
-    <a class="" href="../..">FAQ</a>
-	    </li>
-          
         </ul>
       </div>
       &nbsp;
@@ -87,7 +97,7 @@
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
         <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="../action-creators/">react-localize-redux</a>
+        <a href="../../getting-started/">react-localize-redux</a>
       </nav>
 
       
@@ -95,7 +105,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href="../action-creators/">Docs</a> &raquo;</li>
+    <li><a href="../../getting-started/">Docs</a> &raquo;</li>
     
       
         
@@ -118,9 +128,9 @@
               
                 <h2 id="localizecomponent-reducername">localize(Component, [reducerName])</h2>
 <blockquote>
-<p><strong>NOTE:</strong> if your component is already using <a href="">connect</a> then you should use the <a href="">getTranslate</a>, and <a href="">getActiveLanguage</a> selectors instead of <code>localize</code>.</p>
+<p><strong>NOTE:</strong> if your component is already using <a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options">connect</a> then you should use the <a href="../selectors/#gettranslatestate">getTranslate</a>, and <a href="../selectors/#getactivelanguagestate">getActiveLanguage</a> selectors instead of <code>localize</code>.</p>
 </blockquote>
-<p>If you have a component that just needs access to translations, and nothing else then you can use the <code>localize</code> higher-order function. When you pass your Component to localize it will automatically add <a href="">translate</a> and <code>currentLanguage</code> to props. </p>
+<p>If you have a component that just needs access to translations, and nothing else then you can use the <code>localize</code> higher-order function. When you pass your Component to localize it will automatically add <a href="../selectors/#translatekey-string-string-data">translate</a> and <code>currentLanguage</code> to props. </p>
 <p><strong> Arguments: </strong></p>
 <table>
 <thead>
@@ -139,12 +149,12 @@
 <tr>
 <td>[reducerName]</td>
 <td>string</td>
-<td>If you added localeReducer with <a href="">combineReducers</a> then you will need to pass the reducerName to localize.</td>
+<td>If you added localeReducer with <a href="http://redux.js.org/docs/api/combineReducers.html">combineReducers</a> then you will need to pass the reducerName to localize.</td>
 </tr>
 </tbody>
 </table>
 <p><strong> Returns: </strong> </p>
-<p>A higher-order React component that adds <a href="">translate</a> and <code>currentLanguage</code> to props.</p>
+<p>A higher-order React component that adds <a href="../selectors/#translatekey-string-string-data">translate</a> and <code>currentLanguage</code> to props.</p>
 <p><strong> Usage: </strong></p>
 <pre><code class="javascript">const Greeting = ({ translate, currentLanguage }) =&gt; (
   &lt;span&gt;
@@ -160,8 +170,6 @@ export default localize(Greeting, 'locale');
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="../.." class="btn btn-neutral float-right" title="FAQ">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../selectors/" class="btn btn-neutral" title="Selectors"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -194,8 +202,6 @@ export default localize(Greeting, 'locale');
       
         <span><a href="../selectors/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
-      
-        <span style="margin-left: 15px"><a href="../.." style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
