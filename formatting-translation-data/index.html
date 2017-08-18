@@ -136,7 +136,7 @@
 <p>The data is an object where the property name is your translation key, and the value is an array of translations. The translation key is used to identify the translation, and the value is an array that enforces the following...</p>
 <ul>
 <li>Includes a translation for each language your app supports.</li>
-<li>The order of the translation strings in the array matters! The order <strong>MUST</strong> follow the order of the languages array passed to <a href="../../api/action-creators#setlanguageslanguages-defaultactivelanguage">setLanguages</a>.</li>
+<li>The order of the translation strings in the array matters! The order <strong>MUST</strong> follow the order of the languages array passed to <a href="../[addTranslationForLanguage](../api/action-creators#addtranslationforlanguagedata-language)">setLanguages</a>.</li>
 </ul>
 <p>Assuming your application has dispatched <code>setLanguages('en', 'fr', 'es')</code>:</p>
 <pre><code class="json">{
