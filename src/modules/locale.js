@@ -161,14 +161,14 @@ export const getTranslationsForActiveLanguage = customeEqualSelector(
 export const getTranslate = createSelector(
   getTranslationsForActiveLanguage,
   (translations) => {
-    return (value, data) => { 
+    return (value, data, renderInnerHtml = false) => {
       if (typeof value === 'string') {
-        return getLocalizedElement(value, translations, data);
+        return getLocalizedElement(value, translations, data, renderInnerHtml);
       } else if (Array.isArray(value)) {
         return value.reduce((prev, cur) => {
           return {
             ...prev,
-            [cur]: getLocalizedElement(cur, translations, data)
+            [cur]: getLocalizedElement(cur, translations, data, renderInnerHtml)
           };
         }, {});
       } else {

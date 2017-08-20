@@ -1,9 +1,9 @@
 import React from 'react';
 
-export const getLocalizedElement = (key, translations, data) => {
+export const getLocalizedElement = (key, translations, data, renderInnerHtml = false) => {
   const localizedString = translations[key] || `Missing localized key: ${key}`;
   const translatedValue = templater(localizedString, data)
-  return hasHtmlTags(translatedValue) 
+  return renderInnerHtml && hasHtmlTags(translatedValue)
     ? React.createElement('span', { dangerouslySetInnerHTML: { __html: translatedValue }})
     : translatedValue;
 };
