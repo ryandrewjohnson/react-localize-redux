@@ -18,6 +18,13 @@ describe('locale utils', () => {
       expect(wrapper.html()).toEqual(`<span>${translations.test}</span>`);
     });
 
+    it('should not render inner HTML when this is disabled', () => {
+      const translations = { test: '<h1>Here</h1> is my <strong>test</strong>' };
+      const options = { renderInnerHtml: false };
+      const result = utils.getLocalizedElement('test', translations, null, options);
+      expect(result).toBe(translations.test);
+    });
+
     it('should return element with warning when no localized string found', () => {
       const translations = { test: 'Here is my test' };
       const key = 'test2';

@@ -8,6 +8,7 @@ export const ADD_TRANSLATION_FOR_LANGUGE  = '@@localize/ADD_TRANSLATION_FOR_LANG
 export const SET_LANGUAGES                = '@@localize/SET_LANGUAGES';
 export const SET_ACTIVE_LANGUAGE          = '@@localize/SET_ACTIVE_LANGUAGE';
 export const TRANSLATE                    = '@@localize/TRANSLATE';
+export const SET_OPTIONS                  = '@@localize/SET_OPTIONS';
 
 /**
  * REDUCERS
@@ -65,16 +66,31 @@ export function translations(state = {}, action) {
   }
 }
 
+export function options(state = defaultTranslateOptions, action) {
+  switch(action.type) {
+    case SET_OPTIONS:
+      return {
+        ...state,
+        ...action.payload.options
+      };
+
+    default:
+      return state;
+  }
+}
+
 const initialState = {
   languages: [],
-  translations: {}
+  translations: {},
+  options: defaultTranslateOptions
 };
 
 export const localeReducer = (state = initialState, action) => {
   const languageCodes = state.languages.map(language => language.code);
   return {
     languages: languages(state.languages, action),
-    translations: translations(state.translations, { ...action, languageCodes })
+    translations: translations(state.translations, { ...action, languageCodes }),
+    options: options(state.options, action)
   };
 };
 
@@ -106,6 +122,13 @@ export const setActiveLanguage = (languageCode) => {
   return {
     type: SET_ACTIVE_LANGUAGE,
     payload: { languageCode }
+  };
+};
+
+export const setOptions = (options) => {
+  return {
+    type: SET_OPTIONS,
+    payload: { options }
   };
 };
 
@@ -158,17 +181,25 @@ export const getTranslationsForActiveLanguage = customeEqualSelector(
   }
 );
 
+export const getOptions = state => state.options;
+
+export const defaultTranslateOptions = {
+  renderInnerHtml: true
+};
+
 export const getTranslate = createSelector(
   getTranslationsForActiveLanguage,
-  (translations) => {
-    return (value, data) => { 
+  getOptions,
+  (translations, options) => {
+    return (value, data) => {
+      const translateOptions = {...defaultTranslateOptions, ...options};
       if (typeof value === 'string') {
-        return getLocalizedElement(value, translations, data);
+        return getLocalizedElement(value, translations, data, translateOptions);
       } else if (Array.isArray(value)) {
         return value.reduce((prev, cur) => {
           return {
             ...prev,
-            [cur]: getLocalizedElement(cur, translations, data)
+            [cur]: getLocalizedElement(cur, translations, data, translateOptions)
           };
         }, {});
       } else {
