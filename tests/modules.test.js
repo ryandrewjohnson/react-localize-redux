@@ -304,15 +304,17 @@ describe('locale module', () => {
       expect(value).toBe('hi-fr');
     });
 
-    it('should not render inner html by default', () => {
-      const translate = getTranslate(state);
+    it('should not render inner html if option is passed in', () => {
+      const stateWithOpts = {...state, options: { renderInnerHtml: false }};
+      const translate = getTranslate(stateWithOpts);
+
       const value = translate('html');
       expect(value).toBe('<b>hi-fr</b>');
     });
 
-    it('should render inner html if requested', () => {
+    it('should render inner html by default', () => {
       const translate = getTranslate(state);
-      const wrapper = shallow(translate('html', {}, true));
+      const wrapper = shallow(translate('html'));
 
       expect(wrapper.find('span').exists()).toBe(true);
       expect(wrapper.html()).toEqual(`<span><b>hi-fr</b></span>`);

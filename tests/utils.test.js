@@ -12,15 +12,16 @@ describe('locale utils', () => {
 
     it('should return element with HTML from translation rendered', () => {
       const translations = { test: '<h1>Here</h1> is my <strong>test</strong>' };
-      const wrapper = shallow(utils.getLocalizedElement('test', translations, {}, true));
+      const wrapper = shallow(utils.getLocalizedElement('test', translations));
       
       expect(wrapper.find('span').exists()).toBe(true);
       expect(wrapper.html()).toEqual(`<span>${translations.test}</span>`);
     });
 
-    it('should not render inner HTML by default', () => {
+    it('should not render inner HTML when this is disabled', () => {
       const translations = { test: '<h1>Here</h1> is my <strong>test</strong>' };
-      const result = utils.getLocalizedElement('test', translations);
+      const options = { renderInnerHtml: false };
+      const result = utils.getLocalizedElement('test', translations, null, options);
       expect(result).toBe(translations.test);
     });
 
