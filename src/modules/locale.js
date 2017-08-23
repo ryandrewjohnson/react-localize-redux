@@ -1,8 +1,100 @@
+// @flow
 import { combineReducers } from 'redux';
 import { flatten } from 'flat';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
-import { isDefinedNested, getLocalizedElement, getIndexForLanguageCode, objectValuesToString } from '../utils';
+import { getLocalizedElement, getIndexForLanguageCode, objectValuesToString } from '../utils';
+import type { Selector, SelectorCreator } from 'reselect';
+import type { Element } from 'react';
 
+/**
+ * TYPES
+ */
+export type Language = {
+  code: string,
+  active: boolean
+};
+
+export type Translations = {
+  [key: string]: string[]
+};
+
+export type Options = {
+  renderInnerHtml?: boolean,
+  defaultLanguage?: string
+};
+
+export type LocaleState = {
+  +languages: Language[],
+  +translations: Translations,
+  +options: Options
+};
+
+export type TranslatedLanguage = {
+  [string]: string
+};
+
+export type LocalizedElement = Element<'span'>|string;
+
+export type LocalizedElementMap = {
+  [string]: LocalizedElement
+};
+
+export type TranslatePlaceholderData = {
+  [string]: string|number
+};
+
+export type TranslateValue = string|string[];
+
+export type Translate = (value: TranslateValue, data: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap; 
+
+type InitializePayload = {
+  languageCodes: string[],
+  options?: Options
+};
+
+type AddTranslationPayload = {
+  translation: Object
+};
+
+type AddTranslationForLanguagePayload = {
+  translation: Object,
+  language: string
+};
+
+type SetLanguagesPayload = {
+  languageCodes: string[],
+  activeLanguage?: string
+};
+
+type SetActiveLanguagePayload = {
+  languageCode: string
+};
+
+type BaseAction<T, P> = {
+  type: T,
+  payload: P
+};
+
+export type InitializeAction = BaseAction<'@@localize/INITIALIZE', InitializePayload>;
+export type AddTranslationAction = BaseAction<'@@localize/ADD_TRANSLATION', AddTranslationPayload>;
+export type AddTranslationForLanguageAction = BaseAction<'@@localize/ADD_TRANSLATION_FOR_LANGUGE', AddTranslationForLanguagePayload>;
+export type SetActiveLanguageAction = BaseAction<'@@localize/SET_ACTIVE_LANGUAGE', SetActiveLanguagePayload>;
+export type SetLanguagesAction = BaseAction<'@@localize/SET_LANGUAGES', SetLanguagesPayload>;
+
+export type Action = BaseAction<
+  string, 
+  & InitializePayload
+  & AddTranslationPayload 
+  & AddTranslationForLanguagePayload 
+  & SetActiveLanguagePayload
+  & SetLanguagesPayload
+>;
+
+export type ActionLanguageCodes = Action & { languageCodes: string[] };
+
+/**
+ * ACTIONS
+ */
 export const INITIALIZE                   = '@@localize/INITIALIZE';
 export const ADD_TRANSLATION              = '@@localize/ADD_TRANSLATION';
 export const ADD_TRANSLATION_FOR_LANGUGE  = '@@localize/ADD_TRANSLATION_FOR_LANGUGE';
@@ -13,7 +105,7 @@ export const TRANSLATE                    = '@@localize/TRANSLATE';
 /**
  * REDUCERS
  */
-export function languages(state = [], action) {
+export function languages(state: Language[] = [], action: Action): Language[] {
   switch (action.type) {
     case INITIALIZE:
     case SET_LANGUAGES:
@@ -36,7 +128,7 @@ export function languages(state = [], action) {
   }
 }
 
-export function translations(state = {}, action) {
+export function translations(state: Translations = {}, action: ActionLanguageCodes): Translations {
   switch(action.type) {
     case ADD_TRANSLATION:
       return {
@@ -46,7 +138,7 @@ export function translations(state = {}, action) {
     case ADD_TRANSLATION_FOR_LANGUGE:
       const languageIndex = action.languageCodes.indexOf(action.payload.language);
       const flattenedTranslations = languageIndex >= 0 ? flatten(action.payload.translation) : {};
-      const languageTranslations = Object.keys(flattenedTranslations).reduce((prev, cur) => {
+      const languageTranslations = Object.keys(flattenedTranslations).reduce((prev, cur: string) => {
         const translationValues = action.languageCodes.map((code, index) => {
           const existingValues = state[cur] || [];
           return index === languageIndex
@@ -68,7 +160,7 @@ export function translations(state = {}, action) {
   }
 }
 
-export function options(state = defaultTranslateOptions, action) {
+export function options(state: Options = defaultTranslateOptions, action: Action): Options {
   switch(action.type) {
     case INITIALIZE:
       return {
@@ -78,19 +170,19 @@ export function options(state = defaultTranslateOptions, action) {
     default:
       return state;
   }
-}
+};
 
-export const defaultTranslateOptions = {
+export const defaultTranslateOptions: Options = {
   renderInnerHtml: true
 };
 
-const initialState = {
+const initialState: LocaleState = {
   languages: [],
   translations: {},
   options: defaultTranslateOptions
 };
 
-export const localeReducer = (state = initialState, action) => {
+export const localeReducer = (state: LocaleState = initialState, action: Action): LocaleState => {
   const languageCodes = state.languages.map(language => language.code);
   return {
     languages: languages(state.languages, action),
@@ -102,66 +194,74 @@ export const localeReducer = (state = initialState, action) => {
 /**
  * ACTION CREATORS
  */
-export const initialize = (languageCodes, options = defaultTranslateOptions) => ({
+export const initialize = (languageCodes: string[], options: Options = defaultTranslateOptions) => ({
   type: INITIALIZE,
   payload: { languageCodes, options }
 });
 
-export const addTranslation = (translation) => ({
+export const addTranslation = (translation: Object): AddTranslationAction => ({
   type: ADD_TRANSLATION,
   payload: { translation }
 });
 
-export const addTranslationForLanguage = (translation, language) => ({
+export const addTranslationForLanguage = (translation: Object, language: string): AddTranslationForLanguageAction => ({
   type: ADD_TRANSLATION_FOR_LANGUGE,
   payload: { translation, language }
 });
 
-export const setLanguages = (languageCodes, activeLanguage = null) => ({
+export const setLanguages = (languageCodes: string[], activeLanguage: string): SetLanguagesAction => ({
   type: SET_LANGUAGES,
   payload: { languageCodes, activeLanguage }
 });
 
-export const setActiveLanguage = (languageCode) => ({
+export const setActiveLanguage = (languageCode: string): SetActiveLanguageAction => ({
   type: SET_ACTIVE_LANGUAGE,
   payload: { languageCode }
 });
 
+
 /**
  * SELECTORS
  */
-export const getTranslations = state => state.translations;
-export const getLanguages = state => state.languages;
-export const getOptions = state => state.options;
-export const getActiveLanguage = state => {
+export const getTranslations = (state: LocaleState): Translations => state.translations;
+
+export const getLanguages = (state: LocaleState): Language[] => state.languages;
+
+export const getOptions = (state: LocaleState): Options => state.options;
+
+export const getActiveLanguage = (state: LocaleState): Language => {
   const languages = getLanguages(state);
   const activeLanguageIndex = languages.map(language => language.active).indexOf(true);
   return languages[activeLanguageIndex];
 };
 
-
-export const customeEqualSelector = createSelectorCreator(
+export const translationsEqualSelector = createSelectorCreator(
   defaultMemoize,
-  (cur, prev) => {
-    const isTranslationsData = !(Array.isArray(cur) || Object.keys(cur).toString() === 'code,active');
+  (cur: Object, prev: Object) => {
+    const isTranslationsData: boolean = !(Array.isArray(cur) || Object.keys(cur).toString() === 'code,active');
 
     // for translations data use a combination of keys and values for comparison
     if (isTranslationsData) {
-      const prevKeys = Object.keys(prev).toString();
-      const curKeys = Object.keys(cur).toString();
+      const prevTranslations = (prev: Translations);
+      const curTranslations = (cur: Translations);
+ 
+      const prevKeys: string = Object.keys(prevTranslations).toString();
+      const curKeys: string = Object.keys(curTranslations).toString();
 
-      const prevValues = objectValuesToString(prev);
-      const curValues = objectValuesToString(cur);
+      const prevValues = objectValuesToString(prevTranslations);
+      const curValues = objectValuesToString(curTranslations);
 
-      prev = `${ prevKeys } - ${ prevValues }`;
-      cur  = `${ curKeys } - ${ curValues }`;
+      const prevCacheValue = `${ prevKeys } - ${ prevValues }`;
+      const curCacheValue  = `${ curKeys } - ${ curValues }`;
+
+      return prevCacheValue === curCacheValue;
     }
     
-    return prev === cur;
+    return prev === cur; 
   }
 )
 
-export const getTranslationsForActiveLanguage = customeEqualSelector(
+export const getTranslationsForActiveLanguage: Selector<LocaleState, void, TranslatedLanguage> = translationsEqualSelector(
   getActiveLanguage,
   getLanguages,
   getTranslations,
@@ -177,12 +277,12 @@ export const getTranslationsForActiveLanguage = customeEqualSelector(
   }
 );
 
-export const getTranslate = createSelector(
+export const getTranslate: Selector<LocaleState, void, Translate> = createSelector(
   getTranslationsForActiveLanguage,
   getOptions,
   (translations, options) => {
     return (value, data, optionsOverride = {}) => {
-      const translateOptions = {...options, ...optionsOverride};
+      const translateOptions: Options = {...options, ...optionsOverride};
       if (typeof value === 'string') {
         return getLocalizedElement(value, translations, data, translateOptions);
       } else if (Array.isArray(value)) {
