@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
   <link rel="stylesheet" href="../../css/highlight.css">
+  <link href="../../css/highlight-fix.css" rel="stylesheet">
+  <link href="../../css/highlight.css" rel="stylesheet">
   
   <script>
     // Current page data
@@ -78,7 +80,7 @@
     <li class="toctree-l3"><a href="#gettranslatestate">getTranslate(state)</a></li>
     
 
-    <li class="toctree-l3"><a href="#translatekey-string-string-data">translate(key: string | string[], [data])</a></li>
+    <li class="toctree-l3"><a href="#translatekey-string-string-data-options">translate(key: string | string[], [data], [options])</a></li>
     
 
     <li class="toctree-l3"><a href="#getactivelanguagestate">getActiveLanguage(state)</a></li>
@@ -167,7 +169,7 @@ export default connect(mapStateToProps)(Greeting);
 </code></pre>
 
 <hr />
-<h2 id="translatekey-string-string-data">translate(key: string | string[], [data])</h2>
+<h2 id="translatekey-string-string-data-options">translate(key: string | string[], [data], [options])</h2>
 <p>The <a href="#gettranslatestate">getTranslate</a> selector will return the <code>translate</code> function, which is used to add localized strings to your connected React components. The translate function will return single, or multiple translations depending on the arguments passed. </p>
 <p><strong> Arguments: </strong></p>
 <table>
@@ -189,6 +191,11 @@ export default connect(mapStateToProps)(Greeting);
 <td>object</td>
 <td>Optional data to be used in your localized strings for <a href="">variable replacement</a>.</td>
 </tr>
+<tr>
+<td>[options]</td>
+<td>object</td>
+<td>Optional local override for <code>renderInnerHtml</code> option passed to the <a href="../../action-creators/#initializelanguages-options">initialize</a> action creator.</td>
+</tr>
 </tbody>
 </table>
 <p><strong> Returns: </strong></p>
@@ -202,6 +209,7 @@ export default connect(mapStateToProps)(Greeting);
   'article.title': 'Article Title',
   'article.author': 'Ted Tedson',
   'article.desc': 'My awesome article description',
+  'article.code': '&lt;code&gt;console.log(&quot;hi&quot;)&lt;/code&gt;'
 }
 </code></pre>
 
@@ -217,6 +225,7 @@ export default connect(mapStateToProps)(Greeting);
 const Page = ({ translate }) =&gt; (
   &lt;div&gt;
     &lt;h1&gt;{ translate('heading') }&lt;/h1&gt;
+    &lt;p&gt;{ translate('article.code', null, { renderInnerHtml: false }) }
     &lt;Article { ...translate(['article.title', 'article.author', 'article.desc'], { name: 'Ted' }) } /&gt;
   &lt;/div&gt;
 );

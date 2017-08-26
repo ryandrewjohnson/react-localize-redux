@@ -14,6 +14,8 @@
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
   <link rel="stylesheet" href="../../css/highlight.css">
+  <link href="../../css/highlight-fix.css" rel="stylesheet">
+  <link href="../../css/highlight.css" rel="stylesheet">
   
   <script>
     // Current page data
@@ -71,6 +73,9 @@
     <a class="current" href="./">Action Creators</a>
     <ul class="subnav">
             
+    <li class="toctree-l3"><a href="#initializelanguages-options">initialize(languages, [options])</a></li>
+    
+
     <li class="toctree-l3"><a href="#setlanguageslanguages-defaultactivelanguage">setLanguages(languages, [defaultActiveLanguage])</a></li>
     
 
@@ -135,7 +140,76 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="setlanguageslanguages-defaultactivelanguage">setLanguages(languages, [defaultActiveLanguage])</h2>
+                <h2 id="initializelanguages-options">initialize(languages, [options])</h2>
+<p>Dispatch this action when your app is initialized, and pass in which languages you are supporting in your translations. An optional <code>options</code> param can be passed to configure additional settings.</p>
+<p><strong> Arguments: </strong></p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>languages</td>
+<td>string []</td>
+<td>An array of languages codes</td>
+</tr>
+<tr>
+<td>[options]</td>
+<td>object</td>
+<td>Additional configuration options</td>
+</tr>
+</tbody>
+</table>
+<p><strong> Options: </strong></p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>defaultLanguage</td>
+<td>string</td>
+<td>languages[0]</td>
+<td>An array of languages codes</td>
+</tr>
+<tr>
+<td>renderInnerHtml</td>
+<td>boolean</td>
+<td>true</td>
+<td>Controls whether HTML in your translations will be rendered or returned as a plain string.</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition important">
+  <p class="first admonition-title">Important</p>
+  <p class="last">If you're adding translation data from un-trusted sources make sure you set <code>renderInnerHtml</code> option to <code>false</code>. In order to render HTML tags in translations react-localize-redux uses React's <a href="https://facebook.github.io/react/docs/dom-elements.html#dangerouslysetinnerhtml" target="_blank">dangerouslySetInnerHTML</a>, which has <a href="https://zhenyong.github.io/react/tips/dangerously-set-inner-html.html" target="_blank">risks</a> when used improperly. For this reason in the next major release this option will be set to <code>false</code> by default to align with <code>dangerouslySetInnerHTML</code>.</p>
+</div>
+
+<p><strong> Usage: </strong></p>
+<pre><code class="javascript">const languages = ['en', 'fr', 'es'];
+
+store.dispatch(initialize(languages));
+
+// if you wanted 'fr' to be default language instead of 'en'
+store.dispatch(initialize(languages, { defaultLanguage: 'fr' }));
+</code></pre>
+
+<hr />
+<h2 id="setlanguageslanguages-defaultactivelanguage">setLanguages(languages, [defaultActiveLanguage])</h2>
+<div class="admonition error">
+  <p class="first admonition-title">Deprecated</p>
+  <p class="last">This has been replaced by the <a href="#initializelanguages-options">initialize</a> action creator, and will be removed in the next major version.</p>
+</div>
+
 <p>Dispatch this action to set which languages you are supporting in your translations. If <code>defaultActiveLanguage</code> is not passed then the first language in the <code>languages</code> array will be used.</p>
 <p><strong> Arguments: </strong></p>
 <table>
