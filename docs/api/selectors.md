@@ -26,7 +26,7 @@ export default connect(mapStateToProps)(Greeting);
 
 
 
-## translate(key: string | string[], [data])
+## translate(key: string | string[], [data], [options])
 
 The [getTranslate](#gettranslatestate) selector will return the `translate` function, which is used to add localized strings to your connected React components. The translate function will return single, or multiple translations depending on the arguments passed. 
 
@@ -36,6 +36,7 @@ name | Type | Description
 --------- | ----------| ------------
 key | string \| string [] | Pass a single key or multiple keys from your translation data.
 [data] | object | Optional data to be used in your localized strings for [variable replacement]().
+[options]| object | Optional local override for `renderInnerHtml` option passed to the [initialize](../action-creators/#initializelanguages-options) action creator.
 
 ** Returns: **
 
@@ -51,6 +52,7 @@ If multiple keys are passed then multiple localized values will be returned in t
   'article.title': 'Article Title',
   'article.author': 'Ted Tedson',
   'article.desc': 'My awesome article description',
+  'article.code': '<code>console.log("hi")</code>'
 }
 ```
 
@@ -68,6 +70,7 @@ const Article = props => (
 const Page = ({ translate }) => (
   <div>
     <h1>{ translate('heading') }</h1>
+    <p>{ translate('article.code', null, { renderInnerHtml: false }) }
     <Article { ...translate(['article.title', 'article.author', 'article.desc'], { name: 'Ted' }) } />
   </div>
 );

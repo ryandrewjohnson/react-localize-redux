@@ -1,8 +1,9 @@
 import { combineReducers } from 'redux';
 import { flatten } from 'flat';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
-import { isDefinedNested, getLocalizedElement, getIndexForLanguageCode } from '../utils';
+import { isDefinedNested, getLocalizedElement, getIndexForLanguageCode, objectValuesToString } from '../utils';
 
+export const INITIALIZE                   = '@@localize/INITIALIZE';
 export const ADD_TRANSLATION              = '@@localize/ADD_TRANSLATION';
 export const ADD_TRANSLATION_FOR_LANGUGE  = '@@localize/ADD_TRANSLATION_FOR_LANGUGE';
 export const SET_LANGUAGES                = '@@localize/SET_LANGUAGES';
@@ -14,9 +15,11 @@ export const TRANSLATE                    = '@@localize/TRANSLATE';
  */
 export function languages(state = [], action) {
   switch (action.type) {
+    case INITIALIZE:
     case SET_LANGUAGES:
       const languageCodes = action.payload.languageCodes;
-      const activeLanguage = action.payload.activeLanguage || languageCodes[0];
+      const options = action.payload.options || {};
+      const activeLanguage = action.payload.activeLanguage || options.defaultLanguage || languageCodes[0];
       const activeIndex = languageCodes.indexOf(activeLanguage);
       return languageCodes.map((code, index) => {
         const isActive = index === activeIndex;
@@ -65,55 +68,71 @@ export function translations(state = {}, action) {
   }
 }
 
+export function options(state = defaultTranslateOptions, action) {
+  switch(action.type) {
+    case INITIALIZE:
+      return {
+        ...state,
+        ...action.payload.options
+      };
+    default:
+      return state;
+  }
+}
+
+export const defaultTranslateOptions = {
+  renderInnerHtml: true
+};
+
 const initialState = {
   languages: [],
-  translations: {}
+  translations: {},
+  options: defaultTranslateOptions
 };
 
 export const localeReducer = (state = initialState, action) => {
   const languageCodes = state.languages.map(language => language.code);
   return {
     languages: languages(state.languages, action),
-    translations: translations(state.translations, { ...action, languageCodes })
+    translations: translations(state.translations, { ...action, languageCodes }),
+    options: options(state.options, action)
   };
 };
 
 /**
  * ACTION CREATORS
  */
-export const addTranslation = (translation) => {
-  return {
-    type: ADD_TRANSLATION,
-    payload: { translation }
-  };
-};
+export const initialize = (languageCodes, options = defaultTranslateOptions) => ({
+  type: INITIALIZE,
+  payload: { languageCodes, options }
+});
 
-export const addTranslationForLanguage = (translation, language) => {
-  return {
-    type: ADD_TRANSLATION_FOR_LANGUGE,
-    payload: { translation, language }
-  }
-};
+export const addTranslation = (translation) => ({
+  type: ADD_TRANSLATION,
+  payload: { translation }
+});
 
-export const setLanguages = (languageCodes, activeLanguage = null) => {
-  return {
-    type: SET_LANGUAGES,
-    payload: { languageCodes, activeLanguage }
-  };
-};
+export const addTranslationForLanguage = (translation, language) => ({
+  type: ADD_TRANSLATION_FOR_LANGUGE,
+  payload: { translation, language }
+});
 
-export const setActiveLanguage = (languageCode) => {
-  return {
-    type: SET_ACTIVE_LANGUAGE,
-    payload: { languageCode }
-  };
-};
+export const setLanguages = (languageCodes, activeLanguage = null) => ({
+  type: SET_LANGUAGES,
+  payload: { languageCodes, activeLanguage }
+});
+
+export const setActiveLanguage = (languageCode) => ({
+  type: SET_ACTIVE_LANGUAGE,
+  payload: { languageCode }
+});
 
 /**
  * SELECTORS
  */
 export const getTranslations = state => state.translations;
 export const getLanguages = state => state.languages;
+export const getOptions = state => state.options;
 export const getActiveLanguage = state => {
   const languages = getLanguages(state);
   const activeLanguageIndex = languages.map(language => language.active).indexOf(true);
@@ -130,9 +149,9 @@ export const customeEqualSelector = createSelectorCreator(
     if (isTranslationsData) {
       const prevKeys = Object.keys(prev).toString();
       const curKeys = Object.keys(cur).toString();
-      
-      const prevValues = Object.keys(prev).map(key => prev[key].toString()).toString();
-      const curValues = Object.keys(cur).map(key => cur[key].toString()).toString();
+
+      const prevValues = objectValuesToString(prev);
+      const curValues = objectValuesToString(cur);
 
       prev = `${ prevKeys } - ${ prevValues }`;
       cur  = `${ curKeys } - ${ curValues }`;
@@ -160,15 +179,17 @@ export const getTranslationsForActiveLanguage = customeEqualSelector(
 
 export const getTranslate = createSelector(
   getTranslationsForActiveLanguage,
-  (translations) => {
-    return (value, data) => { 
+  getOptions,
+  (translations, options) => {
+    return (value, data, optionsOverride = {}) => {
+      const translateOptions = {...options, ...optionsOverride};
       if (typeof value === 'string') {
-        return getLocalizedElement(value, translations, data);
+        return getLocalizedElement(value, translations, data, translateOptions);
       } else if (Array.isArray(value)) {
         return value.reduce((prev, cur) => {
           return {
             ...prev,
-            [cur]: getLocalizedElement(cur, translations, data)
+            [cur]: getLocalizedElement(cur, translations, data, translateOptions)
           };
         }, {});
       } else {

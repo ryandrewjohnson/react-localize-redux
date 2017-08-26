@@ -1,5 +1,6 @@
 {
   "title": "ES - My Article title",
   "description": "ES - My article description",
-  "author": "ES - Ted Tedson"
+  "author": "ES - Ted Tedson",
+  "html": "<strong>ES - The strong tag should not be rendered</strong>"
 }

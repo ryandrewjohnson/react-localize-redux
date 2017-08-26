@@ -14,6 +14,7 @@ const WelcomeView = ({ translate, addTranslation, count }) => {
         <h2>{ translate('title') }</h2>
         <p>{ translate('description') }</p>
         <p>{ translate('author') }</p>
+        <code>{ translate('html', null, { renderInnerHtml: false })}</code>
       </article>
      
     </div>  

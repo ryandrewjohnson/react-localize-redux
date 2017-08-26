@@ -18,6 +18,13 @@ describe('locale utils', () => {
       expect(wrapper.html()).toEqual(`<span>${translations.test}</span>`);
     });
 
+    it('should not render inner HTML when this is disabled', () => {
+      const translations = { test: '<h1>Here</h1> is my <strong>test</strong>' };
+      const options = { renderInnerHtml: false };
+      const result = utils.getLocalizedElement('test', translations, null, options);
+      expect(result).toBe(translations.test);
+    });
+
     it('should return element with warning when no localized string found', () => {
       const translations = { test: 'Here is my test' };
       const key = 'test2';
@@ -68,6 +75,32 @@ describe('locale utils', () => {
       const languages = [{ code: 'en' }, { code: 'fr' }, { code: 'ne' }];
       const result = utils.getIndexForLanguageCode('zw', languages);
       expect(result).toBe(-1);
+    });
+  });
+
+  describe('objectValuesToString', () => {
+    let translationData = {};
+    
+    beforeEach(() => {
+      translationData = {
+        one: ['1', '2', '3'],
+        two: ['4', '5', '6']
+      };
+    });
+
+    describe('Object.values defined', () => {
+      it('should return an stingified array of translation array data', () => {
+        const result = utils.objectValuesToString(translationData);
+        expect(result).toEqual('1,2,3,4,5,6');
+      });
+    });
+
+    describe('Object.values undefined', () => {
+      it('should return an stingified array of translation array data', () => {
+        Object.values = undefined;
+        const result = utils.objectValuesToString(translationData);
+        expect(result).toEqual('1,2,3,4,5,6');
+      });
     });
   });
 });
