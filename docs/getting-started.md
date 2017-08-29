@@ -30,7 +30,7 @@ const App = props => {
 Dispatch [initialize](api/action-creators#initializelanguages-options) action creator and pass in the languages for your app. By default the first language in the array will be set as the active language.
 
 ```javascript
-import { setLanguages } from 'react-localize-redux';
+import { initialize } from 'react-localize-redux';
 
 const languages = ['en', 'fr', 'es'];
 store.dispatch(initialize(languages));
@@ -40,7 +40,7 @@ To set a different default active language set the `defaultLanguage` option.
 
 ```javascript
 const languages = ['en', 'fr', 'es'];
-store.dispatch(setLanguages(languages, { defaultLanguage: 'fr' }));
+store.dispatch(initialize(languages, { defaultLanguage: 'fr' }));
 ```
 
 
