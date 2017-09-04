@@ -1,6 +1,6 @@
 import * as actions from 'modules/locale';
 import { shallow } from 'enzyme';
-import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, customeEqualSelector, setLanguages, getTranslate, getTranslateSelector, defaultTranslateOptions, options } from 'modules/locale';
+import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, translationsEqualSelector, setLanguages, getTranslate, getTranslateSelector, defaultTranslateOptions, options } from 'modules/locale';
 import { getLocalizedElement } from 'utils';
 import { INITIALIZE, SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION, ADD_TRANSLATION_FOR_LANGUGE } from 'modules/locale';
 
@@ -452,7 +452,7 @@ describe('locale module', () => {
   });
 
 
-  describe('customeEqualSelector', () => {
+  describe('translationsEqualSelector', () => {
     let languages = [];
     let activeLanguage = {};
     let translations = {};
@@ -469,7 +469,7 @@ describe('locale module', () => {
 
     it('should call result function when languages changes', () => {
       const result = jest.fn();
-      const selector = customeEqualSelector(() => languages, result);
+      const selector = translationsEqualSelector(() => languages, result);
       selector({});
       languages = [...languages, [...{ code: 'ca', active: false }]];
       selector({});
@@ -478,7 +478,7 @@ describe('locale module', () => {
 
     it('should not call result function when languages haven\'t changed', () => {
       const result = jest.fn();
-      const selector = customeEqualSelector(() => languages, result);
+      const selector = translationsEqualSelector(() => languages, result);
       selector({});
       selector({});
       expect(result).toHaveBeenCalledTimes(1);
@@ -486,7 +486,7 @@ describe('locale module', () => {
 
     it('should call result function when active language changes', () => {
       const result = jest.fn();
-      const selector = customeEqualSelector(() => activeLanguage, result);
+      const selector = translationsEqualSelector(() => activeLanguage, result);
       selector({});
       activeLanguage = { code: 'ca', active: false };
       selector({});
@@ -495,7 +495,7 @@ describe('locale module', () => {
 
     it('should not call result function when active language hasn\'t changed', () => {
       const result = jest.fn();
-      const selector = customeEqualSelector(() => activeLanguage, result);
+      const selector = translationsEqualSelector(() => activeLanguage, result);
       selector({});
       selector({});
       expect(result).toHaveBeenCalledTimes(1);
@@ -503,7 +503,7 @@ describe('locale module', () => {
 
     it('should call result function when translations change', () => {
       const result = jest.fn();
-      const selector = customeEqualSelector(() => translations, result);
+      const selector = translationsEqualSelector(() => translations, result);
       selector({});
       translations = { ...translations, four: 'four' };
       selector({});
@@ -512,7 +512,7 @@ describe('locale module', () => {
 
     it('should not call result function when translations haven\'t changed', () => {
       const result = jest.fn();
-      const selector = customeEqualSelector(() => translations, result);
+      const selector = translationsEqualSelector(() => translations, result);
       selector({});
       selector({});
       expect(result).toHaveBeenCalledTimes(1);
@@ -524,7 +524,7 @@ describe('locale module', () => {
         title: ['title', undefined, undefined]
       };
 
-      const selector = customeEqualSelector(() => initialTranslations, result);
+      const selector = translationsEqualSelector(() => initialTranslations, result);
       selector({});
       initialTranslations = { title: ['title', 'title FR', undefined] };
       selector({});
@@ -537,7 +537,7 @@ describe('locale module', () => {
         title: ['title', 'title2', undefined]
       };
 
-      const selector = customeEqualSelector(() => initialTranslations, result);
+      const selector = translationsEqualSelector(() => initialTranslations, result);
       selector({});
       selector({});
       expect(result).toHaveBeenCalledTimes(1);

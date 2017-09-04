@@ -1,24 +1,15 @@
 {
-  "presets": [
-    ["es2015", { "loose": true, "modules": "commonjs" }],
-    "react",
-    "stage-0"
-  ],
+  "presets": ["es2015-no-commonjs", "react", "stage-0"],
+  "plugins": ["transform-flow-strip-types"],
   "env": {
-    "cjs": {
-      "presets": [
-        ["es2015", { "loose": true, "modules": "commonjs" }],
-        "react",
-        "stage-0"
-      ],
-      "plugins": ["add-module-exports"]
+    "development": {
+      "plugins": ["transform-es2015-modules-commonjs"]
     },
-    "es": {
-      "presets": [
-        ["es2015", { "loose": true, "modules": false }],
-        "react",
-        "stage-0"
-      ]
+    "commonjs": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    },
+    "test": {
+      "plugins": ["transform-es2015-modules-commonjs"]
     }
   }
 }

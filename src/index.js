@@ -1,3 +1,18 @@
+// @flow
+export type { 
+  LocaleState, 
+  Options, 
+  Translations,
+  Action,
+  Translate,
+  Language,
+  InitializeAction,
+  AddTranslationAction,
+  AddTranslationForLanguageAction,
+  SetLanguagesAction,
+  SetActiveLanguageAction
+} from './modules/locale';
+
 export { localize } from './containers/Localize';
 
 export { 
