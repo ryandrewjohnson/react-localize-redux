@@ -5,6 +5,7 @@
   "main": "./lib/index.js",
   "module": "./es/index.js",
   "jsnext:main": "./es/index.js",
+  "typings": "lib/index.d.ts",
   "files": [
     "*.md",
     "es",
@@ -12,12 +13,13 @@
     "dist"
   ],
   "scripts": {
-    "build": "npm run build:commonjs && npm run build:es && npm run build:flow && npm run build:umd && npm run build:umd:min",
+    "build": "npm run build:commonjs && npm run build:es && npm run build:flow && npm run build:umd && npm run build:umd:min && npm run copy:ts",
     "build:commonjs": "rimraf lib && cross-env BABEL_ENV=commonjs babel ./src -d lib",
     "build:es": "rimraf es && cross-env BABEL_ENV=es babel ./src -d es",
     "build:umd": "rimraf dist && webpack --env.dev --output-filename dist/ReactLocalizeRedux.js",
     "build:umd:min": "webpack --env.prod --output-filename dist/ReactLocalizeRedux.min.js",
     "build:flow": "flow-copy-source ./src lib && flow-copy-source ./src es",
+    "copy:ts": "ncp ./src/index.d.ts ./lib/index.d.ts && ncp ./src/index.d.ts ./es/index.d.ts",
     "coverage": "jest --coverage",
     "prepublish": "npm run build",
     "start": "webpack-dev-server --config examples/webpack.config.babel.js --content-base examples --inline --open",
@@ -79,6 +81,7 @@
     "html-webpack-plugin": "^2.24.1",
     "jest": "^20.0.4",
     "json-loader": "^0.5.4",
+    "ncp": "^2.0.0",
     "progress-bar-webpack-plugin": "^1.9.1",
     "react": "^15.6.1",
     "react-addons-test-utils": "^15.6.0",

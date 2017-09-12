@@ -194,7 +194,7 @@ export const localeReducer = (state: LocaleState = initialState, action: Action)
 /**
  * ACTION CREATORS
  */
-export const initialize = (languageCodes: string[], options: Options = defaultTranslateOptions) => ({
+export const initialize = (languageCodes: string[], options: Options = defaultTranslateOptions): InitializeAction => ({
   type: INITIALIZE,
   payload: { languageCodes, options }
 });
