@@ -133,7 +133,7 @@ const transformFunction = (translationData, languageCodes) => {
 };
 ```
 
-Now when you dispatch the [intialize](../api/action-creators#initializelanguages-options) action make sure you set the [transformFunction](../api/action-creators#initialize-options) option equal to the `transformFunction`. Now anytime you dispatch the [addTranslation](../api/action-creators#addtranslationdata) action the `transformFunction` will run on the translation data you are adding.
+Now when you dispatch the [intialize](../api/action-creators#initializelanguages-options) action make sure you set the [translationTransform](../api/action-creators#initialize-options) option equal to the `transformFunction`. Now anytime you dispatch the [addTranslation](../api/action-creators#addtranslationdata) action the `transformFunction` will run on the translation data you are adding.
 
 ```javascript
 const languages = ['en', 'fr'];
