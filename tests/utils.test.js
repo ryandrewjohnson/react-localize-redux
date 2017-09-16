@@ -103,4 +103,25 @@ describe('locale utils', () => {
       });
     });
   });
+
+  describe('validateOptions', () => {
+    it('should return options object when valid', () => {
+      const options = {
+        renderInnerHtml: false,
+        defaultLanguage: 'en',
+        translationTransform: (data, codes) => ({})
+      };
+      const result = utils.validateOptions(options);
+      expect(result).toEqual(options);
+    });
+
+    it('should throw error if translationTransform is not a function', () => {
+      const options = {
+        renderInnerHtml: false,
+        defaultLanguage: 'en',
+        translationTransform: false
+      };
+      expect(() => utils.validateOptions(options)).toThrow();
+    });
+  });
 });

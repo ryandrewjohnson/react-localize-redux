@@ -79,6 +79,16 @@ Include HTML in your translation strings and it will be rendered in your compone
 
 
 
+### Handles custom translation data
+
+Does react-localize-redux's supported translation data formats not work for you? That's ok - there is a way for you to use your own custom trnaslation data format. See [Formatting Transltion Data - Custom data format](../formatting-translation-data/#custom-data-format) for full documentation.
+
+
+
+---------------
+
+
+
 ### Avoid naming collisions with nested translation data
 
 ** Multiple language format **

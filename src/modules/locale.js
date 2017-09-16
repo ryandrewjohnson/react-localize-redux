@@ -2,7 +2,7 @@
 import { combineReducers } from 'redux';
 import { flatten } from 'flat';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
-import { getLocalizedElement, getIndexForLanguageCode, objectValuesToString } from '../utils';
+import { getLocalizedElement, getIndexForLanguageCode, objectValuesToString, validateOptions } from '../utils';
 import type { Selector, SelectorCreator } from 'reselect';
 import type { Element } from 'react';
 
@@ -18,9 +18,12 @@ export type Translations = {
   [key: string]: string[]
 };
 
+type TransFormFunction = (data: Object, languageCodes: string[]) => Translations;
+
 export type Options = {
   renderInnerHtml?: boolean,
-  defaultLanguage?: string
+  defaultLanguage?: string,
+  translationTransform?: TransFormFunction
 };
 
 export type LocaleState = {
@@ -90,7 +93,10 @@ export type Action = BaseAction<
   & SetLanguagesPayload
 >;
 
-export type ActionLanguageCodes = Action & { languageCodes: string[] };
+export type ActionDetailed = Action & { 
+  languageCodes: string[],
+  translationTransform: TransFormFunction
+};
 
 /**
  * ACTIONS
@@ -128,17 +134,24 @@ export function languages(state: Language[] = [], action: Action): Language[] {
   }
 }
 
-export function translations(state: Translations = {}, action: ActionLanguageCodes): Translations {
+export function translations(state: Translations = {}, action: ActionDetailed): Translations {
   switch(action.type) {
     case ADD_TRANSLATION:
+    // apply transformation if set in options
+    const translations = action.translationTransform !== undefined
+      ? action.translationTransform(action.payload.translation, action.languageCodes)
+      : action.payload.translation;
       return {
         ...state,
-        ...flatten(action.payload.translation, { safe: true })
+        ...flatten(translations, { safe: true })
       };
     case ADD_TRANSLATION_FOR_LANGUGE:
-      const languageIndex = action.languageCodes.indexOf(action.payload.language);
-      const flattenedTranslations = languageIndex >= 0 ? flatten(action.payload.translation) : {};
+    const languageIndex = action.languageCodes.indexOf(action.payload.language);
+    const flattenedTranslations = languageIndex >= 0 ? flatten(action.payload.translation) : {};
+      // convert single translation data into multiple
       const languageTranslations = Object.keys(flattenedTranslations).reduce((prev, cur: string) => {
+        // loop through each language, and for languages that don't match active language 
+        // keep existing translation data, and for active language store new translation data
         const translationValues = action.languageCodes.map((code, index) => {
           const existingValues = state[cur] || [];
           return index === languageIndex
@@ -163,9 +176,10 @@ export function translations(state: Translations = {}, action: ActionLanguageCod
 export function options(state: Options = defaultTranslateOptions, action: Action): Options {
   switch(action.type) {
     case INITIALIZE:
+      const options = action.payload.options || {};
       return {
         ...state,
-        ...action.payload.options
+        ...validateOptions(options)
       };
     default:
       return state;
@@ -184,9 +198,10 @@ const initialState: LocaleState = {
 
 export const localeReducer = (state: LocaleState = initialState, action: Action): LocaleState => {
   const languageCodes = state.languages.map(language => language.code);
+  const translationTransform = state.options.translationTransform;
   return {
     languages: languages(state.languages, action),
-    translations: translations(state.translations, { ...action, languageCodes }),
+    translations: translations(state.translations, { ...action, languageCodes, translationTransform }),
     options: options(state.options, action)
   };
 };
