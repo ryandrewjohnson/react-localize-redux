@@ -65,6 +65,9 @@
     <li class="toctree-l2"><a href="#single-language-format">Single language format</a></li>
     
 
+    <li class="toctree-l2"><a href="#custom-data-format">Custom data format</a></li>
+    
+
     <li class="toctree-l2"><a href="#nested-data-format">Nested data format</a></li>
     
 
@@ -182,9 +185,70 @@
 </code></pre>
 
 <hr />
+<h2 id="custom-data-format">Custom data format</h2>
+<p>If you cannot use the supported data formats there is a way to instruct react-localize-redux on how to handle your custom data. To do this you must pass the <a href="../../api/action-creators#initialize-options">translationTransform</a> option when dispatching the <a href="../../api/action-creators#initializelanguages-options">intialize</a> action, which takes a function in the following format: </p>
+<pre><code class="javascript">const transformationFunction = (translationData: Object, languagesCodes: string[]) =&gt; {
+  // Your transformation logic goes here...
+};
+</code></pre>
+
+<p>This function is responsible for taking your custom data, and transforming it into the format required by react-localize-redux. You are responsible for writing the transformation logic, but after that the function will be run automatically whenever dispatching <a href="../../api/action-creators#addtranslationdata">addTranslation</a>.</p>
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">The transformation function will not be run if you use the <code><a href="../api/action-creators/#addtranslationforlanguagedata-language">addTranslationForLanguage</a></code> action.</p>
+</div>
+
+<p><strong> Example </strong></p>
+<p>For example if you had data in the following format that you wanted to use...</p>
+<pre><code class="javascript">const customTranslation = {
+  en: {
+    title: 'Title',
+    subtitle: 'Subtitle'
+  },
+  fr: {
+    title: 'FR - Title',
+    subtitle: 'FR - Subtitle'
+  }
+};
+</code></pre>
+
+<p>You would need to transform it into this format to work with react-localize-redux.</p>
+<pre><code class="javascript">const translations = {
+  title: ['Title', 'FR - Title'],
+  subtitle: ['Subtitle', 'FR - Subtitle']
+};
+</code></pre>
+
+<p>This is where the transformation function comes in - we need to write a function that takes the custom translationData and returns the react-localize-redux format. Here is an example of what that function could look like for the example custom data:</p>
+<pre><code class="javascript">const transformFunction = (translationData, languageCodes) =&gt; {
+  return Object.keys(translationData).reduce((prev, cur, index) =&gt; {
+    const languageData = data[cur];
+
+    for(let prop in languageData) {
+      const values = prev[prop] || [];
+      prev[prop] = languageCodes.map((code, languageIndex) =&gt; {
+        return index === languageIndex
+          ? languageData[prop]
+          : values[languageIndex];
+      })
+    }
+
+    return prev;
+  }, {});
+};
+</code></pre>
+
+<p>Now when you dispatch the <a href="../../api/action-creators#initializelanguages-options">intialize</a> action make sure you set the <a href="../../api/action-creators#initialize-options">translationTransform</a> option equal to the <code>transformFunction</code>. Now anytime you dispatch the <a href="../../api/action-creators#addtranslationdata">addTranslation</a> action the <code>transformFunction</code> will run on the translation data you are adding.</p>
+<pre><code class="javascript">const languages = ['en', 'fr'];
+store.dispatch(initialize(languages, { translationTransform: transformFunction }));
+
+store.dispatch(addTranslation(customTranslation));
+</code></pre>
+
+<hr />
 <h2 id="nested-data-format">Nested data format</h2>
 <p>Both types of translation data support nested data format to help with organization of translations, and avoiding naming collisions with translation keys.</p>
-<p><strong> Single language format </strong></p>
+<p><strong> Multiple language format </strong></p>
 <pre><code class="json">{
   &quot;welcome&quot; {
     &quot;banner&quot;: {
@@ -197,7 +261,7 @@
 }
 </code></pre>
 
-<p><strong> Multiple language format </strong></p>
+<p><strong> Single language format </strong></p>
 <pre><code class="json">// en.json
 {
   &quot;welcome&quot; {

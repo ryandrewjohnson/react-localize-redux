@@ -164,7 +164,8 @@
 </tr>
 </tbody>
 </table>
-<p><strong> Options: </strong></p>
+<p id="initialize-options"><strong> Options: </strong></p>
+
 <table>
 <thead>
 <tr>
@@ -186,6 +187,12 @@
 <td>boolean</td>
 <td>true</td>
 <td>Controls whether HTML in your translations will be rendered or returned as a plain string.</td>
+</tr>
+<tr>
+<td>translationTransform</td>
+<td>function</td>
+<td>undefined</td>
+<td>A transformation function that will be applied to translation data. See <a href="../../formatting-translation-data#custom-data-format">Custom data format</a> for details.</td>
 </tr>
 </tbody>
 </table>
@@ -244,7 +251,7 @@ store.dispatch(setLanguages(languages, 'fr'));
 
 <hr />
 <h2 id="addtranslationdata">addTranslation(data)</h2>
-<p>Dispatch this action to add translation data for multiple languages from a json file, or vanilla JS to your redux store. Please see <a href="">formatting transaltion data</a> to ensure your data is in the proper format. </p>
+<p>Dispatch this action to add translation data for multiple languages from a json file, or vanilla JS to your redux store. Please see <a href="../../formatting-translation-data#multiple-language-format">formatting transaltion data</a> to ensure your data is in the proper format. </p>
 <p><strong> Arguments </strong></p>
 <table>
 <thead>
@@ -258,7 +265,7 @@ store.dispatch(setLanguages(languages, 'fr'));
 <tr>
 <td>data</td>
 <td>json | object</td>
-<td>Translation data in the <a href="">required format</a></td>
+<td>Translation data in the <a href="../../formatting-translation-data#multiple-language-format">required format</a></td>
 </tr>
 </tbody>
 </table>
@@ -274,7 +281,7 @@ store.dispatch(addTranslation(welcomePageTranslations));
 
 <hr />
 <h2 id="addtranslationforlanguagedata-language">addTranslationForLanguage(data, language)</h2>
-<p>Dispatch this action to add translation data for a single language from a json file, or vanilla JS to your redux store. Please see <a href="">formatting transaltion data</a> to ensure your data is in the proper format. </p>
+<p>Dispatch this action to add translation data for a single language from a json file, or vanilla JS to your redux store. Please see <a href="../../formatting-translation-data#single-language-format">formatting transaltion data</a> to ensure your data is in the proper format. </p>
 <p><strong> Arguments </strong></p>
 <table>
 <thead>
@@ -288,7 +295,7 @@ store.dispatch(addTranslation(welcomePageTranslations));
 <tr>
 <td>data</td>
 <td>json | object</td>
-<td>Translation data in the <a href="">required format</a></td>
+<td>Translation data in the <a href="../../formatting-translation-data#single-language-format">required format</a></td>
 </tr>
 <tr>
 <td>language</td>
