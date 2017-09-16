@@ -6,6 +6,23 @@ import { INITIALIZE, SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION, ADD_TR
 
 describe('locale module', () => {
 
+  const transformFunction = (data, codes) => {
+    return Object.keys(data).reduce((prev, cur, index) => {
+      const languageData = data[cur];
+      
+      for(let prop in languageData) {
+        const values = prev[prop] || [];
+        prev[prop] = codes.map((code, languageIndex) => {
+          return index === languageIndex
+            ? languageData[prop]
+            : values[languageIndex];
+        })
+      }
+    
+      return prev;
+    }, {});
+  };
+
   describe('reducer: languages', () => {
     let initialState = [];
 
@@ -195,6 +212,34 @@ describe('locale module', () => {
           'more.nested': ['one']
         });
       });
+
+      it('should use translationTransform from options', () => {
+        const translationData = {
+          en: {
+            title: 'Title',
+            subtitle: 'Subtitle'
+          },
+          fr: {
+            title: 'FR - Title',
+            subtitle: 'FR - Subtitle'
+          }
+        };
+
+        const action = {
+          type: ADD_TRANSLATION,
+          payload: {
+            translation: translationData
+          },
+          languageCodes: ['en', 'fr'],
+          translationTransform: transformFunction
+        };
+
+        const result = translations({}, action);
+        expect(result).toEqual({
+          title: ['Title', 'FR - Title'],
+          subtitle: ['Subtitle', 'FR - Subtitle']
+        })
+      });
     });
     
     describe('ADD_TRANSLATION_FOR_LANGUGE', () => {
@@ -276,7 +321,7 @@ describe('locale module', () => {
         });
       });
     });
-
+    
   });
 
 
@@ -315,6 +360,33 @@ describe('locale module', () => {
       });
     });
     
+    it('should set translationTransform option', () => {
+      const action = {
+        type: INITIALIZE,
+        payload: {
+          options: {
+            translationTransform: () => ({})
+          }
+        }
+      };
+
+      const result = options({}, action);
+      expect(result.translationTransform).toBeDefined();
+      expect(typeof result.translationTransform).toEqual('function');
+    });
+
+    it('should throw error if translationTransform is not a function', () => {
+      const action = {
+        type: INITIALIZE,
+        payload: {
+          options: {
+            translationTransform: false
+          }
+        }
+      };
+
+      expect(() => options({}, action)).toThrow();
+    });
   });
 
 

@@ -41,3 +41,10 @@ export const objectValuesToString = (data: Object): string => {
     ? Object.keys(data).map(key => data[key].toString()).toString()
     : Object.values(data).toString();
 };
+
+export const validateOptions = (options: Options): Options => {
+  if (options.translationTransform !== undefined && typeof options.translationTransform !== 'function') {
+    throw new Error('react-localize-redux: Invalid translationTransform function.');
+  }
+  return options;
+};
