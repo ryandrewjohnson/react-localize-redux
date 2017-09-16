@@ -13,9 +13,12 @@ export interface Translations {
   [key: string]: string[];
 }
 
+type TransFormFunction = (data: Object, languageCodes: string[]) => Translations;
+
 export interface Options {
   renderInnerHtml?: boolean;
   defaultLanguage?: string;
+  translationTransform?: TransFormFunction;
 }
 
 export interface LocaleState {
