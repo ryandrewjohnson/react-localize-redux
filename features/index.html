@@ -73,11 +73,14 @@
         
             <li><a class="toctree-l3" href="#include-html-in-translations">Include HTML in translations</a></li>
         
-            <li><a class="toctree-l3" href="#handles-custom-translation-data">Handles custom translation data</a></li>
+            <li><a class="toctree-l3" href="#handle-custom-translation-data">Handle custom translation data</a></li>
         
             <li><a class="toctree-l3" href="#avoid-naming-collisions-with-nested-translation-data">Avoid naming collisions with nested translation data</a></li>
         
         </ul>
+    
+
+    <li class="toctree-l2"><a href="#handle-missing-translations">Handle missing translations</a></li>
     
 
     <li class="toctree-l2"><a href="#load-translation-data-on-demand">Load translation data on demand</a></li>
@@ -196,7 +199,7 @@ const Article = props =&gt; (
 </code></pre>
 
 <hr />
-<h3 id="handles-custom-translation-data">Handles custom translation data</h3>
+<h3 id="handle-custom-translation-data">Handle custom translation data</h3>
 <p>Does react-localize-redux's supported translation data formats not work for you? That's ok - there is a way for you to use your own custom trnaslation data format. See <a href="../../formatting-translation-data/#custom-data-format">Formatting Transltion Data - Custom data format</a> for full documentation.</p>
 <hr />
 <h3 id="avoid-naming-collisions-with-nested-translation-data">Avoid naming collisions with nested translation data</h3>
@@ -230,6 +233,27 @@ const Article = props =&gt; (
 
 <pre><code class="javascript">&lt;h1&gt;{ translate('welcome.greeting', { name: 'Testy McTest' }) }&lt;/h1&gt;
 &lt;h1&gt;{ translate('info.greeting') }&lt;/h1&gt;
+</code></pre>
+
+<hr />
+<h2 id="handle-missing-translations">Handle missing translations</h2>
+<p>If you need a way to detect missing translations you can set the <a href="../../api/action-creators/#initialize-options">missingTranslationCallback</a> option. When set this callback will be triggered anytime the <a href="../../api/selectors/#translatekey-string-string-data-options">translate</a> function detects an <code>undefined</code> translation. </p>
+<p><strong> Example </strong></p>
+<pre><code class="javascript">import { initialize } from 'react-localize-redux';
+
+const languages = ['en', 'fr', 'es'];
+
+/**
+ * The callback function will be called with the following arguments:
+ * key - The key that was passed to the translate function
+ * languageCode - The language code for the currently active language.
+ */
+const onMissingTranslation = (key, languageCode) =&gt; {
+  // here you can do whatever you want e.g. call back end service that will 
+  // send email to translation team
+};
+
+store.dispatch(initialize(languages), { missingTranslationCallback: onMissingTranslation });
 </code></pre>
 
 <hr />

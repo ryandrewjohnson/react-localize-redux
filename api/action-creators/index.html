@@ -180,13 +180,25 @@
 <td>defaultLanguage</td>
 <td>string</td>
 <td>languages[0]</td>
-<td>An array of languages codes</td>
+<td>The language code for the language you'd like to set as the defualt.</td>
 </tr>
 <tr>
 <td>renderInnerHtml</td>
 <td>boolean</td>
 <td>true</td>
 <td>Controls whether HTML in your translations will be rendered or returned as a plain string.</td>
+</tr>
+<tr>
+<td>showMissingTranslationMsg</td>
+<td>boolean</td>
+<td>true</td>
+<td>Controls whether missing translation message will be rendered when translation is undefined.</td>
+</tr>
+<tr>
+<td>missingTranslationCallback</td>
+<td>function</td>
+<td>undefined</td>
+<td>A function that will be called when attempting to get an undefined translation. See <a href="../../features/#handle-missing-translations">Handle missing translations</a> for details.</td>
 </tr>
 <tr>
 <td>translationTransform</td>
