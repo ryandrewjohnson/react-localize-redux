@@ -20,9 +20,13 @@ export type Translations = {
 
 type TransFormFunction = (data: Object, languageCodes: string[]) => Translations;
 
+type MissingTranslationCallback = (key: string, languageCode: string) => any;
+
 export type Options = {
   renderInnerHtml?: boolean,
   defaultLanguage?: string,
+  showMissingTranslationMsg?: boolean,
+  missingTranslationCallback?: MissingTranslationCallback,
   translationTransform?: TransFormFunction
 };
 
@@ -187,7 +191,8 @@ export function options(state: Options = defaultTranslateOptions, action: Action
 };
 
 export const defaultTranslateOptions: Options = {
-  renderInnerHtml: true
+  renderInnerHtml: true,
+  showMissingTranslationMsg: true
 };
 
 const initialState: LocaleState = {
@@ -294,17 +299,18 @@ export const getTranslationsForActiveLanguage: Selector<LocaleState, void, Trans
 
 export const getTranslate: Selector<LocaleState, void, Translate> = createSelector(
   getTranslationsForActiveLanguage,
+  getActiveLanguage,
   getOptions,
-  (translations, options) => {
+  (translations, activeLanguage, options) => {
     return (value, data, optionsOverride = {}) => {
       const translateOptions: Options = {...options, ...optionsOverride};
       if (typeof value === 'string') {
-        return getLocalizedElement(value, translations, data, translateOptions);
+        return getLocalizedElement(value, translations, data, activeLanguage, translateOptions);
       } else if (Array.isArray(value)) {
         return value.reduce((prev, cur) => {
           return {
             ...prev,
-            [cur]: getLocalizedElement(cur, translations, data, translateOptions)
+            [cur]: getLocalizedElement(cur, translations, data, activeLanguage, translateOptions)
           };
         }, {});
       } else {

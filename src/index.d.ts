@@ -15,9 +15,13 @@ export interface Translations {
 
 type TransFormFunction = (data: Object, languageCodes: string[]) => Translations;
 
+type MissingTranslationCallback = (key: string, languageCode: string) => any;
+
 export interface Options {
   renderInnerHtml?: boolean;
   defaultLanguage?: string;
+  showMissingTranslationMsg?: boolean;
+  missingTranslationCallback?: MissingTranslationCallback;
   translationTransform?: TransFormFunction;
 }
 

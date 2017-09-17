@@ -2,17 +2,18 @@ import { shallow } from 'enzyme';
 import * as utils from 'utils';
 
 describe('locale utils', () => {
+  const defaultLanguage = { code: 'en' };
 
   describe('getLocalizedElement', () => {
     it('should return element with localized string', () => {
       const translations = { test: 'Here is my test' };
-      const result = utils.getLocalizedElement('test', translations);
+      const result = utils.getLocalizedElement('test', translations, null, defaultLanguage);
       expect(result).toBe(translations.test);
     });
 
     it('should return element with HTML from translation rendered', () => {
       const translations = { test: '<h1>Here</h1> is my <strong>test</strong>' };
-      const wrapper = shallow(utils.getLocalizedElement('test', translations));
+      const wrapper = shallow(utils.getLocalizedElement('test', translations, null, defaultLanguage));
       
       expect(wrapper.find('span').exists()).toBe(true);
       expect(wrapper.html()).toEqual(`<span>${translations.test}</span>`);
@@ -21,21 +22,38 @@ describe('locale utils', () => {
     it('should not render inner HTML when this is disabled', () => {
       const translations = { test: '<h1>Here</h1> is my <strong>test</strong>' };
       const options = { renderInnerHtml: false };
-      const result = utils.getLocalizedElement('test', translations, null, options);
+      const result = utils.getLocalizedElement('test', translations, null, null, options);
       expect(result).toBe(translations.test);
     });
 
-    it('should return element with warning when no localized string found', () => {
+    it('should return empty string when showMissingTranslationMsg is false', () => {
       const translations = { test: 'Here is my test' };
       const key = 'test2';
-      const result = utils.getLocalizedElement(key, translations);
-      expect(result).toEqual(`Missing localized key: ${key}`);
+      const options = { showMissingTranslationMsg: false };
+      const result = utils.getLocalizedElement(key, translations, null, null, options);
+      expect(result).toEqual('');
+    });
+
+    it('should return missing translation msg when showMissingTranslationMsg is true', () => {
+      const translations = { test: 'Here is my test' };
+      const key = 'test2';
+      const language = { code: 'en' };
+      const options = { showMissingTranslationMsg: true };
+      const result = utils.getLocalizedElement(key, translations, null, { code: 'en' }, options);
+      expect(result).toEqual(`Missing localized key: ${key} for language: ${ language.code }`);
     });
 
     it('should replace variables in translation string with data', () => {
       const translations = { test: 'Hello ${ name }' };
-      const result = utils.getLocalizedElement('test', translations, { name: 'Ted' });
+      const result = utils.getLocalizedElement('test', translations, { name: 'Ted' }, defaultLanguage);
       expect(result).toEqual('Hello Ted');
+    });
+
+    it('should call missingTranslationCallback when set and translation is missing', () => {
+      const callback = jest.fn();
+      const options = { missingTranslationCallback: callback };
+      const result = utils.getLocalizedElement('nothinghere', {}, null, defaultLanguage, options);
+      expect(callback).toHaveBeenCalledWith('nothinghere', 'en');
     });
   });
 

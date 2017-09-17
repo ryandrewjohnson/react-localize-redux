@@ -13,8 +13,10 @@ languages | string []  | An array of languages codes
 
 name | Type | Default | Description
 --------- | ----------| ------------ |  ------------
-defaultLanguage | string | languages[0] | An array of languages codes
+defaultLanguage | string | languages[0] | The language code for the language you'd like to set as the defualt.
 renderInnerHtml | boolean  | true |  Controls whether HTML in your translations will be rendered or returned as a plain string. 
+showMissingTranslationMsg | boolean | true | Controls whether missing translation message will be rendered when translation is undefined.
+missingTranslationCallback | function | undefined | A function that will be called when attempting to get an undefined translation. See [Handle missing translations](../features/#handle-missing-translations) for details.
 translationTransform | function | undefined | A transformation function that will be applied to translation data. See [Custom data format](../formatting-translation-data#custom-data-format) for details.
 
 <div class="admonition important">
