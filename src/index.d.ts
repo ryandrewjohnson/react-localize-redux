@@ -18,6 +18,7 @@ type TransFormFunction = (data: Object, languageCodes: string[]) => Translations
 export interface Options {
   renderInnerHtml?: boolean;
   defaultLanguage?: string;
+  showMissingTranslationMsg?: boolean;
   translationTransform?: TransFormFunction;
 }
 

@@ -521,6 +521,20 @@ describe('locale module', () => {
         expect(value).toBe(results[index]);
       });
     });
+
+    it('should return empty string when missing translation and showMissingTranslationMsg = false', () => {
+      state.options.showMissingTranslationMsg = false;
+      const translate = getTranslate(state);
+      const result = translate('nothinghere');
+      expect(result).toEqual('');
+    });
+
+    it('should retrun missing translation msg when missing translation and showMissingTranslationMsg = true', () => {
+      state.options.showMissingTranslationMsg = true;
+      const translate = getTranslate(state);
+      const result = translate('nothinghere');
+      expect(result).toEqual('Missing localized key: nothinghere for language: fr');
+    });
   });
 
 

@@ -15,6 +15,7 @@ name | Type | Default | Description
 --------- | ----------| ------------ |  ------------
 defaultLanguage | string | languages[0] | An array of languages codes
 renderInnerHtml | boolean  | true |  Controls whether HTML in your translations will be rendered or returned as a plain string. 
+showMissingTranslationMsg | boolean | true | Controls whether missing translation message will be rendered when translation is undefined.
 translationTransform | function | undefined | A transformation function that will be applied to translation data. See [Custom data format](../formatting-translation-data#custom-data-format) for details.
 
 <div class="admonition important">
