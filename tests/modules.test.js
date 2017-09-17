@@ -535,6 +535,14 @@ describe('locale module', () => {
       const result = translate('nothinghere');
       expect(result).toEqual('Missing localized key: nothinghere for language: fr');
     });
+
+    it('should call missingTranslationCallback if set and translation is missing', () => {
+      const callback = jest.fn();
+      state.options.missingTranslationCallback = callback;
+      const translate = getTranslate(state);
+      const result = translate('nothinghere');
+      expect(callback).toHaveBeenCalledWith('nothinghere', 'fr');
+    });
   });
 
 

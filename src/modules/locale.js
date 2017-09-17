@@ -20,10 +20,13 @@ export type Translations = {
 
 type TransFormFunction = (data: Object, languageCodes: string[]) => Translations;
 
+type MissingTranslationCallback = (key: string, languageCode: string) => any;
+
 export type Options = {
   renderInnerHtml?: boolean,
   defaultLanguage?: string,
   showMissingTranslationMsg?: boolean,
+  missingTranslationCallback?: MissingTranslationCallback,
   translationTransform?: TransFormFunction
 };
 

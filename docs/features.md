@@ -79,7 +79,7 @@ Include HTML in your translation strings and it will be rendered in your compone
 
 
 
-### Handles custom translation data
+### Handle custom translation data
 
 Does react-localize-redux's supported translation data formats not work for you? That's ok - there is a way for you to use your own custom trnaslation data format. See [Formatting Transltion Data - Custom data format](../formatting-translation-data/#custom-data-format) for full documentation.
 
@@ -126,6 +126,34 @@ Does react-localize-redux's supported translation data formats not work for you?
 ```javascript
 <h1>{ translate('welcome.greeting', { name: 'Testy McTest' }) }</h1>
 <h1>{ translate('info.greeting') }</h1>
+```
+
+
+---------------
+
+
+## Handle missing translations
+
+If you need a way to detect missing translations you can set the [missingTranslationCallback](../api/action-creators/#initialize-options) option. When set this callback will be triggered anytime the [translate](../api/selectors/#translatekey-string-string-data-options) function detects an `undefined` translation. 
+
+** Example **
+
+```javascript
+import { initialize } from 'react-localize-redux';
+
+const languages = ['en', 'fr', 'es'];
+
+/**
+ * The callback function will be called with the following arguments:
+ * key - The key that was passed to the translate function
+ * languageCode - The language code for the currently active language.
+ */
+const onMissingTranslation = (key, languageCode) => {
+  // here you can do whatever you want e.g. call back end service that will 
+  // send email to translation team
+};
+
+store.dispatch(initialize(languages), { missingTranslationCallback: onMissingTranslation });
 ```
 
 

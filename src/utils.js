@@ -4,10 +4,15 @@ import { defaultTranslateOptions } from './modules/locale';
 import type { TranslatePlaceholderData, TranslatedLanguage, Options, LocalizedElement, Language } from './modules/locale';
 
 export const getLocalizedElement = (key: string, translations: TranslatedLanguage, data: TranslatePlaceholderData, activeLanguage: Language, options: Options = defaultTranslateOptions): LocalizedElement => {
-  const missingTranslationMsg = options.showMissingTranslationMsg  
-    ? `Missing localized key: ${ key } for language: ${ activeLanguage.code }`
-    : '';
-  const localizedString = translations[key] || missingTranslationMsg;
+  const onMissingTranslation = () => {
+    if (options.missingTranslationCallback) {
+      options.missingTranslationCallback(key, activeLanguage.code);
+    }
+    return options.showMissingTranslationMsg  
+      ? `Missing localized key: ${ key } for language: ${ activeLanguage.code }`
+      : '';
+  };
+  const localizedString = translations[key] || onMissingTranslation();
   const translatedValue = templater(localizedString, data)
   return options.renderInnerHtml && hasHtmlTags(translatedValue)
     ? React.createElement('span', { dangerouslySetInnerHTML: { __html: translatedValue }})

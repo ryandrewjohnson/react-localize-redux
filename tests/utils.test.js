@@ -48,6 +48,13 @@ describe('locale utils', () => {
       const result = utils.getLocalizedElement('test', translations, { name: 'Ted' }, defaultLanguage);
       expect(result).toEqual('Hello Ted');
     });
+
+    it('should call missingTranslationCallback when set and translation is missing', () => {
+      const callback = jest.fn();
+      const options = { missingTranslationCallback: callback };
+      const result = utils.getLocalizedElement('nothinghere', {}, null, defaultLanguage, options);
+      expect(callback).toHaveBeenCalledWith('nothinghere', 'en');
+    });
   });
 
   describe('hasHtmlTags', () => {
