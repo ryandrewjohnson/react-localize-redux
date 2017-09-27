@@ -136,12 +136,12 @@
                 <p>The translation data for you application will either come from json or vanilla JS, but in order for <code>react-localize-redux</code> to work with your data in needs to be in one of the following formats.</p>
 <h2 id="multiple-language-format">Multiple language format</h2>
 <blockquote>
-<p>Use <strong><a href="../../api/action-creators#addtranslationdata">addTranslation</a></strong> to add data in this format.</p>
+<p>Use <strong><a href="../api/action-creators#addtranslationdata">addTranslation</a></strong> to add data in this format.</p>
 </blockquote>
 <p>The data is an object where the property name is your translation key, and the value is an array of translations. The translation key is used to identify the translation, and the value is an array that enforces the following...</p>
 <ul>
 <li>Includes a translation for each language your app supports.</li>
-<li>The order of the translation strings in the array matters! The order <strong>MUST</strong> follow the order of the languages array passed to <a href="../[addTranslationForLanguage](../api/action-creators#addtranslationforlanguagedata-language)">setLanguages</a>.</li>
+<li>The order of the translation strings in the array matters! The order <strong>MUST</strong> follow the order of the languages array passed to <a href="../[addTranslationForLanguage](/api/action-creators#addtranslationforlanguagedata-language)">setLanguages</a>.</li>
 </ul>
 <p>Assuming your application has dispatched <code>setLanguages('en', 'fr', 'es')</code>:</p>
 <pre><code class="json">{
@@ -161,7 +161,7 @@
 <hr />
 <h2 id="single-language-format">Single language format</h2>
 <blockquote>
-<p>Use <strong><a href="../../api/action-creators#addtranslationforlanguagedata-language">addTranslationForLanguage</a></strong> to add data in this format.</p>
+<p>Use <strong><a href="../api/action-creators#addtranslationforlanguagedata-language">addTranslationForLanguage</a></strong> to add data in this format.</p>
 </blockquote>
 <p>The data is an object where the property name is your translation key, and the value is the translation for the language. With the single language format you would dispatch <code>addTranslationForLanguage</code> for each language you support.</p>
 <p>Assuming your application <code>setLanguages('en', 'fr', 'es')</code>:</p>
@@ -186,16 +186,16 @@
 
 <hr />
 <h2 id="custom-data-format">Custom data format</h2>
-<p>If you cannot use the supported data formats there is a way to instruct react-localize-redux on how to handle your custom data. To do this you must pass the <a href="../../api/action-creators#initialize-options">translationTransform</a> option when dispatching the <a href="../../api/action-creators#initializelanguages-options">intialize</a> action, which takes a function in the following format: </p>
+<p>If you cannot use the supported data formats there is a way to instruct react-localize-redux on how to handle your custom data. To do this you must pass the <a href="../api/action-creators#initialize-options">translationTransform</a> option when dispatching the <a href="../api/action-creators#initializelanguages-options">intialize</a> action, which takes a function in the following format: </p>
 <pre><code class="javascript">const transformationFunction = (translationData: Object, languagesCodes: string[]) =&gt; {
   // Your transformation logic goes here...
 };
 </code></pre>
 
-<p>This function is responsible for taking your custom data, and transforming it into the format required by react-localize-redux. You are responsible for writing the transformation logic, but after that the function will be run automatically whenever dispatching <a href="../../api/action-creators#addtranslationdata">addTranslation</a>.</p>
+<p>This function is responsible for taking your custom data, and transforming it into the format required by react-localize-redux. You are responsible for writing the transformation logic, but after that the function will be run automatically whenever dispatching <a href="../api/action-creators#addtranslationdata">addTranslation</a>.</p>
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
-  <p class="last">The transformation function will not be run if you use the <code><a href="../api/action-creators/#addtranslationforlanguagedata-language">addTranslationForLanguage</a></code> action.</p>
+  <p class="last">The transformation function will not be run if you use the <code><a href="/api/action-creators/#addtranslationforlanguagedata-language">addTranslationForLanguage</a></code> action.</p>
 </div>
 
 <p><strong> Example </strong></p>
@@ -238,7 +238,7 @@
 };
 </code></pre>
 
-<p>Now when you dispatch the <a href="../../api/action-creators#initializelanguages-options">intialize</a> action make sure you set the <a href="../../api/action-creators#initialize-options">translationTransform</a> option equal to the <code>transformFunction</code>. Now anytime you dispatch the <a href="../../api/action-creators#addtranslationdata">addTranslation</a> action the <code>transformFunction</code> will run on the translation data you are adding.</p>
+<p>Now when you dispatch the <a href="../api/action-creators#initializelanguages-options">intialize</a> action make sure you set the <a href="../api/action-creators#initialize-options">translationTransform</a> option equal to the <code>transformFunction</code>. Now anytime you dispatch the <a href="../api/action-creators#addtranslationdata">addTranslation</a> action the <code>transformFunction</code> will run on the translation data you are adding.</p>
 <pre><code class="javascript">const languages = ['en', 'fr'];
 store.dispatch(initialize(languages, { translationTransform: transformFunction }));
 

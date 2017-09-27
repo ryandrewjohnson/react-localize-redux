@@ -145,7 +145,7 @@
               
                 <h2 id="pass-multiple-translations-to-components">Pass multiple translations to components</h2>
 <p>To avoid connecting every single component that needs translations you should instead pass translations down to child components.
-To retrieve multiple translations using <a href="../../api/selectors#translatekey-string-string-data">translate</a> pass an array of translation keys instead of a single key. This will return an object with translated strings mapped to translation keys.</p>
+To retrieve multiple translations using <a href="../api/selectors#translatekey-string-string-data">translate</a> pass an array of translation keys instead of a single key. This will return an object with translated strings mapped to translation keys.</p>
 <p>Since <code>translate</code> returns an object we can use the object spread operator to pass the translations as props for the <code>&lt;Article&gt;</code> component.</p>
 <pre><code class="javascript">const translationData = {
   heading: [&quot;Heading&quot;, &quot;Heading French&quot;],
@@ -183,7 +183,7 @@ const Article = props =&gt; (
 }
 </code></pre>
 
-<p>Then pass in the data you want to swap in for placeholders to the <a href="../../api/selectors#translatekey-string-string-data">translate</a> function.</p>
+<p>Then pass in the data you want to swap in for placeholders to the <a href="../api/selectors#translatekey-string-string-data">translate</a> function.</p>
 <pre><code class="javascript">&lt;h1&gt;{ translate('greeting', { name: 'Testy McTest' }) }&lt;/h1&gt;
 </code></pre>
 
@@ -200,7 +200,7 @@ const Article = props =&gt; (
 
 <hr />
 <h3 id="handle-custom-translation-data">Handle custom translation data</h3>
-<p>Does react-localize-redux's supported translation data formats not work for you? That's ok - there is a way for you to use your own custom trnaslation data format. See <a href="../../formatting-translation-data/#custom-data-format">Formatting Transltion Data - Custom data format</a> for full documentation.</p>
+<p>Does react-localize-redux's supported translation data formats not work for you? That's ok - there is a way for you to use your own custom trnaslation data format. See <a href="../formatting-translation-data/#custom-data-format">Formatting Transltion Data - Custom data format</a> for full documentation.</p>
 <hr />
 <h3 id="avoid-naming-collisions-with-nested-translation-data">Avoid naming collisions with nested translation data</h3>
 <p><strong> Multiple language format </strong></p>
