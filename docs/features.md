@@ -1,7 +1,7 @@
 ## Pass multiple translations to components
 
 To avoid connecting every single component that needs translations you should instead pass translations down to child components.
-To retrieve multiple translations using [translate](../api/selectors#translatekey-string-string-data) pass an array of translation keys instead of a single key. This will return an object with translated strings mapped to translation keys.
+To retrieve multiple translations using [translate](/api/selectors#translatekey-string-string-data) pass an array of translation keys instead of a single key. This will return an object with translated strings mapped to translation keys.
 
 Since `translate` returns an object we can use the object spread operator to pass the translations as props for the `<Article>` component.
 
@@ -49,7 +49,7 @@ Insert dynamic content into your translation strings by inserting placeholders w
 }
 ```
 
-Then pass in the data you want to swap in for placeholders to the [translate](../api/selectors#translatekey-string-string-data) function.
+Then pass in the data you want to swap in for placeholders to the [translate](/api/selectors#translatekey-string-string-data) function.
 
 ```javascript
 <h1>{ translate('greeting', { name: 'Testy McTest' }) }</h1>
@@ -81,7 +81,7 @@ Include HTML in your translation strings and it will be rendered in your compone
 
 ### Handle custom translation data
 
-Does react-localize-redux's supported translation data formats not work for you? That's ok - there is a way for you to use your own custom trnaslation data format. See [Formatting Transltion Data - Custom data format](../formatting-translation-data/#custom-data-format) for full documentation.
+Does react-localize-redux's supported translation data formats not work for you? That's ok - there is a way for you to use your own custom trnaslation data format. See [Formatting Transltion Data - Custom data format](/formatting-translation-data/#custom-data-format) for full documentation.
 
 
 
@@ -134,7 +134,7 @@ Does react-localize-redux's supported translation data formats not work for you?
 
 ## Handle missing translations
 
-If you need a way to detect missing translations you can set the [missingTranslationCallback](../api/action-creators/#initialize-options) option. When set this callback will be triggered anytime the [translate](../api/selectors/#translatekey-string-string-data-options) function detects an `undefined` translation. 
+If you need a way to detect missing translations you can set the [missingTranslationCallback](/api/action-creators/#initialize-options) option. When set this callback will be triggered anytime the [translate](/api/selectors/#translatekey-string-string-data-options) function detects an `undefined` translation. 
 
 ** Example **
 

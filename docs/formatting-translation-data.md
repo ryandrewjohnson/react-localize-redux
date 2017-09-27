@@ -2,12 +2,12 @@ The translation data for you application will either come from json or vanilla J
 
 ## Multiple language format
 
-> Use **[addTranslation](../api/action-creators#addtranslationdata)** to add data in this format.
+> Use **[addTranslation](/api/action-creators#addtranslationdata)** to add data in this format.
 
 The data is an object where the property name is your translation key, and the value is an array of translations. The translation key is used to identify the translation, and the value is an array that enforces the following...
 
 * Includes a translation for each language your app supports.
-* The order of the translation strings in the array matters! The order **MUST** follow the order of the languages array passed to [setLanguages]([addTranslationForLanguage](../api/action-creators#addtranslationforlanguagedata-language)).
+* The order of the translation strings in the array matters! The order **MUST** follow the order of the languages array passed to [setLanguages]([addTranslationForLanguage](/api/action-creators#addtranslationforlanguagedata-language)).
 
 Assuming your application has dispatched `setLanguages('en', 'fr', 'es')`:
 
@@ -34,7 +34,7 @@ Assuming your application has dispatched `setLanguages('en', 'fr', 'es')`:
 
 ## Single language format
 
-> Use **[addTranslationForLanguage](../api/action-creators#addtranslationforlanguagedata-language)** to add data in this format.
+> Use **[addTranslationForLanguage](/api/action-creators#addtranslationforlanguagedata-language)** to add data in this format.
 
 The data is an object where the property name is your translation key, and the value is the translation for the language. With the single language format you would dispatch `addTranslationForLanguage` for each language you support.
 
@@ -71,7 +71,7 @@ Assuming your application `setLanguages('en', 'fr', 'es')`:
 
 ## Custom data format
 
-If you cannot use the supported data formats there is a way to instruct react-localize-redux on how to handle your custom data. To do this you must pass the [translationTransform](../api/action-creators#initialize-options) option when dispatching the [intialize](../api/action-creators#initializelanguages-options) action, which takes a function in the following format: 
+If you cannot use the supported data formats there is a way to instruct react-localize-redux on how to handle your custom data. To do this you must pass the [translationTransform](/api/action-creators#initialize-options) option when dispatching the [intialize](/api/action-creators#initializelanguages-options) action, which takes a function in the following format: 
 
 ```javascript
 const transformationFunction = (translationData: Object, languagesCodes: string[]) => {
@@ -79,11 +79,11 @@ const transformationFunction = (translationData: Object, languagesCodes: string[
 };
 ```
 
-This function is responsible for taking your custom data, and transforming it into the format required by react-localize-redux. You are responsible for writing the transformation logic, but after that the function will be run automatically whenever dispatching [addTranslation](../api/action-creators#addtranslationdata).
+This function is responsible for taking your custom data, and transforming it into the format required by react-localize-redux. You are responsible for writing the transformation logic, but after that the function will be run automatically whenever dispatching [addTranslation](/api/action-creators#addtranslationdata).
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
-  <p class="last">The transformation function will not be run if you use the <code><a href="../api/action-creators/#addtranslationforlanguagedata-language">addTranslationForLanguage</a></code> action.</p>
+  <p class="last">The transformation function will not be run if you use the <code><a href="/api/action-creators/#addtranslationforlanguagedata-language">addTranslationForLanguage</a></code> action.</p>
 </div>
 
 ** Example **
@@ -133,7 +133,7 @@ const transformFunction = (translationData, languageCodes) => {
 };
 ```
 
-Now when you dispatch the [intialize](../api/action-creators#initializelanguages-options) action make sure you set the [translationTransform](../api/action-creators#initialize-options) option equal to the `transformFunction`. Now anytime you dispatch the [addTranslation](../api/action-creators#addtranslationdata) action the `transformFunction` will run on the translation data you are adding.
+Now when you dispatch the [intialize](/api/action-creators#initializelanguages-options) action make sure you set the [translationTransform](/api/action-creators#initialize-options) option equal to the `transformFunction`. Now anytime you dispatch the [addTranslation](/api/action-creators#addtranslationdata) action the `transformFunction` will run on the translation data you are adding.
 
 ```javascript
 const languages = ['en', 'fr'];
