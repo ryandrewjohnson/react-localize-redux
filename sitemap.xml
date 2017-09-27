@@ -3,6 +3,14 @@
 
     
     <url>
+     <loc>/</loc>
+     <lastmod>2017-09-26</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
      <loc>/getting-started/</loc>
      <lastmod>2017-09-26</lastmod>
      <changefreq>daily</changefreq>
