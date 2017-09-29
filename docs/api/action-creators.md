@@ -16,8 +16,8 @@ name | Type | Default | Description
 defaultLanguage | string | languages[0] | The language code for the language you'd like to set as the defualt.
 renderInnerHtml | boolean  | true |  Controls whether HTML in your translations will be rendered or returned as a plain string. 
 showMissingTranslationMsg | boolean | true | Controls whether missing translation message will be rendered when translation is undefined.
-missingTranslationCallback | function | undefined | A function that will be called when attempting to get an undefined translation. See [Handle missing translations](../features/#handle-missing-translations) for details.
-translationTransform | function | undefined | A transformation function that will be applied to translation data. See [Custom data format](../formatting-translation-data#custom-data-format) for details.
+missingTranslationCallback | function | undefined | A function that will be called when attempting to get an undefined translation. See [Handle missing translations](/features/#handle-missing-translations) for details.
+translationTransform | function | undefined | A transformation function that will be applied to translation data. See [Custom data format](/formatting-translation-data#custom-data-format) for details.
 
 <div class="admonition important">
   <p class="first admonition-title">Important</p>
@@ -73,13 +73,13 @@ store.dispatch(setLanguages(languages, 'fr'));
 
 ## addTranslation(data)
 
-Dispatch this action to add translation data for multiple languages from a json file, or vanilla JS to your redux store. Please see [formatting transaltion data](../formatting-translation-data#multiple-language-format) to ensure your data is in the proper format. 
+Dispatch this action to add translation data for multiple languages from a json file, or vanilla JS to your redux store. Please see [formatting transaltion data](/formatting-translation-data#multiple-language-format) to ensure your data is in the proper format. 
 
 ** Arguments **
 
 name | Type | Description
 --------- | ----------| ------------
-data | json \| object  | Translation data in the [required format](../formatting-translation-data#multiple-language-format)
+data | json \| object  | Translation data in the [required format](/formatting-translation-data#multiple-language-format)
 
 ** Usage: **
 
@@ -100,13 +100,13 @@ store.dispatch(addTranslation(welcomePageTranslations));
 
 ## addTranslationForLanguage(data, language)
 
-Dispatch this action to add translation data for a single language from a json file, or vanilla JS to your redux store. Please see [formatting transaltion data](../formatting-translation-data#single-language-format) to ensure your data is in the proper format. 
+Dispatch this action to add translation data for a single language from a json file, or vanilla JS to your redux store. Please see [formatting transaltion data](/formatting-translation-data#single-language-format) to ensure your data is in the proper format. 
 
 ** Arguments **
 
 name | Type | Description
 --------- | ----------| ------------
-data | json \| object  | Translation data in the [required format](../formatting-translation-data#single-language-format)
+data | json \| object  | Translation data in the [required format](/formatting-translation-data#single-language-format)
 language | string  | The language code this translation data belongs to
 
 ** Usage: **

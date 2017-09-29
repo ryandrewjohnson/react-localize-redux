@@ -1,7 +1,10 @@
 site_name: react-localize-redux
 repo_url: https://github.com/ryandrewjohnson/react-localize-redux
+site_description: 'Localization library for React/Redux.'
+site_author: Ryan Johnson
 
 pages:
+- index.md
 - Getting Started: getting-started.md
 - Formatting Translation Data: formatting-translation-data.md
 - Features: features.md

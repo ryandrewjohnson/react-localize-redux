@@ -1,7 +1,10 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import Enzyme, { shallow, mount } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
 import { localize } from 'containers/Localize';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 describe('<Localize />', () => {
   let wrapper = undefined;

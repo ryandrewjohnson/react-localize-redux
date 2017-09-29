@@ -36,7 +36,7 @@ name | Type | Description
 --------- | ----------| ------------
 key | string \| string [] | Pass a single key or multiple keys from your translation data.
 [data] | object | Optional data to be used in your localized strings for [variable replacement]().
-[options]| object | Optional local override for `renderInnerHtml` option passed to the [initialize](../action-creators/#initializelanguages-options) action creator.
+[options]| object | Optional local override for `renderInnerHtml` option passed to the [initialize](/action-creators/#initializelanguages-options) action creator.
 
 ** Returns: **
 

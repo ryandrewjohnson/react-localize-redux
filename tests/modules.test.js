@@ -1,8 +1,11 @@
 import * as actions from 'modules/locale';
-import { shallow } from 'enzyme';
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, translationsEqualSelector, setLanguages, getTranslate, getTranslateSelector, defaultTranslateOptions, options } from 'modules/locale';
 import { getLocalizedElement } from 'utils';
 import { INITIALIZE, SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION, ADD_TRANSLATION_FOR_LANGUGE } from 'modules/locale';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 describe('locale module', () => {
 
