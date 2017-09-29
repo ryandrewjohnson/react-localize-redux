@@ -82,6 +82,14 @@ type LocalizeProps = {
   translate: Translate
 };
 
+export type SingleLanguageTranslation = {
+  [key: string]: Object | string
+};
+
+export type MultipleLanguageTranslation = {
+  [key: string]: Object | string[]
+};
+
 export type InitializeAction = BaseAction<'@@localize/INITIALIZE', InitializePayload>;
 export type AddTranslationAction = BaseAction<'@@localize/ADD_TRANSLATION', AddTranslationPayload>;
 export type AddTranslationForLanguageAction = BaseAction<'@@localize/ADD_TRANSLATION_FOR_LANGUGE', AddTranslationForLanguagePayload>;
@@ -108,9 +116,9 @@ export function localeReducer(state: LocaleState, action: Action): LocaleState;
 
 export function initialize(languageCodes: string[], options: Options): InitializeAction;
 
-export function addTranslation(translation: Object): AddTranslationAction;
+export function addTranslation(translation: MultipleLanguageTranslation): AddTranslationAction;
 
-export function addTranslationForLanguage(translation: Object, language: string): AddTranslationForLanguageAction;
+export function addTranslationForLanguage(translation: SingleLanguageTranslation, language: string): AddTranslationForLanguageAction;
 
 export function setLanguages(languageCodes: string[], activeLanguage: string): SetLanguagesAction;
 

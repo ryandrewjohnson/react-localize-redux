@@ -54,6 +54,14 @@ export type TranslateValue = string|string[];
 
 export type Translate = (value: TranslateValue, data: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap; 
 
+export type SingleLanguageTranslation = {
+  [key: string]: Object | string
+};
+
+export type MultipleLanguageTranslation = {
+  [key: string]: Object | string[]
+};
+
 type InitializePayload = {
   languageCodes: string[],
   options?: Options
@@ -219,12 +227,12 @@ export const initialize = (languageCodes: string[], options: Options = defaultTr
   payload: { languageCodes, options }
 });
 
-export const addTranslation = (translation: Object): AddTranslationAction => ({
+export const addTranslation = (translation: MultipleLanguageTranslation): AddTranslationAction => ({
   type: ADD_TRANSLATION,
   payload: { translation }
 });
 
-export const addTranslationForLanguage = (translation: Object, language: string): AddTranslationForLanguageAction => ({
+export const addTranslationForLanguage = (translation: SingleLanguageTranslation, language: string): AddTranslationForLanguageAction => ({
   type: ADD_TRANSLATION_FOR_LANGUGE,
   payload: { translation, language }
 });
