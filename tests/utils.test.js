@@ -1,5 +1,8 @@
-import { shallow } from 'enzyme';
+import Enzyme, { shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import * as utils from 'utils';
+
+Enzyme.configure({ adapter: new Adapter() });
 
 describe('locale utils', () => {
   const defaultLanguage = { code: 'en' };
