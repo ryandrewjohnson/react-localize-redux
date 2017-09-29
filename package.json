@@ -57,7 +57,7 @@
   },
   "homepage": "https://github.com/ryandrewjohnson/react-localize-redux#readme",
   "peerDependencies": {
-    "react": "^15.0.0",
+    "react": "^15.0.0 || ^16.0.0",
     "react-redux": "^4.3.0 || ^5.0.0",
     "redux": "^3.0.0"
   },
@@ -73,7 +73,8 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "cross-env": "^3.1.4",
-    "enzyme": "^2.9.1",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-16": "^1.0.0",
     "express": "^4.14.0",
     "flow-bin": "^0.53.1",
     "flow-copy-source": "^1.2.1",
@@ -83,14 +84,14 @@
     "json-loader": "^0.5.4",
     "ncp": "^2.0.0",
     "progress-bar-webpack-plugin": "^1.9.1",
-    "react": "^15.6.1",
-    "react-addons-test-utils": "^15.6.0",
-    "react-dom": "^15.6.1",
-    "react-redux": "^5.0.1",
+    "raf": "^3.3.2",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "react-redux": "^5.0.6",
     "react-router": "^3.0.0",
-    "react-test-renderer": "^15.6.1",
+    "react-test-renderer": "^16.0.0",
     "redux": "^3.6.0",
-    "redux-devtools": "^3.3.1",
+    "redux-devtools": "^3.4.0",
     "redux-devtools-extension": "^2.13.2",
     "redux-mock-store": "^1.2.1",
     "rimraf": "^2.5.4",
@@ -107,6 +108,9 @@
     "modulePaths": [
       "src/",
       "node_modules"
+    ],
+    "setupFiles": [
+      "raf/polyfill"
     ]
   },
   "dependencies": {
