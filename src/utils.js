@@ -20,7 +20,7 @@ export const getLocalizedElement = (key: string, translations: TranslatedLanguag
 };
 
 export const hasHtmlTags = (value: string): boolean => {
-  const pattern = /<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)\/?>/;
+  const pattern = /(&[^\s]*;|<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)\/?>)/;
   return value.search(pattern) >= 0;
 };
 
