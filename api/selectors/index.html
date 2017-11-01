@@ -261,7 +261,7 @@ export default connect(mapStateToProps)(Page);
 </table>
 <p><strong> Returns: </strong></p>
 <p>The active language object </p>
-<pre><code class="javascript">{ code: 'en', active: true }
+<pre><code class="javascript">{ name: 'English', code: 'en', active: true }
 </code></pre>
 
 <p><strong> Usage: </strong></p>
@@ -293,14 +293,14 @@ export default connect(mapStateToProps)(Greeting);
 </table>
 <p><strong> Returns: </strong> </p>
 <p>An array of language codes </p>
-<pre><code class="javascript">[{ code: 'en', active: true }, { code: 'fr', active: false }]
+<pre><code class="javascript">[{ name: 'English', code: 'en', active: true }, { name: 'French', code: 'fr', active: false }]
 </code></pre>
 
 <p><strong> Usage: </strong></p>
 <pre><code class="javascript">const LanguageSelector = ({ languages }) =&gt; (
   &lt;ul&gt;
-    { languages.map(language =&gt; 
-      &lt;a onClick={ () =&gt; setActiveLanguage(language.code) }&gt;{ language.code }&lt;/a&gt;
+    { languages.map(language =&gt; (
+      &lt;a onClick={ () =&gt; { setActiveLanguage(language.code) }&gt;{ language.name }&lt;/a&gt;
     )}
   &lt;/ul&gt;
 );

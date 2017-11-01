@@ -176,6 +176,15 @@ store.dispatch(initialize(languages));
 store.dispatch(initialize(languages, { defaultLanguage: 'fr' }));
 </code></pre>
 
+<p>If you want to associate a language name with each language code you can use the following format:</p>
+<pre><code class="javascript">const languages = [
+  { name: 'English', code: 'en' },
+  { name: 'French', code: 'fr' },
+  { name: 'Spanish', code: 'es' }
+];
+store.dispatch(initialize(languages));
+</code></pre>
+
 <hr />
 <h2 id="3-add-translation-data">3. Add translation data</h2>
 <p>Typically you will store your translation data in json files, but the data can also be a vanilla JS object. </p>

@@ -159,8 +159,8 @@
 <tbody>
 <tr>
 <td>languages</td>
-<td>string []</td>
-<td>An array of languages codes</td>
+<td>string [] or <br/>{ name: string, code: string } []</td>
+<td>An array of language codes or named language objects.</td>
 </tr>
 <tr>
 <td>[options]</td>
@@ -219,8 +219,16 @@
 </div>
 
 <p><strong> Usage: </strong></p>
-<pre><code class="javascript">const languages = ['en', 'fr', 'es'];
+<pre><code class="javascript">// with named languages 
+const languages = [
+  { name: 'English', code: 'en' },
+  { name: 'French', code: 'fr' },
+  { name: 'Spanish', code: 'es' }
+];
+store.dispatch(initialize(languages));
 
+// with language codes only
+const languages = ['en', 'fr', 'es'];
 store.dispatch(initialize(languages));
 
 // if you wanted 'fr' to be default language instead of 'en'
