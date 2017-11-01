@@ -13,7 +13,11 @@ const mainRoute = (store) => {
     onEnter (nextState) {
       const language = nextState.params.lang || 'en';
       const json = require('../assets/global.locale.json');
-      store.dispatch(initialize(['en', 'fr', 'es']));
+      store.dispatch(initialize([
+        { name: 'English', code: 'en' }, 
+        { name: 'French', code: 'fr' }, 
+        { name: 'Spanish', code: 'es' }
+      ]));
       store.dispatch(setActiveLanguage(language));
       store.dispatch(addTranslation(json));
 

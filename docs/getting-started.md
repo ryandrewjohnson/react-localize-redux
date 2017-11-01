@@ -43,6 +43,16 @@ const languages = ['en', 'fr', 'es'];
 store.dispatch(initialize(languages, { defaultLanguage: 'fr' }));
 ```
 
+If you want to associate a language name with each language code you can use the following format:
+
+```javascript
+const languages = [
+  { name: 'English', code: 'en' },
+  { name: 'French', code: 'fr' },
+  { name: 'Spanish', code: 'es' }
+];
+store.dispatch(initialize(languages));
+```
 
 
 ---------------

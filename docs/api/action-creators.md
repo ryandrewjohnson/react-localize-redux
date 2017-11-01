@@ -6,7 +6,7 @@ Dispatch this action when your app is initialized, and pass in which languages y
 
 name | Type | Description
 --------- | ----------| ------------
-languages | string []  | An array of languages codes
+languages | string [] or <br/>{ name: string, code: string } []  | An array of language codes or named language objects.
 [options] | object  | Additional configuration options
 
 <p id="initialize-options"><strong> Options: </strong></p>
@@ -27,8 +27,16 @@ translationTransform | function | undefined | A transformation function that wil
 ** Usage: **
 
 ```javascript
-const languages = ['en', 'fr', 'es'];
+// with named languages 
+const languages = [
+  { name: 'English', code: 'en' },
+  { name: 'French', code: 'fr' },
+  { name: 'Spanish', code: 'es' }
+];
+store.dispatch(initialize(languages));
 
+// with language codes only
+const languages = ['en', 'fr', 'es'];
 store.dispatch(initialize(languages));
 
 // if you wanted 'fr' to be default language instead of 'en'

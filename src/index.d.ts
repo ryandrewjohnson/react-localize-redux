@@ -5,8 +5,14 @@ import { ComponentClass } from 'react-redux';
 export as namespace ReactLocalizeRedux;
 
 export interface Language {
+  name?: string;
   code: string;
   active: boolean;
+}
+
+export interface NamedLanguage {
+  name: string;
+  code: string;
 }
 
 export interface Translations {
@@ -55,7 +61,7 @@ interface BaseAction<T, P> {
 export type Translate = (value: TranslateValue, data: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap; 
 
 type InitializePayload = {
-  languageCodes: string[],
+  languages: any[], 
   options?: Options
 };
 
@@ -69,7 +75,7 @@ type AddTranslationForLanguagePayload = {
 };
 
 type SetLanguagesPayload = {
-  languageCodes: string[],
+  languages: string[]|NamedLanguage[],
   activeLanguage?: string
 };
 
@@ -114,13 +120,13 @@ export interface LocalizeStateProps {
 
 export function localeReducer(state: LocaleState, action: Action): LocaleState;
 
-export function initialize(languageCodes: string[], options: Options): InitializeAction;
+export function initialize(languages: string[]|NamedLanguage[], options: Options): InitializeAction;
 
 export function addTranslation(translation: MultipleLanguageTranslation): AddTranslationAction;
 
 export function addTranslationForLanguage(translation: SingleLanguageTranslation, language: string): AddTranslationForLanguageAction;
 
-export function setLanguages(languageCodes: string[], activeLanguage: string): SetLanguagesAction;
+export function setLanguages(languages: string[]|NamedLanguage[], activeLanguage: string): SetLanguagesAction;
 
 export function setActiveLanguage(languageCode: string): SetActiveLanguageAction;
 

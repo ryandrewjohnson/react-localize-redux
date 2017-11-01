@@ -98,7 +98,7 @@ state | any | The localeReducer slice of your state.
 The active language object 
 
 ```javascript
-{ code: 'en', active: true }
+{ name: 'English', code: 'en', active: true }
 ```
 
 ** Usage: **
@@ -129,7 +129,7 @@ state | any | The localeReducer slice of your state.
 An array of language codes 
 
 ```javascript
-[{ code: 'en', active: true }, { code: 'fr', active: false }]
+[{ name: 'English', code: 'en', active: true }, { name: 'French', code: 'fr', active: false }]
 ```
 
 ** Usage: **
@@ -137,8 +137,8 @@ An array of language codes
 ```javascript
 const LanguageSelector = ({ languages }) => (
   <ul>
-    { languages.map(language => 
-      <a onClick={ () => setActiveLanguage(language.code) }>{ language.code }</a>
+    { languages.map(language => (
+      <a onClick={ () => { setActiveLanguage(language.code) }>{ language.name }</a>
     )}
   </ul>
 );

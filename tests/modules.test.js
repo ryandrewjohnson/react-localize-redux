@@ -38,63 +38,136 @@ describe('locale module', () => {
     });
 
     describe('INITIALIZE', () => {
-      it('should set languages and set default language to first language', () => {
-        const action = {
-          type: INITIALIZE,
-          payload: {
-            languageCodes: ['en', 'fr', 'ne']
-          }
-        };
-        const result = languages([], action);
-        expect(result).toEqual([
-          { code: 'en', active: true },
-          { code: 'fr', active: false },
-          { code: 'ne', active: false }
-        ]);
+      describe('set with string[]', () => {
+        it('should set languages and set default language to first language', () => {
+          const action = {
+            type: INITIALIZE,
+            payload: {
+              languages: ['en', 'fr', 'ne']
+            }
+          };
+          const result = languages([], action);
+          expect(result).toEqual([
+            { code: 'en', active: true },
+            { code: 'fr', active: false },
+            { code: 'ne', active: false }
+          ]);
+        });
+
+        it('should set active language based on defaultLanguage option', () => {
+          const action = {
+            type: INITIALIZE,
+            payload: {
+              languages: ['en', 'fr', 'ne'],
+              options: { defaultLanguage: 'ne' }
+            }
+          };
+          const result = languages([], action);
+          expect(result).toEqual([
+            { code: 'en', active: false },
+            { code: 'fr', active: false },
+            { code: 'ne', active: true }
+          ]);
+        }); 
       });
 
-      it('should set active language based on defaultLanguage option', () => {
-        const action = {
-          type: INITIALIZE,
-          payload: {
-            languageCodes: ['en', 'fr', 'ne'],
-            options: { defaultLanguage: 'ne' }
-          }
-        };
-        const result = languages([], action);
-        expect(result).toEqual([
-          { code: 'en', active: false },
-          { code: 'fr', active: false },
-          { code: 'ne', active: true }
-        ]);
-      }); 
+      describe('set with Language[]', () => {
+        it('should set languages and set default language to first language', () => {
+          const action = {
+            type: INITIALIZE,
+            payload: {
+              languages: [
+                { name: 'English', code: 'en' },
+                { name: 'French', code: 'fr' }
+              ]
+            }
+          };
+          const result = languages([], action);
+          expect(result).toEqual([
+            { name: 'English', code: 'en', active: true },
+            { name: 'French', code: 'fr', active: false }
+          ]);
+        });
+  
+        it('should set active language based on defaultLanguage option', () => {
+          const action = {
+            type: INITIALIZE,
+            payload: {
+              languages: [
+                { name: 'English', code: 'en' },
+                { name: 'French', code: 'fr' }
+              ],
+              options: { defaultLanguage: 'fr' }
+            }
+          };
+          const result = languages([], action);
+          expect(result).toEqual([
+            { name: 'English', code: 'en', active: false },
+            { name: 'French', code: 'fr', active: true }
+          ]);
+        }); 
+      });
     });
 
     describe('SET_LANGUAGES', () => {
-      it('should add new languages with first set to active by default', () => {
-        const action = {
-          type: SET_LANGUAGES,
-          payload: {
-            languageCodes: ['en', 'fr', 'ne']
-          }
-        };
+      describe('set with string[]', () => {
+        it('should add new languages with first set to active by default', () => {
+          const action = {
+            type: SET_LANGUAGES,
+            payload: {
+              languages: ['en', 'fr', 'ne']
+            }
+          };
 
-        const result = languages([], action);
-        expect(result).toEqual([
-          { code: 'en', active: true },
-          { code: 'fr', active: false },
-          { code: 'ne', active: false }
-        ]);
+          const result = languages([], action);
+          expect(result).toEqual([
+            { code: 'en', active: true },
+            { code: 'fr', active: false },
+            { code: 'ne', active: false }
+          ]);
+        });
+
+        it('should set active language = to activeIndex passed to setLanguages', () => {
+          const result = languages([], setLanguages(['en', 'fr', 'ne'], 'fr'));
+
+          expect(result).toEqual([
+            { code: 'en', active: false },
+            { code: 'fr', active: true },
+            { code: 'ne', active: false }
+          ]);
+        });
       });
 
-      it('should set active language = to activeIndex passed to setLanguages', () => {
-        const result = languages([], setLanguages(['en', 'fr', 'ne'], 'fr'));
+      describe('set with Language[]', () => {
+        it('should add new languages with first set to active by default', () => {
+          const action = {
+            type: SET_LANGUAGES,
+            payload: {
+              languages: [
+                { name: 'English', code: 'en' },
+                { name: 'French', code: 'fr' }
+              ]
+            }
+          };
 
-        expect(result).toEqual([
-          { code: 'en', active: false },
-          { code: 'fr', active: true },
-          { code: 'ne', active: false }
-        ]);
+          const result = languages([], action);
+          expect(result).toEqual([
+            { name: 'English', code: 'en', active: true },
+            { name: 'French', code: 'fr', active: false }
+          ]);
+        });
+
+        it('should set active language = to activeIndex passed to setLanguages', () => {
+          const result = languages([], setLanguages([
+            { name: 'English', code: 'en' },
+            { name: 'French', code: 'fr' }
+          ], 'fr'));
+
+          expect(result).toEqual([
+            { name: 'English', code: 'en', active: false },
+            { name: 'French', code: 'fr', active: true }
+          ]);
+        });
       });
     });
     
@@ -411,6 +484,18 @@ describe('locale module', () => {
       };
       const result = getActiveLanguage(state);
       expect(result).toBe(undefined);
+    });
+
+    it('should return activeLanguage with name', () => {
+      const state = {
+        languages: [{ code: 'en', name: 'English', active: false }, { code: 'fr', name: 'French', active: true }]
+      };
+      const result = getActiveLanguage(state);
+      expect(result).toEqual({
+        code: 'fr',
+        name: 'French',
+        active: true
+      });
     });
   });
 

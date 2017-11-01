@@ -10,8 +10,14 @@ import type { Element } from 'react';
  * TYPES
  */
 export type Language = {
+  name?: string,
   code: string,
   active: boolean
+};
+
+export type NamedLanguage = {
+  name: string,
+  code: string
 };
 
 export type Translations = {
@@ -63,7 +69,7 @@ export type MultipleLanguageTranslation = {
 };
 
 type InitializePayload = {
-  languageCodes: string[],
+  languages: any[], // TODO: why does string[]|NamedLanguage[] not work?
   options?: Options
 };
 
@@ -77,7 +83,7 @@ type AddTranslationForLanguagePayload = {
 };
 
 type SetLanguagesPayload = {
-  languageCodes: string[],
+  languages: string[]|NamedLanguage[],
   activeLanguage?: string
 };
 
@@ -127,13 +133,18 @@ export function languages(state: Language[] = [], action: Action): Language[] {
   switch (action.type) {
     case INITIALIZE:
     case SET_LANGUAGES:
-      const languageCodes = action.payload.languageCodes;
       const options = action.payload.options || {};
-      const activeLanguage = action.payload.activeLanguage || options.defaultLanguage || languageCodes[0];
-      const activeIndex = languageCodes.indexOf(activeLanguage);
-      return languageCodes.map((code, index) => {
-        const isActive = index === activeIndex;
-        return { code, active: isActive };
+      const activeLanguage = action.payload.activeLanguage || options.defaultLanguage;
+      return action.payload.languages.map((language, index) => {
+        const isActive = (code) => {
+          return activeLanguage !== undefined
+            ? code === activeLanguage
+            : index === 0;
+        };
+        // check if it's using array of Language objects, or array of languge codes
+        return typeof language === 'string'
+          ? { code: language, active: isActive(language) }    // language codes
+          : { ...language, active: isActive(language.code) }; // language objects
       });
     case SET_ACTIVE_LANGUAGE:
       return state.map(language => {
@@ -222,9 +233,9 @@ export const localeReducer = (state: LocaleState = initialState, action: Action)
 /**
  * ACTION CREATORS
  */
-export const initialize = (languageCodes: string[], options: Options = defaultTranslateOptions): InitializeAction => ({
+export const initialize = (languages: string[]|NamedLanguage[], options: Options = defaultTranslateOptions): InitializeAction => ({
   type: INITIALIZE,
-  payload: { languageCodes, options }
+  payload: { languages, options }
 });
 
 export const addTranslation = (translation: MultipleLanguageTranslation): AddTranslationAction => ({
@@ -237,9 +248,9 @@ export const addTranslationForLanguage = (translation: SingleLanguageTranslation
   payload: { translation, language }
 });
 
-export const setLanguages = (languageCodes: string[], activeLanguage: string): SetLanguagesAction => ({
+export const setLanguages = (languages: string[]|NamedLanguage[], activeLanguage: string): SetLanguagesAction => ({
   type: SET_LANGUAGES,
-  payload: { languageCodes, activeLanguage }
+  payload: { languages, activeLanguage }
 });
 
 export const setActiveLanguage = (languageCode: string): SetActiveLanguageAction => ({
@@ -259,8 +270,7 @@ export const getOptions = (state: LocaleState): Options => state.options;
 
 export const getActiveLanguage = (state: LocaleState): Language => {
   const languages = getLanguages(state);
-  const activeLanguageIndex = languages.map(language => language.active).indexOf(true);
-  return languages[activeLanguageIndex];
+  return languages.filter(language => language.active === true)[0];
 };
 
 export const translationsEqualSelector = createSelectorCreator(
