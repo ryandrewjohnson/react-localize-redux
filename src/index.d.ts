@@ -85,7 +85,7 @@ type SetActiveLanguagePayload = {
 
 type LocalizeProps = {
   currentLanguage: string,
-  translate: Translate
+  translate: Selector<LocaleState, Translate>
 };
 
 export type SingleLanguageTranslation = {
