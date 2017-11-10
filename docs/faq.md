@@ -11,8 +11,11 @@ See [Custom data format](/formatting-translation-data/#custom-data-format) for d
 
 ## How does react-localize-redux differ from [react-intl](https://github.com/yahoo/react-intl)?
 
-* **react-intl** is larger in size/complexity, and for good reason as it handles many things related to localization. e.g. Pluralization, currency. Where as with react-localize-redux you could still do pluralization, and currency, but you'd be writing the formatting functionality yourself. 
+* **react-intl** is larger in size/complexity, and for good reason as it handles many things related to localization. e.g. Pluralization, currency. Where as with **react-localize-redux** you could still do pluralization, and currency, but you'd be writing the formatting functionality yourself. 
 <br/>
 <br/>
-* It's not meant to work with Redux out of the box, and needs an additional library [react-intl-redux](https://github.com/ratson/react-intl-redux) to add support.
+* **react-intl** doesn't work with Redux out of the box, and needs an additional library [react-intl-redux](https://github.com/ratson/react-intl-redux) to add support.
+<br/>
+<br/>
+* For further discussion on this topic see [original github issue](https://github.com/ryandrewjohnson/react-localize-redux/issues/21).
 

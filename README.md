@@ -24,6 +24,7 @@ npm install react-localize-redux --save
 - [Getting Started](https://ryandrewjohnson.github.io/react-localize-redux/getting-started/)
 - [Formatting Translation Data](https://ryandrewjohnson.github.io/react-localize-redux/formatting-translation-data/)
 - [Features](https://ryandrewjohnson.github.io/react-localize-redux/features/)
+- [FAQ](https://ryandrewjohnson.github.io/react-localize-redux/faq/)
 - API
   - [Action Creators](https://ryandrewjohnson.github.io/react-localize-redux/api/action-creators/)
   - [Selectors](https://ryandrewjohnson.github.io/react-localize-redux/api/selectors/)

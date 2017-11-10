@@ -8,11 +8,11 @@ pages:
 - Getting Started: getting-started.md
 - Formatting Translation Data: formatting-translation-data.md
 - Features: features.md
+- FAQ: faq.md
 - API Documentation: 
   - 'Action Creators': 'api/action-creators.md'
   - 'Selectors': 'api/selectors.md'
   - 'Higher Order Component': 'api/higher-order-component.md'
-- FAQ: faq.md
 
 theme: readthedocs
 # theme_dir: cinder
