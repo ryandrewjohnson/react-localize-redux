@@ -174,6 +174,26 @@
             "location": "/api/higher-order-component/#localizecomponent-reducername", 
             "text": "Important \n   if your component is already using  connect  then you should use the  getTranslate , and  getActiveLanguage  selectors instead of  localize .   If you have a component that just needs access to translations, and nothing else then you can use the  localize  higher-order function. When you pass your Component to localize it will automatically add  translate  and  currentLanguage  to props.    Arguments:      name  Type  Description      Component  ReactComponent  The localeReducer slice of your state.    [reducerName]  string  If you added localeReducer with  combineReducers  then you will need to pass the reducerName to localize.      Returns:     A higher-order React component that adds  translate  and  currentLanguage  to props.   Usage:   const Greeting = ({ translate, currentLanguage }) =  (\n   span \n     h1 languageCode: { currentLanguage } /h1 \n     h2 { translate('greeting', { name: 'Testy McTest' }) } /h2 \n   /span \n);\nexport default localize(Greeting, 'locale');", 
             "title": "localize(Component, [reducerName])"
+        }, 
+        {
+            "location": "/faq/", 
+            "text": "Do I have to connect every component that needs translations?\n\n\nNo you shouldn't have to connect every component. To avoid this add translate to a parent component, and then pass translations \ndown to stateless child components as props. See the \npass multiple translations to components\n feature on one way to accomplish this.\n\n\nWhat if my translation data isn't in the required format?\n\n\nIf you don't have control over the translation data for your application you can use the \ntranslationTransform\n option. \nThis allows you to write a function that takes in your custom translation data, and outputs the data in the required format.\nSee \nCustom data format\n for documentaion.\n\n\nHow does react-localize-redux differ from \nreact-intl\n?\n\n\n\n\nreact-intl\n is larger in size/complexity, and for good reason as it handles many things related to localization. e.g. Pluralization, currency. Where as with react-localize-redux you could still do pluralization, and currency, but you'd be writing the formatting functionality yourself. \n\n\n\n\n\nIt's not meant to work with Redux out of the box, and needs an additional library \nreact-intl-redux\n to add support.\n\n\n\n\n\nFor further discussion on this topic see \noriginal github issue\n.", 
+            "title": "FAQ"
+        }, 
+        {
+            "location": "/faq/#do-i-have-to-connect-every-component-that-needs-translations", 
+            "text": "No you shouldn't have to connect every component. To avoid this add translate to a parent component, and then pass translations \ndown to stateless child components as props. See the  pass multiple translations to components  feature on one way to accomplish this.", 
+            "title": "Do I have to connect every component that needs translations?"
+        }, 
+        {
+            "location": "/faq/#what-if-my-translation-data-isnt-in-the-required-format", 
+            "text": "If you don't have control over the translation data for your application you can use the  translationTransform  option. \nThis allows you to write a function that takes in your custom translation data, and outputs the data in the required format.\nSee  Custom data format  for documentaion.", 
+            "title": "What if my translation data isn't in the required format?"
+        }, 
+        {
+            "location": "/faq/#how-does-react-localize-redux-differ-from-react-intl", 
+            "text": "react-intl  is larger in size/complexity, and for good reason as it handles many things related to localization. e.g. Pluralization, currency. Where as with react-localize-redux you could still do pluralization, and currency, but you'd be writing the formatting functionality yourself.    It's not meant to work with Redux out of the box, and needs an additional library  react-intl-redux  to add support.   For further discussion on this topic see  original github issue .", 
+            "title": "How does react-localize-redux differ from react-intl?"
         }
     ]
 }
