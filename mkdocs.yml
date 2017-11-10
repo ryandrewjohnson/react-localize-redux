@@ -12,7 +12,7 @@ pages:
   - 'Action Creators': 'api/action-creators.md'
   - 'Selectors': 'api/selectors.md'
   - 'Higher Order Component': 'api/higher-order-component.md'
-# - FAQ: index.md
+- FAQ: faq.md
 
 theme: readthedocs
 # theme_dir: cinder
