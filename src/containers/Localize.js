@@ -4,12 +4,7 @@ import { connect } from 'react-redux';
 import { getActiveLanguage, getTranslate } from '../modules/locale';
 import type { ComponentType } from 'react';
 import type { MapStateToProps } from 'react-redux';
-import type { LocaleState, Language, Translate } from '../modules/locale';
-
-export type LocalizeStateProps = {
-  currentLanguage: string,
-  translate: Translate
-};
+import type { LocaleState, Language, Translate, LocalizeStateProps } from '../index';
 
 const mapStateToProps = (slice: ?string): MapStateToProps<LocaleState, {}, LocalizeStateProps> => (state: Object|LocaleState): LocalizeStateProps => {
   const scopedState: LocaleState = slice ? state[slice] : state;

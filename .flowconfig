@@ -7,3 +7,4 @@
 [lints]
 
 [options]
+module.name_mapper='react-localize-redux' -> '<PROJECT_ROOT>/src/index.js'

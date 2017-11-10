@@ -58,7 +58,7 @@ interface BaseAction<T, P> {
   payload: P;
 }
 
-export type Translate = (value: TranslateValue, data: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap; 
+export type Translate = (value: TranslateValue, data?: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap; 
 
 type InitializePayload = {
   languages: any[], 
