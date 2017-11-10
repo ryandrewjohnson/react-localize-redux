@@ -34,6 +34,14 @@
     
 
     
+    <url>
+     <loc>/faq/</loc>
+     <lastmod>2017-11-09</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
         
     <url>
      <loc>/api/action-creators/</loc>
@@ -53,14 +61,6 @@
      <changefreq>daily</changefreq>
     </url>
         
-    
-
-    
-    <url>
-     <loc>/faq/</loc>
-     <lastmod>2017-11-09</lastmod>
-     <changefreq>daily</changefreq>
-    </url>
     
 
 </urlset>
