@@ -13,12 +13,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "npm run build:commonjs && npm run build:es && npm run build:flow && npm run build:umd && npm run build:umd:min && npm run copy:ts",
+    "build": "npm run build:commonjs && npm run build:es && npm run copy:flow && npm run build:umd && npm run build:umd:min && npm run copy:ts",
     "build:commonjs": "rimraf lib && cross-env BABEL_ENV=commonjs babel ./src -d lib",
     "build:es": "rimraf es && cross-env BABEL_ENV=es babel ./src -d es",
     "build:umd": "rimraf dist && webpack --env.dev --output-filename dist/ReactLocalizeRedux.js",
     "build:umd:min": "webpack --env.prod --output-filename dist/ReactLocalizeRedux.min.js",
-    "build:flow": "flow-copy-source ./src lib && flow-copy-source ./src es",
+    "copy:flow": "ncp ./src/index.js.flow ./lib/index.js.flow && ncp ./src/index.js.flow ./es/index.js.flow",
     "copy:ts": "ncp ./src/index.d.ts ./lib/index.d.ts && ncp ./src/index.d.ts ./es/index.d.ts",
     "coverage": "jest --coverage",
     "prepublish": "npm run build",

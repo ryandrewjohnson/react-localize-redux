@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { getTranslate, addTranslation } from 'react-localize-redux';
 import { connect } from 'react-redux';

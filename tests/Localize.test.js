@@ -2,7 +2,7 @@ import React from 'react';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
-import { localize } from 'containers/Localize';
+import { localize } from 'Localize';
 
 Enzyme.configure({ adapter: new Adapter() });
 

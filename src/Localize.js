@@ -1,10 +1,15 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
-import { getActiveLanguage, getTranslate } from '../modules/locale';
+import { getActiveLanguage, getTranslate } from './locale';
 import type { ComponentType } from 'react';
 import type { MapStateToProps } from 'react-redux';
-import type { LocaleState, Language, Translate, LocalizeStateProps } from '../index';
+import type { LocaleState, Language, Translate } from './locale';
+
+export type LocalizeStateProps = {
+  currentLanguage: string,
+  translate: Translate
+};
 
 const mapStateToProps = (slice: ?string): MapStateToProps<LocaleState, {}, LocalizeStateProps> => (state: Object|LocaleState): LocalizeStateProps => {
   const scopedState: LocaleState = slice ? state[slice] : state;

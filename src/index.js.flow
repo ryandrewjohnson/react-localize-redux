@@ -1,0 +1,86 @@
+// @flow
+import type { ComponentType } from 'react';
+import type { Selector, SelectorCreator } from 'reselect';
+
+import type { Language as _Language } from './locale';
+import type { NamedLanguage as _NamedLanguage } from './locale';
+import type { Options as _Options } from './locale';
+import type { LocaleState as _LocaleState } from './locale';
+import type { Translations as _Translations } from './locale';
+import type { SingleLanguageTranslation as _SingleLanguageTranslation } from './locale';
+import type { MultipleLanguageTranslation as _MultipleLanguageTranslation } from './locale';
+import type { Translate as _Translate } from './locale';
+import type { LocalizeStateProps as _LocalizeStateProps } from './localize';
+
+import type { InitializeAction as _InitializeAction } from './locale';
+import type { AddTranslationAction as _AddTranslationAction } from './locale';
+import type { AddTranslationForLanguageAction as _AddTranslationForLanguageAction } from './locale';
+import type { SetLanguagesAction as _SetLanguagesAction } from './locale';
+import type { SetActiveLanguageAction as _SetActiveLanguageAction } from './locale';
+import type { Action as _Action } from './locale';
+
+export type Language = _Language;
+export type NamedLanguage = _NamedLanguage;
+export type Options = _Options;
+export type LocaleState = _LocaleState;
+export type Translations = _Translations;
+export type SingleLanguageTranslation = _SingleLanguageTranslation;
+export type MultipleLanguageTranslation = _MultipleLanguageTranslation;
+export type Translate = _Translate;
+export type LocalizeStateProps = _LocalizeStateProps;
+
+export type InitializeAction = _InitializeAction;
+export type AddTranslationAction = _AddTranslationAction;
+export type AddTranslationForLanguageAction = _AddTranslationForLanguageAction;
+export type SetLanguagesAction = _SetLanguagesAction;
+export type SetActiveLanguageAction = _SetActiveLanguageAction;
+export type Action = _Action;
+
+
+declare export function localeReducer(
+  state: LocaleState, action: Action
+): LocaleState;
+
+declare export function initialize(
+  languages: Array<string|NamedLanguage>, options?: Options
+): InitializeAction;
+
+declare export function addTranslation(
+  translation: MultipleLanguageTranslation
+): AddTranslationAction;
+
+declare export function addTranslationForLanguage(
+  translation: SingleLanguageTranslation, language: string
+): AddTranslationForLanguageAction;
+
+declare export function setLanguages(
+  languages: Array<string|NamedLanguage>, activeLanguage?: string
+): SetLanguagesAction;
+
+declare export function setActiveLanguage(
+  languageCode: string
+): SetActiveLanguageAction;
+
+declare export function getTranslations(
+  state: LocaleState
+): Translations;
+
+declare export function getLanguages(
+  state: LocaleState
+): Language[];
+
+declare export function getOptions(
+  state: LocaleState
+): Options;
+
+declare export function getActiveLanguage(
+  state: LocaleState
+): Language;
+
+declare export function getTranslate(
+  state: LocaleState
+): Selector<LocaleState, Translate>;
+
+declare export function localize(
+  Component: ComponentType<any>, slice?: string
+): (state: LocaleState) => ComponentType<LocalizeStateProps>;

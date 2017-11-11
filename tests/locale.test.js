@@ -1,9 +1,9 @@
-import * as actions from 'modules/locale';
+import * as actions from 'locale';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, translationsEqualSelector, setLanguages, getTranslate, getTranslateSelector, defaultTranslateOptions, options } from 'modules/locale';
+import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, translationsEqualSelector, setLanguages, getTranslate, getTranslateSelector, defaultTranslateOptions, options } from 'locale';
 import { getLocalizedElement } from 'utils';
-import { INITIALIZE, SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION, ADD_TRANSLATION_FOR_LANGUGE } from 'modules/locale';
+import { INITIALIZE, SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION, ADD_TRANSLATION_FOR_LANGUGE } from 'locale';
 
 Enzyme.configure({ adapter: new Adapter() });
 

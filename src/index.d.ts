@@ -120,13 +120,13 @@ export interface LocalizeStateProps {
 
 export function localeReducer(state: LocaleState, action: Action): LocaleState;
 
-export function initialize(languages: string[]|NamedLanguage[], options: Options): InitializeAction;
+export function initialize(languages: Array<string|NamedLanguage>, options?: Options): InitializeAction;
 
 export function addTranslation(translation: MultipleLanguageTranslation): AddTranslationAction;
 
 export function addTranslationForLanguage(translation: SingleLanguageTranslation, language: string): AddTranslationForLanguageAction;
 
-export function setLanguages(languages: string[]|NamedLanguage[], activeLanguage: string): SetLanguagesAction;
+export function setLanguages(languages: Array<string|NamedLanguage>, activeLanguage?: string): SetLanguagesAction;
 
 export function setActiveLanguage(languageCode: string): SetActiveLanguageAction;
 

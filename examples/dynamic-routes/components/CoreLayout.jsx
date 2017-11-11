@@ -1,3 +1,4 @@
+// @flow
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
@@ -7,7 +8,7 @@ const CoreLayout = ({ children, currentLanguage, translate, count, click }) => {
   return (
     <div>
       <nav>
-        <button onClick={ click }>Click count: { count }</button>
+        {/* <button onClick={ click }>Click count: { count }</button> */}
         <ul>
           <li>
             <Link to={ `${ currentLanguage }/welcome` }>{ translate('welcome-page') }</Link>
@@ -31,10 +32,4 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    click: () => dispatch({ type: 'CLICKED' })
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CoreLayout);
+export default connect(mapStateToProps)(CoreLayout);

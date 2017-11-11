@@ -1,5 +1,6 @@
+// @flow
 import React from 'react';
-import { Store, applyMiddleware, compose, createStore, combineReducers } from 'redux';
+import { applyMiddleware, compose, createStore, combineReducers } from 'redux';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, hashHistory } from 'react-router';

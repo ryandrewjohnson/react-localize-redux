@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import { defaultTranslateOptions } from './modules/locale';
-import type { TranslatePlaceholderData, TranslatedLanguage, Options, LocalizedElement, Language } from './index';
+import { defaultTranslateOptions } from './locale';
+import type { TranslatePlaceholderData, TranslatedLanguage, Options, LocalizedElement, Language } from './locale';
 
 export const getLocalizedElement = (key: string, translations: TranslatedLanguage, data: TranslatePlaceholderData, activeLanguage: Language, options: Options = defaultTranslateOptions): LocalizedElement => {
   const onMissingTranslation = () => {

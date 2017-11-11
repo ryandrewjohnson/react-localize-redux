@@ -2,38 +2,119 @@
 import { combineReducers } from 'redux';
 import { flatten } from 'flat';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
-import { getLocalizedElement, getIndexForLanguageCode, objectValuesToString, validateOptions } from '../utils';
+import { getLocalizedElement, getIndexForLanguageCode, objectValuesToString, validateOptions } from './utils';
 import type { Selector, SelectorCreator } from 'reselect';
-import type {
-  Language,
-  NamedLanguage,
-  Translations,
-  TransFormFunction,
-  MissingTranslationCallback,
-  Options,
-  LocaleState,
-  TranslatedLanguage,
-  LocalizedElement,
-  LocalizedElementMap,
-  TranslatePlaceholderData,
-  TranslateValue,
-  Translate,
-  SingleLanguageTranslation,
-  MultipleLanguageTranslation,
-  InitializePayload,
-  AddTranslationPayload,
-  AddTranslationForLanguagePayload,
-  SetLanguagesPayload,
-  SetActiveLanguagePayload,
-  BaseAction,
-  InitializeAction,
-  AddTranslationAction,
-  AddTranslationForLanguageAction,
-  SetActiveLanguageAction,
-  SetLanguagesAction,
-  Action,
-  ActionDetailed
-} from '../index';
+import type { Element } from 'react';
+
+/**
+ * TYPES
+ */
+export type Language = {
+  name?: string,
+  code: string,
+  active: boolean
+};
+
+export type NamedLanguage = {
+  name: string,
+  code: string
+};
+
+export type Translations = {
+  [key: string]: string[]
+};
+
+type TransFormFunction = (data: Object, languageCodes: string[]) => Translations;
+
+type MissingTranslationCallback = (key: string, languageCode: string) => any;
+
+export type Options = {
+  renderInnerHtml?: boolean,
+  defaultLanguage?: string,
+  showMissingTranslationMsg?: boolean,
+  missingTranslationCallback?: MissingTranslationCallback,
+  translationTransform?: TransFormFunction
+};
+
+export type LocaleState = {
+  +languages: Language[],
+  +translations: Translations,
+  +options: Options
+};
+
+export type TranslatedLanguage = {
+  [string]: string
+};
+
+export type LocalizedElement = Element<'span'>|string;
+
+export type LocalizedElementMap = {
+  [string]: LocalizedElement
+};
+
+export type TranslatePlaceholderData = {
+  [string]: string|number
+};
+
+export type TranslateValue = string|string[];
+
+export type Translate = (value: TranslateValue, data?: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap; 
+
+export type SingleLanguageTranslation = {
+  [key: string]: Object | string
+};
+
+export type MultipleLanguageTranslation = {
+  [key: string]: Object | string[]
+};
+
+type InitializePayload = {
+  languages: Array<string|NamedLanguage>,
+  options?: Options
+};
+
+type AddTranslationPayload = {
+  translation: Object
+};
+
+type AddTranslationForLanguagePayload = {
+  translation: Object,
+  language: string
+};
+
+type SetLanguagesPayload = {
+  languages: Array<string|NamedLanguage>,
+  activeLanguage?: string
+};
+
+type SetActiveLanguagePayload = {
+  languageCode: string
+};
+
+type BaseAction<T, P> = {
+  type: T,
+  payload: P
+};
+
+export type InitializeAction = BaseAction<'@@localize/INITIALIZE', InitializePayload>;
+export type AddTranslationAction = BaseAction<'@@localize/ADD_TRANSLATION', AddTranslationPayload>;
+export type AddTranslationForLanguageAction = BaseAction<'@@localize/ADD_TRANSLATION_FOR_LANGUGE', AddTranslationForLanguagePayload>;
+export type SetActiveLanguageAction = BaseAction<'@@localize/SET_ACTIVE_LANGUAGE', SetActiveLanguagePayload>;
+export type SetLanguagesAction = BaseAction<'@@localize/SET_LANGUAGES', SetLanguagesPayload>;
+
+export type Action = BaseAction<
+  string, 
+  & InitializePayload
+  & AddTranslationPayload 
+  & AddTranslationForLanguagePayload 
+  & SetActiveLanguagePayload
+  & SetLanguagesPayload
+>;
+
+export type ActionDetailed = Action & { 
+  languageCodes: string[],
+  translationTransform: TransFormFunction
+};
 
 /**
  * ACTIONS
@@ -152,7 +233,7 @@ export const localeReducer = (state: LocaleState = initialState, action: Action)
 /**
  * ACTION CREATORS
  */
-export const initialize = (languages: string[]|NamedLanguage[], options: Options = defaultTranslateOptions): InitializeAction => ({
+export const initialize = (languages: Array<string|NamedLanguage>, options?: Options = defaultTranslateOptions): InitializeAction => ({
   type: INITIALIZE,
   payload: { languages, options }
 });
@@ -167,7 +248,7 @@ export const addTranslationForLanguage = (translation: SingleLanguageTranslation
   payload: { translation, language }
 });
 
-export const setLanguages = (languages: string[]|NamedLanguage[], activeLanguage: string): SetLanguagesAction => ({
+export const setLanguages = (languages: Array<string|NamedLanguage>, activeLanguage?: string): SetLanguagesAction => ({
   type: SET_LANGUAGES,
   payload: { languages, activeLanguage }
 });
@@ -239,7 +320,7 @@ export const getTranslate: Selector<LocaleState, void, Translate> = createSelect
   getActiveLanguage,
   getOptions,
   (translations, activeLanguage, options) => {
-    return (value, data, optionsOverride = {}) => {
+    return (value, data = {}, optionsOverride = {}) => {
       const translateOptions: Options = {...options, ...optionsOverride};
       if (typeof value === 'string') {
         return getLocalizedElement(value, translations, data, activeLanguage, translateOptions);

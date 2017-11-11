@@ -1,16 +1,17 @@
+// @flow
 import { routeError, loadMultipleRoutes } from '../utils/routes';
 import { addTranslation, addTranslationForLanguage, initialize, setActiveLanguage } from 'react-localize-redux';
 import CoreLayout from '../components/CoreLayout';
 
 export const PATH = '/(:lang)';
 
-const mainRoute = (store) => {
+const mainRoute = (store: any) => {
 
   const routes = {
     path: PATH,
     component: CoreLayout,
     
-    onEnter (nextState) {
+    onEnter (nextState: any) {
       const language = nextState.params.lang || 'en';
       const json = require('../assets/global.locale.json');
       store.dispatch(initialize([
@@ -22,20 +23,21 @@ const mainRoute = (store) => {
       store.dispatch(addTranslation(json));
 
       // add language specific json depending on current language
-      store.dispatch(addTranslationForLanguage(require(`../assets/${ language }.article.json`), language));
+      const articleJson = require(`../assets/${ language }.article.json`);
+      store.dispatch(addTranslationForLanguage(articleJson, language));
     },
 
     indexRoute: {
-      onEnter: (nextState, replace) => {
+      onEnter: (nextState: any, replace: any) => {
         const language = nextState.params.lang || 'en';
         replace(`/${language}/welcome`);
       }
     },
 
-    getChildRoutes (partialNextState, next) {
+    getChildRoutes (partialNextState: any, next: any) {
       Promise.all([
-        System.import('./welcome'),
-        System.import('./info')
+        import('./welcome'),
+        import('./info')
       ])
       .then(loadMultipleRoutes(next, store))
       .catch(routeError);
