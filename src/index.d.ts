@@ -1,5 +1,4 @@
 import { ReactElement } from 'react';
-import { Selector } from 'reselect';
 import { ComponentClass } from 'react-redux';
 
 export as namespace ReactLocalizeRedux;
@@ -85,7 +84,7 @@ type SetActiveLanguagePayload = {
 
 type LocalizeProps = {
   currentLanguage: string,
-  translate: Selector<LocaleState, Translate>
+  translate: Translate
 };
 
 export type SingleLanguageTranslation = {
@@ -138,6 +137,6 @@ export function getOptions(state: LocaleState): Options;
 
 export function getActiveLanguage(state: LocaleState): Language;
 
-export function getTranslate(state: LocaleState): Selector<LocaleState, Translate>;
+export function getTranslate(state: LocaleState): Translate;
 
 export function localize(Component: ReactElement<any>, slice?: string): (state: LocaleState) => ComponentClass<LocalizeProps>;
