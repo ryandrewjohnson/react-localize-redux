@@ -1,6 +1,6 @@
 {
   "name": "react-localize-redux",
-  "version": "2.13.5",
+  "version": "2.13.6",
   "description": "Localization library for React/Redux",
   "main": "./lib/index.js",
   "module": "./es/index.js",
