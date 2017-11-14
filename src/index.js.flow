@@ -79,7 +79,7 @@ declare export function getActiveLanguage(
 
 declare export function getTranslate(
   state: LocaleState
-): Selector<LocaleState, Translate>;
+): Translate;
 
 declare export function localize(
   Component: ComponentType<any>, slice?: string

@@ -84,7 +84,7 @@ type SetActiveLanguagePayload = {
 
 type LocalizeProps = {
   currentLanguage: string,
-  translate: Selector<LocaleState, Translate>
+  translate: Translate
 };
 
 export type SingleLanguageTranslation = {
@@ -111,11 +111,6 @@ export type Action = BaseAction<
 >;
 
 export type ActionLanguageCodes = Action & { languageCodes: string[] };
-
-export interface LocalizeStateProps {
-  currentLanguage: string;
-  translate: Translate;
-}
 
 export function localeReducer(state: LocaleState, action: Action): LocaleState;
 
