@@ -1,5 +1,5 @@
 import { ReactElement } from 'react';
-import { ComponentClass } from 'react-redux';
+import { ComponentClass, Component } from 'react-redux';
 
 export as namespace ReactLocalizeRedux;
 
@@ -134,4 +134,4 @@ export function getActiveLanguage(state: LocaleState): Language;
 
 export function getTranslate(state: LocaleState): Translate;
 
-export function localize(Component: ReactElement<any>, slice?: string): (state: LocaleState) => ComponentClass<LocalizeProps>;
+export function localize(Component: Component<any>, slice?: string): (state: LocaleState) => ComponentClass<LocalizeProps>;
