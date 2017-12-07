@@ -80,6 +80,9 @@
     <li class="toctree-l2"><a href="#what-if-my-translation-data-isnt-in-the-required-format">What if my translation data isn't in the required format?</a></li>
     
 
+    <li class="toctree-l2"><a href="#how-do-i-handle-currency-date-and-other-localization-transformations">How do I handle currency, date, and other localization transformations?</a></li>
+    
+
     <li class="toctree-l2"><a href="#how-does-react-localize-redux-differ-from-react-intl">How does react-localize-redux differ from react-intl?</a></li>
     
 
@@ -147,6 +150,51 @@ down to stateless child components as props. See the <a href="../features/#pass-
 <p>If you don't have control over the translation data for your application you can use the <a href="../api/action-creators/#initializelanguages-options">translationTransform</a> option. 
 This allows you to write a function that takes in your custom translation data, and outputs the data in the required format.
 See <a href="../formatting-translation-data/#custom-data-format">Custom data format</a> for documentaion.</p>
+<h2 id="how-do-i-handle-currency-date-and-other-localization-transformations">How do I handle currency, date, and other localization transformations?</h2>
+<p>This logic was purposely excluded from react-localize-redux to ensure the library remains size and API remains small. 
+In addition this logic, if needed, can usually be covered by other libraries that specialize in that area e.g.(<a href="https://momentjs.com/">Moment</a> for dates).</p>
+<p>There is also the option of handling this logic yourself. Here's an example for currency using <a href="https://github.com/reactjs/reselect">reselect</a>:</p>
+<pre><code class="javascript">import { initialize } from 'react-localize-redux';
+
+const languages = ['en', 'fr'];
+
+const translations = {
+  currency: [&quot;$ ${value}&quot;, &quot;${value} $&quot;]
+};
+
+store.dispatch(initialize(languages));
+store.dispatch(addTranslation(translations));
+
+const Transactions = ({translateCurrency}) =&gt; (
+  &lt;ul&gt;
+    &lt;li&gt;{translateCurrency(1000)}&lt;/li&gt;     // renders $ 1,000 (en), 1 000 $ (fr)
+    &lt;li&gt;{translateCurrency(100000)}&lt;/li&gt;   // renders $ 100,000 (en), 100 000 $ (fr)
+    &lt;li&gt;{translateCurrency(500)}&lt;/li&gt;      // renders $ 500 (en), 500 $ (fr)
+  &lt;/ul&gt;
+);
+
+const getTranslateSelector = (state) =&gt; getTranslate(state.locale);
+const getActiveLanguageSelector = (state) =&gt; getActiveLanguage(state.locale);
+
+/**
+ * Returns a function that takes a number, and formats it using
+ * the current language, the currency translate data, and native toLocaleString 
+ */
+const getTranslateCurrency = createSelector(
+  getTranslateSelector, getActiveLanguageSelector,
+  (translate, language) =&gt; (value) =&gt; {
+    const localizedValue = value.toLocaleString(language.code);
+    return translate('currency', {value: localizedValue});
+  }
+);
+
+const mapStateToProps = state =&gt; ({
+  translateCurrency: getTranslateCurrency(state)
+});
+
+const LocalizedTransactions = connect(mapStateToProps)(Transactions);
+</code></pre>
+
 <h2 id="how-does-react-localize-redux-differ-from-react-intl">How does react-localize-redux differ from <a href="https://github.com/yahoo/react-intl">react-intl</a>?</h2>
 <ul>
 <li><strong>react-intl</strong> is larger in size/complexity, and for good reason as it handles many things related to localization. e.g. Pluralization, currency. Where as with <strong>react-localize-redux</strong> you could still do pluralization, and currency, but you'd be writing the formatting functionality yourself. 
