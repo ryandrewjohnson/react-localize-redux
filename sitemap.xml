@@ -4,7 +4,7 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2017-12-06</lastmod>
+     <lastmod>2017-12-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,7 +12,7 @@
     
     <url>
      <loc>/getting-started/</loc>
-     <lastmod>2017-12-06</lastmod>
+     <lastmod>2017-12-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -20,7 +20,7 @@
     
     <url>
      <loc>/formatting-translation-data/</loc>
-     <lastmod>2017-12-06</lastmod>
+     <lastmod>2017-12-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -28,7 +28,7 @@
     
     <url>
      <loc>/features/</loc>
-     <lastmod>2017-12-06</lastmod>
+     <lastmod>2017-12-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -36,7 +36,7 @@
     
     <url>
      <loc>/faq/</loc>
-     <lastmod>2017-12-06</lastmod>
+     <lastmod>2017-12-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -45,19 +45,19 @@
         
     <url>
      <loc>/api/action-creators/</loc>
-     <lastmod>2017-12-06</lastmod>
+     <lastmod>2017-12-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/api/selectors/</loc>
-     <lastmod>2017-12-06</lastmod>
+     <lastmod>2017-12-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/api/higher-order-component/</loc>
-     <lastmod>2017-12-06</lastmod>
+     <lastmod>2017-12-07</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
