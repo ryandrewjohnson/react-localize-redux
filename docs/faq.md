@@ -3,11 +3,48 @@
 No you shouldn't have to connect every component. To avoid this add translate to a parent component, and then pass translations 
 down to stateless child components as props. See the [pass multiple translations to components](/features/#pass-multiple-translations-to-components) feature on one way to accomplish this.
 
+---------------
+
 ## What if my translation data isn't in the required format?
 
 If you don't have control over the translation data for your application you can use the [translationTransform](/api/action-creators/#initializelanguages-options) option. 
 This allows you to write a function that takes in your custom translation data, and outputs the data in the required format.
 See [Custom data format](/formatting-translation-data/#custom-data-format) for documentaion.
+
+---------------
+
+## How do I persist active language?
+
+Persisting the user’s selected language  after a refresh can be done a few ways, and how that is done is really up to you. 
+The following are two approaches you could use:
+
+**1. Save active language to local storage**
+
+When you start your app check localstorage for an existing saved language. If one exists use that as default language, if not default to first language.
+
+```javascript
+const languages = ['en', 'fr', 'es'];
+const defaultLanguage = storage.getItem('language') || languages[0];
+store.dispatch(initialize(languages, { defaultLanguage }));
+```
+Whenever you change the active language update the language stored in localstorage.
+
+```javascript
+store.dispatch(setActiveLanguage('fr'));
+storage.setItem('language', 'fr');
+```
+
+**2. Keep active language in the url**
+
+Assuming you're using [react-router](https://reacttraining.com/react-router/web) you can use [url-params](https://reacttraining.com/react-router/web/example/url-params) to track active language. Your url might look something like this, but the key is that it has the `:language` param. Now when you start your app use the url's language param, and set default language based on that.
+
+```javascript
+const languages = ['en', 'fr', 'es'];
+const defaultLanguage = this.props.match.params.language;
+store.dispatch(initialize(languages, { defaultLanguage }));
+```
+
+---------------
 
 ## How do I handle currency, date, and other localization transformations?
 
@@ -56,6 +93,8 @@ const mapStateToProps = state => ({
 
 const LocalizedTransactions = connect(mapStateToProps)(Transactions);
 ```
+
+---------------
 
 ## How does react-localize-redux differ from [react-intl](https://github.com/yahoo/react-intl)?
 
