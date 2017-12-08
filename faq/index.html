@@ -80,6 +80,9 @@
     <li class="toctree-l2"><a href="#what-if-my-translation-data-isnt-in-the-required-format">What if my translation data isn't in the required format?</a></li>
     
 
+    <li class="toctree-l2"><a href="#how-do-i-persist-active-language">How do I persist active language?</a></li>
+    
+
     <li class="toctree-l2"><a href="#how-do-i-handle-currency-date-and-other-localization-transformations">How do I handle currency, date, and other localization transformations?</a></li>
     
 
@@ -146,10 +149,35 @@
                 <h2 id="do-i-have-to-connect-every-component-that-needs-translations">Do I have to connect every component that needs translations?</h2>
 <p>No you shouldn't have to connect every component. To avoid this add translate to a parent component, and then pass translations 
 down to stateless child components as props. See the <a href="../features/#pass-multiple-translations-to-components">pass multiple translations to components</a> feature on one way to accomplish this.</p>
+<hr />
 <h2 id="what-if-my-translation-data-isnt-in-the-required-format">What if my translation data isn't in the required format?</h2>
 <p>If you don't have control over the translation data for your application you can use the <a href="../api/action-creators/#initializelanguages-options">translationTransform</a> option. 
 This allows you to write a function that takes in your custom translation data, and outputs the data in the required format.
 See <a href="../formatting-translation-data/#custom-data-format">Custom data format</a> for documentaion.</p>
+<hr />
+<h2 id="how-do-i-persist-active-language">How do I persist active language?</h2>
+<p>Persisting the user’s selected language  after a refresh can be done a few ways, and how that is done is really up to you. 
+The following are two approaches you could use:</p>
+<p><strong>1. Save active language to local storage</strong></p>
+<p>When you start your app check localstorage for an existing saved language. If one exists use that as default language, if not default to first language.</p>
+<pre><code class="javascript">const languages = ['en', 'fr', 'es'];
+const defaultLanguage = storage.getItem('language') || languages[0];
+store.dispatch(initialize(languages, { defaultLanguage }));
+</code></pre>
+
+<p>Whenever you change the active language update the language stored in localstorage.</p>
+<pre><code class="javascript">store.dispatch(setActiveLanguage('fr'));
+storage.setItem('language', 'fr');
+</code></pre>
+
+<p><strong>2. Keep active language in the url</strong></p>
+<p>Assuming you're using <a href="https://reacttraining.com/react-router/web">react-router</a> you can use <a href="https://reacttraining.com/react-router/web/example/url-params">url-params</a> to track active language. Your url might look something like this, but the key is that it has the <code>:language</code> param. Now when you start your app use the url's language param, and set default language based on that.</p>
+<pre><code class="javascript">const languages = ['en', 'fr', 'es'];
+const defaultLanguage = this.props.match.params.language;
+store.dispatch(initialize(languages, { defaultLanguage }));
+</code></pre>
+
+<hr />
 <h2 id="how-do-i-handle-currency-date-and-other-localization-transformations">How do I handle currency, date, and other localization transformations?</h2>
 <p>This logic is purposely excluded from react-localize-redux to ensure that both package size and API remian small. If you do require this logic you have the choice of writing it yourself, or using a third party library that specializes in that area e.g.(<a href="https://momentjs.com/">Moment</a> for dates).</p>
 <p>Here's an example of a basic currency translation using <a href="https://github.com/reactjs/reselect">reselect</a>:</p>
@@ -194,6 +222,7 @@ const mapStateToProps = state =&gt; ({
 const LocalizedTransactions = connect(mapStateToProps)(Transactions);
 </code></pre>
 
+<hr />
 <h2 id="how-does-react-localize-redux-differ-from-react-intl">How does react-localize-redux differ from <a href="https://github.com/yahoo/react-intl">react-intl</a>?</h2>
 <ul>
 <li><strong>react-intl</strong> is larger in size/complexity, and for good reason as it handles many things related to localization. e.g. Pluralization, currency. Where as with <strong>react-localize-redux</strong> you could still do pluralization, and currency, but you'd be writing the formatting functionality yourself. 
