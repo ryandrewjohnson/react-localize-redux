@@ -11,10 +11,9 @@ See [Custom data format](/formatting-translation-data/#custom-data-format) for d
 
 ## How do I handle currency, date, and other localization transformations?
 
-This logic was purposely excluded from react-localize-redux to ensure the library remains size and API remains small. 
-In addition this logic, if needed, can usually be covered by other libraries that specialize in that area e.g.([Moment](https://momentjs.com/) for dates).
+This logic is purposely excluded from react-localize-redux to ensure that both package size and API remian small. If you do require this logic you have the choice of writing it yourself, or using a third party library that specializes in that area e.g.([Moment](https://momentjs.com/) for dates).
 
-There is also the option of handling this logic yourself. Here's an example for currency using [reselect](https://github.com/reactjs/reselect):
+Here's an example of a basic currency translation using [reselect](https://github.com/reactjs/reselect):
 
 ```javascript
 import { initialize } from 'react-localize-redux';
