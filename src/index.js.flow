@@ -10,7 +10,7 @@ import type { Translations as _Translations } from './locale';
 import type { SingleLanguageTranslation as _SingleLanguageTranslation } from './locale';
 import type { MultipleLanguageTranslation as _MultipleLanguageTranslation } from './locale';
 import type { Translate as _Translate } from './locale';
-import type { LocalizeStateProps as _LocalizeStateProps } from './localize';
+import type { LocalizeStateProps as _LocalizeStateProps } from './Localize';
 
 import type { InitializeAction as _InitializeAction } from './locale';
 import type { AddTranslationAction as _AddTranslationAction } from './locale';
