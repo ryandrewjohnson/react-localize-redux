@@ -136,7 +136,7 @@ Does react-localize-redux's supported translation data formats not work for you?
 
 By default when a translation isn't found the following message will be rendered in it's place: `'Missing translation key ${ key } for language ${ code }'`. Where `key` will be the missing translation key, and `code` will be the language code.
 
-You can also override this message with a custom message by passing in your own [missingTranslationMsg]() option.
+You can also override this message with a custom message by passing in your own [missingTranslationMsg](/api/action-creators/#initialize-options) option.
 
 ** Example **
 
