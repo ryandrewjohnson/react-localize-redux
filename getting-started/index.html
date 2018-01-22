@@ -224,7 +224,7 @@ store.dispatch(setActiveLanguage('fr'));
 <hr />
 <h2 id="5-translate-components">5. Translate components</h2>
 <p>If you have a component that is already using <a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options">connect</a> use <a href="../api/selectors#gettranslatestate">getTranslate</a> in your <code>mapStateToProps</code> to add the <a href="../api/selectors#translatekey-string-string-data">translate</a> function to your component's props.</p>
-<pre><code class="javascript">import { getTranslate } from 'react-localize-redux';
+<pre><code class="javascript">import { getTranslate, getActiveLanguage } from 'react-localize-redux';
 
 const Greeting = ({ translate, currentLanguage }) =&gt; (
   &lt;div&gt;

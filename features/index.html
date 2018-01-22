@@ -85,7 +85,10 @@
         </ul>
     
 
-    <li class="toctree-l2"><a href="#handle-missing-translations">Handle missing translations</a></li>
+    <li class="toctree-l2"><a href="#custom-missing-translation-messages">Custom missing translation messages</a></li>
+    
+
+    <li class="toctree-l2"><a href="#missing-translations-callback">Missing translations callback</a></li>
     
 
     <li class="toctree-l2"><a href="#load-translation-data-on-demand">Load translation data on demand</a></li>
@@ -246,14 +249,33 @@ const Article = props =&gt; (
 </code></pre>
 
 <hr />
-<h2 id="handle-missing-translations">Handle missing translations</h2>
-<p>If you need a way to detect missing translations you can set the <a href="../api/action-creators/#initialize-options">missingTranslationCallback</a> option. When set this callback will be triggered anytime the <a href="../api/selectors/#translatekey-string-string-data-options">translate</a> function detects an <code>undefined</code> translation. </p>
+<h2 id="custom-missing-translation-messages">Custom missing translation messages</h2>
+<p>By default when a translation isn't found the following message will be rendered in it's place: <code>'Missing translation key ${ key } for language ${ code }'</code>. Where <code>key</code> will be the missing translation key, and <code>code</code> will be the language code.</p>
+<p>You can also override this message with a custom message by passing in your own <a href="">missingTranslationMsg</a> option.</p>
 <p><strong> Example </strong></p>
 <pre><code class="javascript">import { initialize } from 'react-localize-redux';
 
 const languages = ['en', 'fr', 'es'];
 
-/**
+// just like the default message you can include the ${key} and ${code} placeholders
+const missingTranslationMsg = 'Oh man you missed translation: ${key} for languge ${code}!';
+
+store.dispatch(initialize(languages), { missingTranslationMsg });
+
+// Assuming there is no translation for &quot;missing-key&quot; doesn't exist it would render following:
+// &lt;h1&gt;Oh man you missed translation: missing-key for languge en!&lt;/h1&gt;
+const MyComponent = props =&gt; &lt;h1&gt;{this.props.translate('missing-key')}&lt;/h1&gt;;
+
+// You also have the option to override the global missingTranslationMsg option
+// by passing a custom message directly to the translate function
+ const missingTranslationMsg = 'Whoops! Missing translation!';
+ const AnotherComponent = props =&gt; &lt;h1&gt;{this.props.translate('missing-key', null, { missingTranslationMsg })}&lt;/h1&gt;
+</code></pre>
+
+<hr />
+<h2 id="missing-translations-callback">Missing translations callback</h2>
+<p>If you need a way to detect missing translations you can set the <a href="../api/action-creators/#initialize-options">missingTranslationCallback</a> option. When set this callback will be triggered anytime the <a href="../api/selectors/#translatekey-string-string-data-options">translate</a> function detects an <code>undefined</code> translation.</p>
+<pre><code class="javascript">/**
  * The callback function will be called with the following arguments:
  * key - The key that was passed to the translate function
  * languageCode - The language code for the currently active language.
