@@ -26,6 +26,7 @@ export interface Options {
   renderInnerHtml?: boolean;
   defaultLanguage?: string;
   showMissingTranslationMsg?: boolean;
+  missingTranslationMsg: string;
   missingTranslationCallback?: MissingTranslationCallback;
   translationTransform?: TransFormFunction;
 }

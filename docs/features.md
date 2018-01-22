@@ -132,9 +132,11 @@ Does react-localize-redux's supported translation data formats not work for you?
 ---------------
 
 
-## Handle missing translations
+## Custom missing translation messages
 
-If you need a way to detect missing translations you can set the [missingTranslationCallback](/api/action-creators/#initialize-options) option. When set this callback will be triggered anytime the [translate](/api/selectors/#translatekey-string-string-data-options) function detects an `undefined` translation. 
+By default when a translation isn't found the following message will be rendered in it's place: `'Missing translation key ${ key } for language ${ code }'`. Where `key` will be the missing translation key, and `code` will be the language code.
+
+You can also override this message with a custom message by passing in your own [missingTranslationMsg]() option.
 
 ** Example **
 
@@ -143,6 +145,29 @@ import { initialize } from 'react-localize-redux';
 
 const languages = ['en', 'fr', 'es'];
 
+// just like the default message you can include the ${key} and ${code} placeholders
+const missingTranslationMsg = 'Oh man you missed translation: ${key} for languge ${code}!';
+
+store.dispatch(initialize(languages), { missingTranslationMsg });
+
+// Assuming there is no translation for "missing-key" doesn't exist it would render following:
+// <h1>Oh man you missed translation: missing-key for languge en!</h1>
+const MyComponent = props => <h1>{this.props.translate('missing-key')}</h1>;
+
+// You also have the option to override the global missingTranslationMsg option
+// by passing a custom message directly to the translate function
+ const missingTranslationMsg = 'Whoops! Missing translation!';
+ const AnotherComponent = props => <h1>{this.props.translate('missing-key', null, { missingTranslationMsg })}</h1>
+```
+
+
+---------------
+
+## Missing translations callback
+
+If you need a way to detect missing translations you can set the [missingTranslationCallback](/api/action-creators/#initialize-options) option. When set this callback will be triggered anytime the [translate](/api/selectors/#translatekey-string-string-data-options) function detects an `undefined` translation.
+
+```javascript
 /**
  * The callback function will be called with the following arguments:
  * key - The key that was passed to the translate function
@@ -155,7 +180,6 @@ const onMissingTranslation = (key, languageCode) => {
 
 store.dispatch(initialize(languages), { missingTranslationCallback: onMissingTranslation });
 ```
-
 
 ---------------
 

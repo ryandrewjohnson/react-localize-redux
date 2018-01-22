@@ -9,7 +9,7 @@ export const getLocalizedElement = (key: string, translations: TranslatedLanguag
       options.missingTranslationCallback(key, activeLanguage.code);
     }
     return options.showMissingTranslationMsg  
-      ? `Missing localized key: ${ key } for language: ${ activeLanguage.code }`
+      ? templater(options.missingTranslationMsg, { key, code: activeLanguage.code })
       : '';
   };
   const localizedString = translations[key] || onMissingTranslation();

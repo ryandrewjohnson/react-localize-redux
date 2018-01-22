@@ -41,9 +41,9 @@ describe('locale utils', () => {
       const translations = { test: 'Here is my test' };
       const key = 'test2';
       const language = { code: 'en' };
-      const options = { showMissingTranslationMsg: true };
+      const options = { showMissingTranslationMsg: true, missingTranslationMsg: 'My missing message' };
       const result = utils.getLocalizedElement(key, translations, null, { code: 'en' }, options);
-      expect(result).toEqual(`Missing localized key: ${key} for language: ${ language.code }`);
+      expect(result).toEqual('My missing message');
     });
 
     it('should replace variables in translation string with data', () => {

@@ -621,7 +621,23 @@ describe('locale module', () => {
       state.options.showMissingTranslationMsg = true;
       const translate = getTranslate(state);
       const result = translate('nothinghere');
-      expect(result).toEqual('Missing localized key: nothinghere for language: fr');
+      expect(result).toEqual('Missing translation key nothinghere for language fr');
+    });
+
+    it('should retrun custom missingTranslationMsg when missing translation and showMissingTranslationMsg = true', () => {
+      state.options.showMissingTranslationMsg = true;
+      state.options.missingTranslationMsg = 'Hey you\'re missing this translation: ${ key }:${ code }';
+      const translate = getTranslate(state);
+      const result = translate('nothinghere');
+      expect(result).toEqual('Hey you\'re missing this translation: nothinghere:fr');
+    });
+
+    it('should override custom missingTranslationMsg when passed to getTranslate', () => {
+      state.options.showMissingTranslationMsg = true;
+      const missingTranslationMsg = 'This should be the new missing translation msg!';
+      const translate = getTranslate(state);
+      const result = translate('nothinghere', null, { missingTranslationMsg });
+      expect(result).toEqual(missingTranslationMsg);
     });
 
     it('should call missingTranslationCallback if set and translation is missing', () => {
