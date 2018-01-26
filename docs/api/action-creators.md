@@ -87,7 +87,7 @@ store.dispatch(setLanguages(languages, 'fr'));
 
 ## addTranslation(data)
 
-Dispatch this action to add translation data for multiple languages from a json file, or vanilla JS to your redux store. Please see [formatting transaltion data](/formatting-translation-data#multiple-language-format) to ensure your data is in the proper format. 
+Dispatch this action to add translation data for multiple languages from a json file, or vanilla JS to your redux store. Please see [formatting translation data](/formatting-translation-data#multiple-language-format) to ensure your data is in the proper format. 
 
 ** Arguments **
 
@@ -114,7 +114,7 @@ store.dispatch(addTranslation(welcomePageTranslations));
 
 ## addTranslationForLanguage(data, language)
 
-Dispatch this action to add translation data for a single language from a json file, or vanilla JS to your redux store. Please see [formatting transaltion data](/formatting-translation-data#single-language-format) to ensure your data is in the proper format. 
+Dispatch this action to add translation data for a single language from a json file, or vanilla JS to your redux store. Please see [formatting translation data](/formatting-translation-data#single-language-format) to ensure your data is in the proper format. 
 
 ** Arguments **
 

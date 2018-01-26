@@ -63,7 +63,7 @@ store.dispatch(initialize(languages));
 
 Typically you will store your translation data in json files, but the data can also be a vanilla JS object. 
 
-In order to add translation data to your application there are two action creators available - [addTranslation](/api/action-creators#addtranslationdata) and [addTranslationForLanguage](/api/action-creators#addtranslationforlanguagedata-language). Which one you use will depend on which format your translation data is in - see [formatting transaltion data]() for more information.
+In order to add translation data to your application there are two action creators available - [addTranslation](/api/action-creators#addtranslationdata) and [addTranslationForLanguage](/api/action-creators#addtranslationforlanguagedata-language). Which one you use will depend on which format your translation data is in - see [formatting translation data](/formatting-translation-data) for more information.
 
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
@@ -135,7 +135,7 @@ For components where you only need access to [translate](/api/selectors#translat
 
 <div class="admonition warning">
   <p class="first admonition-title">Warning</p>
-  <p class="last">Components that use <strong>localize</strong> still use <a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options" target="_blank">connect</a> behind the scenes, which means you will want to avoid overusing <strong>localize</strong>. Instead <a href="/features#pass-multiple-translations-to-components">pass multiple translations to components</a> when possible.</p>
+  <p class="last">Components that use <strong>localize</strong> still use <a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options" target="_blank">connect</a> behind the scenes, which means you will want to avoid overusing <strong>localize</strong>. Instead <a href="../features/#pass-multiple-translations-to-components">pass multiple translations to components</a> when possible.</p>
 </div>
 
 ```javascript
