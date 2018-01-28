@@ -12,7 +12,7 @@ export type LocalizeStateProps = {
 };
 
 const mapStateToProps = (slice: ?string): MapStateToProps<LocaleState, {}, LocalizeStateProps> => (state: Object|LocaleState): LocalizeStateProps => {
-  const scopedState: LocaleState = slice ? state[slice] : state;
+  const scopedState: LocaleState = (state instanceof Map ? state.get(slice) : slice && state[slice]) || state;
   return {
     currentLanguage: getActiveLanguage(scopedState).code,
     translate: getTranslate(scopedState)

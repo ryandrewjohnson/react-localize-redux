@@ -59,4 +59,20 @@ describe('<Localize />', () => {
     expect(wrapper.props().translate).toBeDefined();
     expect(wrapper.props().translate('hi')).toEqual('hello');
   });
+
+  it('should handle a state object which is a Map', () => {
+    const store = mockStore(new Map([
+      ['locale', {
+        ...initialState,
+        translations: {
+          hi: ['hello', '', '']
+        }
+      }]
+    ]));
+    const MockPageComponent = props => (<div>{ translate('hi') }</div>);
+    WrappedComponent = localize(MockPageComponent, 'locale');
+    wrapper = shallow(<WrappedComponent />, { context: { store }});
+    expect(wrapper.props().translate).toBeDefined();
+    expect(wrapper.props().translate('hi')).toEqual('hello');
+  });
 });
