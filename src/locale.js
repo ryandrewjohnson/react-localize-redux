@@ -278,7 +278,7 @@ export const getActiveLanguage = (state: LocaleState): Language => {
 export const translationsEqualSelector = createSelectorCreator(
   defaultMemoize,
   (cur: Object, prev: Object) => {
-    const isTranslationsData: boolean = !(Array.isArray(cur) || Object.keys(cur).toString() === 'code,active');
+    const isTranslationsData: boolean = cur && !(Array.isArray(cur) || Object.keys(cur).toString() === 'code,active');
 
     // for translations data use a combination of keys and values for comparison
     if (isTranslationsData) {
@@ -306,6 +306,11 @@ export const getTranslationsForActiveLanguage: Selector<LocaleState, void, Trans
   getLanguages,
   getTranslations,
   (activeLanguage, languages, translations) => {
+    // no active language found! return no translations 
+    if (!activeLanguage) {
+      return {};
+    }
+
     const { code: activeLanguageCode } = activeLanguage;
     const activeLanguageIndex = getIndexForLanguageCode(activeLanguageCode, languages);
     return Object.keys(translations).reduce((prev, key) => {

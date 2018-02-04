@@ -486,6 +486,14 @@ describe('locale module', () => {
       expect(result).toBe(undefined);
     });
 
+    it('should return undefined if no languages found', () => {
+      const state = {
+        languages: []
+      };
+      const result = getActiveLanguage(state);
+      expect(result).toBe(undefined);
+    });
+
     it('should return activeLanguage with name', () => {
       const state = {
         languages: [{ code: 'en', name: 'English', active: false }, { code: 'fr', name: 'French', active: true }]
@@ -514,6 +522,18 @@ describe('locale module', () => {
         hi: 'hi-fr',
         bye: 'bye-fr'
       });
+    });
+
+    it('should return empty object if no active language found', () => {
+      const state = {
+        languages: [],
+        translations: {
+          hi: ['hi-en', 'hi-fr'],
+          bye: ['bye-en', 'bye-fr']
+        }
+      };
+      const result = getTranslationsForActiveLanguage(state);
+      expect(result).toEqual({});
     });
   });
 
