@@ -148,7 +148,7 @@ const languages = ['en', 'fr', 'es'];
 // just like the default message you can include the ${key} and ${code} placeholders
 const missingTranslationMsg = 'Oh man you missed translation: ${key} for languge ${code}!';
 
-store.dispatch(initialize(languages), { missingTranslationMsg });
+store.dispatch(initialize(languages, { missingTranslationMsg }));
 
 // Assuming there is no translation for "missing-key" doesn't exist it would render following:
 // <h1>Oh man you missed translation: missing-key for languge en!</h1>
@@ -174,7 +174,7 @@ If you need a way to detect missing translations you can set the [missingTransla
  * languageCode - The language code for the currently active language.
  */
 const onMissingTranslation = (key, languageCode) => {
-  // here you can do whatever you want e.g. call back end service that will 
+  // here you can do whatever you want e.g. call back end service that will
   // send email to translation team
 };
 
