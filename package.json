@@ -115,6 +115,7 @@
   },
   "dependencies": {
     "flat": "^2.0.1",
+    "immutable": "^3.8.2",
     "reselect": "^3.0.1"
   }
 }
