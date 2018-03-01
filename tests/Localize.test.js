@@ -2,6 +2,7 @@ import React from 'react';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
+import { Map } from 'immutable';
 import { localize } from 'Localize';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -60,15 +61,15 @@ describe('<Localize />', () => {
     expect(wrapper.props().translate('hi')).toEqual('hello');
   });
 
-  it('should handle a state object which is a Map', () => {
-    const store = mockStore(new Map([
-      ['locale', {
+  it('should handle a state object which is an Immutable Map', () => {
+    const store = mockStore(Map({
+      locale: {
         ...initialState,
         translations: {
           hi: ['hello', '', '']
         }
-      }]
-    ]));
+      }
+    }));
     const MockPageComponent = props => (<div>{ translate('hi') }</div>);
     WrappedComponent = localize(MockPageComponent, 'locale');
     wrapper = shallow(<WrappedComponent />, { context: { store }});
