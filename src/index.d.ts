@@ -111,6 +111,8 @@ export type Action = BaseAction<
   & SetLanguagesPayload
 >;
 
+export type GetSliceStateFn = (state: Object|LocaleState) => LocaleState;
+
 export type ActionLanguageCodes = Action & { languageCodes: string[] };
 
 export function localeReducer(state: LocaleState, action: Action): LocaleState;
@@ -135,4 +137,4 @@ export function getActiveLanguage(state: LocaleState): Language;
 
 export function getTranslate(state: LocaleState): Translate;
 
-export function localize(Component: Component<any>, slice?: string): (state: LocaleState) => ComponentClass<LocalizeProps>;
+export function localize(Component: Component<any>, slice?: string, getStateSlice?: GetSliceStateFn): (state: Object|LocaleState) => ComponentClass<LocalizeProps>;

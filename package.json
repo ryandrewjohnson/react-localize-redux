@@ -80,6 +80,7 @@
     "flow-copy-source": "^1.2.1",
     "flow-typed": "^2.1.5",
     "html-webpack-plugin": "^2.24.1",
+    "immutable": "^3.8.2",
     "jest": "^20.0.4",
     "json-loader": "^0.5.4",
     "ncp": "^2.0.0",
