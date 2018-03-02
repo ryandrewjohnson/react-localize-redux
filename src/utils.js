@@ -1,16 +1,16 @@
 // @flow
 import React from 'react';
 import { defaultTranslateOptions } from './locale';
-import type { TranslatePlaceholderData, TranslatedLanguage, Options, LocalizedElement, Language } from './locale';
+import type { TranslatePlaceholderData, TranslatedLanguage, Translations, Options, LocalizedElement, Language } from './locale';
 
 export const getLocalizedElement = (key: string, translations: TranslatedLanguage, data: TranslatePlaceholderData, activeLanguage: Language, options: Options = defaultTranslateOptions): LocalizedElement => {
   const onMissingTranslation = () => {
     if (options.missingTranslationCallback) {
       options.missingTranslationCallback(key, activeLanguage.code);
     }
-    return options.showMissingTranslationMsg  
-      ? templater(options.missingTranslationMsg || '', { key, code: activeLanguage.code })
-      : '';
+    return options.showMissingTranslationMsg === false  
+      ? ''
+      : templater(options.missingTranslationMsg || '', { key, code: activeLanguage.code });
   };
   const localizedString = translations[key] || onMissingTranslation();
   const translatedValue = templater(localizedString, data)
@@ -55,4 +55,20 @@ export const validateOptions = (options: Options): Options => {
     throw new Error('react-localize-redux: Invalid translationTransform function.');
   }
   return options;
+};
+
+export const getTranslationsForLanguage = (language: Language, languages: Language[], translations: Translations): TranslatedLanguage => {
+  // no language! return no translations 
+  if (!language) {
+    return {};
+  }
+
+  const { code: languageCode } = language;
+  const languageIndex = getIndexForLanguageCode(languageCode, languages);
+  return Object.keys(translations).reduce((prev, key) => {
+    return {
+      ...prev,
+      [key]: translations[key][languageIndex]
+    }
+  }, {});
 };

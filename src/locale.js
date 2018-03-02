@@ -2,7 +2,7 @@
 import { combineReducers } from 'redux';
 import { flatten } from 'flat';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
-import { getLocalizedElement, getIndexForLanguageCode, objectValuesToString, validateOptions } from './utils';
+import { getLocalizedElement, getIndexForLanguageCode, objectValuesToString, validateOptions, getTranslationsForLanguage } from './utils';
 import type { Selector, SelectorCreator } from 'reselect';
 import type { Element } from 'react';
 
@@ -305,30 +305,29 @@ export const getTranslationsForActiveLanguage: Selector<LocaleState, void, Trans
   getActiveLanguage,
   getLanguages,
   getTranslations,
-  (activeLanguage, languages, translations) => {
-    // no active language found! return no translations 
-    if (!activeLanguage) {
-      return {};
-    }
+  getTranslationsForLanguage
+);
 
-    const { code: activeLanguageCode } = activeLanguage;
-    const activeLanguageIndex = getIndexForLanguageCode(activeLanguageCode, languages);
-    return Object.keys(translations).reduce((prev, key) => {
-      return {
-        ...prev,
-        [key]: translations[key][activeLanguageIndex]
-      }
-    }, {});
-  }
+export const getTranslationsForSpecificLanguage = translationsEqualSelector(
+  getLanguages,
+  getTranslations,
+  (languages, translations) => defaultMemoize(
+    (languageCode) => getTranslationsForLanguage(languageCode, languages, translations)
+  )
 );
 
 export const getTranslate: Selector<LocaleState, void, Translate> = createSelector(
   getTranslationsForActiveLanguage,
+  getTranslationsForSpecificLanguage,
   getActiveLanguage,
   getOptions,
-  (translations, activeLanguage, options) => {
+  (translationsForActiveLanguage, getTranslationsForLanguage, activeLanguage, options) => {
     return (value, data = {}, optionsOverride = {}) => {
-      const translateOptions: Options = {...options, ...optionsOverride};
+      const {defaultLanguage, ...rest} = optionsOverride;
+      const translateOptions: Options = {...options, ...rest};
+      const translations = defaultLanguage !== undefined 
+        ? getTranslationsForLanguage({code: defaultLanguage, active: false})
+        : translationsForActiveLanguage;
       if (typeof value === 'string') {
         return getLocalizedElement(value, translations, data, activeLanguage, translateOptions);
       } else if (Array.isArray(value)) {

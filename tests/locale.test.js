@@ -1,7 +1,7 @@
 import * as actions from 'locale';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, translationsEqualSelector, setLanguages, getTranslate, getTranslateSelector, defaultTranslateOptions, options } from 'locale';
+import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, getTranslationsForSpecificLanguage, translationsEqualSelector, setLanguages, getTranslate, getTranslateSelector, defaultTranslateOptions, options } from 'locale';
 import { getLocalizedElement } from 'utils';
 import { INITIALIZE, SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION, ADD_TRANSLATION_FOR_LANGUGE } from 'locale';
 
@@ -538,6 +538,36 @@ describe('locale module', () => {
   });
 
 
+  describe('getTranslationsForSpecificLanguage', () => {
+    it('should return translations only for specific language', () => {
+      const state = {
+        languages: [{ code: 'en', active: false }, { code: 'fr', active: true }],
+        translations: {
+          hi: ['hi-en', 'hi-fr'],
+          bye: ['bye-en', 'bye-fr']
+        }
+      };
+      const result = getTranslationsForSpecificLanguage(state)({code: 'en'});
+      expect(result).toEqual({
+        hi: 'hi-en',
+        bye: 'bye-en'
+      });
+    });
+
+    it('should return empty object if language not found', () => {
+      const state = {
+        languages: [],
+        translations: {
+          hi: ['hi-en', 'hi-fr'],
+          bye: ['bye-en', 'bye-fr']
+        }
+      };
+      const result = getTranslationsForSpecificLanguage(state)({code: 'ze'});
+      expect(result).toEqual({});
+    });
+  });
+
+
   describe('getTranslate', () => {
     let state = {};
 
@@ -667,8 +697,13 @@ describe('locale module', () => {
       const result = translate('nothinghere');
       expect(callback).toHaveBeenCalledWith('nothinghere', 'fr');
     });
-  });
 
+    it('should use defaultLanguage option instead of activeLanguage for translations', () => {
+      const translate = getTranslate(state);
+      const result = translate('hi', null, {defaultLanguage: 'en'});
+      expect(result).toEqual('hi-en');
+    });
+  });
 
   describe('translationsEqualSelector', () => {
     let languages = [];
@@ -702,7 +737,7 @@ describe('locale module', () => {
       expect(result).toHaveBeenCalledTimes(1);
     });
 
-    it('should call result function when active language changes', () => {
+    it('should calla result function when active language changes', () => {
       const result = jest.fn();
       const selector = translationsEqualSelector(() => activeLanguage, result);
       selector({});
