@@ -83,7 +83,13 @@
     <li class="toctree-l2"><a href="#how-do-i-persist-active-language">How do I persist active language?</a></li>
     
 
+    <li class="toctree-l2"><a href="#how-do-i-retreive-a-translation-for-a-language-other-than-active-language">How do I retreive a translation for a language other than active language?</a></li>
+    
+
     <li class="toctree-l2"><a href="#how-do-i-handle-currency-date-and-other-localization-transformations">How do I handle currency, date, and other localization transformations?</a></li>
+    
+
+    <li class="toctree-l2"><a href="#can-i-use-immutablejs">Can I use ImmutableJS?</a></li>
     
 
     <li class="toctree-l2"><a href="#how-does-react-localize-redux-differ-from-react-intl">How does react-localize-redux differ from react-intl?</a></li>
@@ -178,6 +184,28 @@ store.dispatch(initialize(languages, { defaultLanguage }));
 </code></pre>
 
 <hr />
+<h2 id="how-do-i-retreive-a-translation-for-a-language-other-than-active-language">How do I retreive a translation for a language other than active language?</h2>
+<p>Let's say your app's active language is English, but you want
+to display a single translation in French. You can accomplish this by overriding the <code>translate</code> function's <code>defaultLanguage</code> option. </p>
+<pre><code class="javascript">import { getTranslate } from 'react-localize-redux';
+
+const Greeting = ({ translate }) =&gt; (
+  &lt;div&gt;
+    &lt;!-- This will be English translation since active language is 'en' --&gt;
+    &lt;h1&gt;{ translate('greeting') }&lt;/h1&gt;
+    &lt;!-- Since we specify defaultLanguage: 'fr' translation will be in French --&gt;
+    &lt;h1&gt;{ translate('greeting', null, {defaultLanguage: 'fr'}) }&lt;/h1&gt;
+  &lt;/div&gt;
+);
+
+const mapStateToProps = state =&gt; ({
+  translate: getTranslate(state.locale)
+});
+
+export default connect(mapStateToProps)(Greeting);
+</code></pre>
+
+<hr />
 <h2 id="how-do-i-handle-currency-date-and-other-localization-transformations">How do I handle currency, date, and other localization transformations?</h2>
 <p>This logic is purposely excluded from react-localize-redux to ensure that both package size and API remian small. If you do require this logic you have the choice of writing it yourself, or using a third party library that specializes in that area e.g.(<a href="https://momentjs.com/">Moment</a> for dates).</p>
 <p>Here's an example of a basic currency translation using <a href="https://github.com/reactjs/reselect">reselect</a>:</p>
@@ -220,6 +248,21 @@ const mapStateToProps = state =&gt; ({
 });
 
 const LocalizedTransactions = connect(mapStateToProps)(Transactions);
+</code></pre>
+
+<hr />
+<h2 id="can-i-use-immutablejs">Can I use <a href="https://facebook.github.io/immutable-js/">ImmutableJS</a>?</h2>
+<p>If your redux state is an ImmutableJS <a href="https://facebook.github.io/immutable-js/docs/#/Map">Map</a>, and you're using the <a href="../api/higher-order-component">localize</a> HOC you'll need to use the <a href="../api/higher-order-component">getStateSlice</a> option. This option allows you to instruct <code>localize</code> on how to read the state even though it's an ImmutableJS Map.</p>
+<pre><code class="javascript">import React from 'react';
+import { toJS } from 'immutable';
+import { localize } from 'Localize';
+
+/**
+ * The getStateSlice function will passed the entire state as a param.
+ * You are responsible for returning the locale state slice.
+ */
+const getStateSlice = (state) =&gt; state.toJS()['locale'];
+localize(Component, 'locale', getStateSlice);
 </code></pre>
 
 <hr />

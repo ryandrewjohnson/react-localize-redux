@@ -204,7 +204,7 @@ export default connect(mapStateToProps)(Greeting);
 <tr>
 <td>[options]</td>
 <td>object</td>
-<td>Optional local override for <code>renderInnerHtml</code> option passed to the <a href="../../action-creators/#initializelanguages-options">initialize</a> action creator.</td>
+<td>Override <code>renderInnerHtml</code>, <code>defaultLanguage</code>, <code>missingTranslationMsg</code>, and <code>missingTranslationCallback</code> <a href="../../action-creators/#initializelanguages-options">initialize optons</a> for translation.</td>
 </tr>
 </tbody>
 </table>
@@ -235,7 +235,11 @@ export default connect(mapStateToProps)(Greeting);
 const Page = ({ translate }) =&gt; (
   &lt;div&gt;
     &lt;h1&gt;{ translate('heading') }&lt;/h1&gt;
-    &lt;p&gt;{ translate('article.code', null, { renderInnerHtml: false }) }
+    &lt;!-- Instead of pulling translation based on activeLanguage, specify language using defaultLanguage option --&gt;
+    &lt;p&gt;{ translate('heading', null, { defaultLanguage: 'fr' }) }&lt;/p&gt;
+    &lt;!-- override renderHtml option for this translation --&gt;
+    &lt;p&gt;{ translate('article.code', null, { renderInnerHtml: false }) }&lt;/p&gt;
+    &lt;!-- pass multiple translations --&gt;
     &lt;Article { ...translate(['article.title', 'article.author', 'article.desc'], { name: 'Ted' }) } /&gt;
   &lt;/div&gt;
 );

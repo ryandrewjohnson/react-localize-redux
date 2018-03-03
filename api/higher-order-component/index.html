@@ -91,7 +91,7 @@
     <a class="current" href="./">Higher Order Component</a>
     <ul class="subnav">
             
-    <li class="toctree-l3"><a href="#localizecomponent-reducername">localize(Component, [reducerName])</a></li>
+    <li class="toctree-l3"><a href="#localizecomponent-reducername-getstateslice">localize(Component, [reducerName], [getStateSlice])</a></li>
     
 
     </ul>
@@ -138,7 +138,7 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="localizecomponent-reducername">localize(Component, [reducerName])</h2>
+                <h2 id="localizecomponent-reducername-getstateslice">localize(Component, [reducerName], [getStateSlice])</h2>
 <div class="admonition important">
   <p class="first admonition-title">Important</p>
   <p class="last">if your component is already using <a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options" target="_blank">connect</a> then you should use the <a href="/selectors/#gettranslatestate">getTranslate</a>, and <a href="/selectors#getactivelanguagestate">getActiveLanguage</a> selectors instead of <code>localize</code>.</p>
@@ -164,6 +164,11 @@
 <td>[reducerName]</td>
 <td>string</td>
 <td>If you added localeReducer with <a href="http://redux.js.org/docs/api/combineReducers.html">combineReducers</a> then you will need to pass the reducerName to localize.</td>
+</tr>
+<tr>
+<td>[getStateSlice]</td>
+<td>function</td>
+<td>An optional param that allows for adding custom logic for retrieving the state slice. See <a href="../../faq/#can-i-use-immutablejs">Can I use ImmutableJS?</a> for usage example.</td>
 </tr>
 </tbody>
 </table>
