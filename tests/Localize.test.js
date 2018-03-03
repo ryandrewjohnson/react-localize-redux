@@ -1,4 +1,5 @@
 import React from 'react';
+import { Map } from 'immutable';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
@@ -60,17 +61,18 @@ describe('<Localize />', () => {
     expect(wrapper.props().translate('hi')).toEqual('hello');
   });
 
-  it('should handle a state object which is a Map', () => {
-    const store = mockStore(new Map([
-      ['locale', {
+  it('should allow for passing a custom function to return state slice', () => {
+    const store = mockStore(Map({
+      locale: {
         ...initialState,
         translations: {
           hi: ['hello', '', '']
         }
-      }]
-    ]));
+      }
+    }));
     const MockPageComponent = props => (<div>{ translate('hi') }</div>);
-    WrappedComponent = localize(MockPageComponent, 'locale');
+    const getStateSlice = (state) => state.toJS()['locale'];
+    WrappedComponent = localize(MockPageComponent, 'locale', getStateSlice);
     wrapper = shallow(<WrappedComponent />, { context: { store }});
     expect(wrapper.props().translate).toBeDefined();
     expect(wrapper.props().translate('hi')).toEqual('hello');

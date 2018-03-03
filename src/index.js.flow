@@ -11,6 +11,7 @@ import type { SingleLanguageTranslation as _SingleLanguageTranslation } from './
 import type { MultipleLanguageTranslation as _MultipleLanguageTranslation } from './locale';
 import type { Translate as _Translate } from './locale';
 import type { LocalizeStateProps as _LocalizeStateProps } from './Localize';
+import type { GetSliceStateFn as _GetSliceStateFn } from './Localize';
 
 import type { InitializeAction as _InitializeAction } from './locale';
 import type { AddTranslationAction as _AddTranslationAction } from './locale';
@@ -28,6 +29,7 @@ export type SingleLanguageTranslation = _SingleLanguageTranslation;
 export type MultipleLanguageTranslation = _MultipleLanguageTranslation;
 export type Translate = _Translate;
 export type LocalizeStateProps = _LocalizeStateProps;
+export type GetSliceStateFn = _GetSliceStateFn;
 
 export type InitializeAction = _InitializeAction;
 export type AddTranslationAction = _AddTranslationAction;
@@ -82,5 +84,5 @@ declare export function getTranslate(
 ): Translate;
 
 declare export function localize(
-  Component: ComponentType<any>, slice?: string
-): (state: LocaleState) => ComponentType<LocalizeStateProps>;
+  Component: ComponentType<any>, slice?: string, getStateSlice?: GetSliceStateFn
+): (state: Object|LocaleState) => ComponentType<LocalizeStateProps>;

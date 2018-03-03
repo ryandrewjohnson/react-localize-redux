@@ -11,8 +11,13 @@ export type LocalizeStateProps = {
   translate: Translate
 };
 
-const mapStateToProps = (slice: ?string): MapStateToProps<LocaleState, {}, LocalizeStateProps> => (state: Object|LocaleState): LocalizeStateProps => {
-  const scopedState: LocaleState = (state instanceof Map ? state.get(slice) : slice && state[slice]) || state;
+export type GetSliceStateFn = (state: Object|LocaleState) => LocaleState;
+
+const mapStateToProps = (slice: ?string, getStateSlice: ?GetSliceStateFn): MapStateToProps<LocaleState, {}, LocalizeStateProps> => (state: Object|LocaleState): LocalizeStateProps => {
+  const scopedState: LocaleState = getStateSlice
+    ? getStateSlice(state)
+    : (slice && state[slice]) || state;
+
   const language = getActiveLanguage(scopedState);
   const currentLanguage = language ? language.code : undefined;
   const translate = getTranslate(scopedState);
@@ -23,4 +28,4 @@ const mapStateToProps = (slice: ?string): MapStateToProps<LocaleState, {}, Local
   };
 };
 
-export const localize = (Component: ComponentType<any>, slice: ?string = null) => connect(mapStateToProps(slice))(Component);
+export const localize = (Component: ComponentType<any>, slice: ?string = null, getStateSlice: ?GetSliceStateFn = null) => connect(mapStateToProps(slice, getStateSlice))(Component);
