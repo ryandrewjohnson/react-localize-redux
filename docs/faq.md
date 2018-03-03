@@ -46,6 +46,32 @@ store.dispatch(initialize(languages, { defaultLanguage }));
 
 ---------------
 
+## How do I retreive a translation for a language other than active language?
+
+Let's say your app's active language is English, but you want
+to display a single translation in French. You can accomplish this by overriding the `translate` function's `defaultLanguage` option. 
+
+```javascript
+import { getTranslate } from 'react-localize-redux';
+
+const Greeting = ({ translate }) => (
+  <div>
+    <!-- This will be English translation since active language is 'en' -->
+    <h1>{ translate('greeting') }</h1>
+    <!-- Since we specify defaultLanguage: 'fr' translation will be in French -->
+    <h1>{ translate('greeting', null, {defaultLanguage: 'fr'}) }</h1>
+  </div>
+);
+
+const mapStateToProps = state => ({
+  translate: getTranslate(state.locale)
+});
+
+export default connect(mapStateToProps)(Greeting);
+```
+
+---------------
+
 ## How do I handle currency, date, and other localization transformations?
 
 This logic is purposely excluded from react-localize-redux to ensure that both package size and API remian small. If you do require this logic you have the choice of writing it yourself, or using a third party library that specializes in that area e.g.([Moment](https://momentjs.com/) for dates).
@@ -92,6 +118,24 @@ const mapStateToProps = state => ({
 });
 
 const LocalizedTransactions = connect(mapStateToProps)(Transactions);
+```
+---------------
+
+## Can I use [ImmutableJS](https://facebook.github.io/immutable-js/)?
+
+If your redux state is an ImmutableJS [Map](https://facebook.github.io/immutable-js/docs/#/Map), and you're using the [localize](/api/higher-order-component) HOC you'll need to use the [getStateSlice](/api/higher-order-component) option. This option allows you to instruct `localize` on how to read the state even though it's an ImmutableJS Map.
+
+```javascript
+import React from 'react';
+import { toJS } from 'immutable';
+import { localize } from 'Localize';
+
+/**
+ * The getStateSlice function will passed the entire state as a param.
+ * You are responsible for returning the locale state slice.
+ */
+const getStateSlice = (state) => state.toJS()['locale'];
+localize(Component, 'locale', getStateSlice);
 ```
 
 ---------------

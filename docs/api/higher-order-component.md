@@ -1,4 +1,4 @@
-## localize(Component, [reducerName])
+## localize(Component, [reducerName], [getStateSlice])
 
 <div class="admonition important">
   <p class="first admonition-title">Important</p>
@@ -13,6 +13,7 @@ name | Type | Description
 --------- | ----------| ------------
 Component | ReactComponent | The localeReducer slice of your state.
 [reducerName] | string | If you added localeReducer with [combineReducers](http://redux.js.org/docs/api/combineReducers.html) then you will need to pass the reducerName to localize.
+[getStateSlice] | function | An optional param that allows for adding custom logic for retrieving the state slice. See [Can I use ImmutableJS?](/faq/#can-i-use-immutablejs) for usage example.
 
 
 ** Returns: ** 

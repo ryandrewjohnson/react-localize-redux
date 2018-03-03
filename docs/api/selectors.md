@@ -36,7 +36,7 @@ name | Type | Description
 --------- | ----------| ------------
 key | string \| string [] | Pass a single key or multiple keys from your translation data.
 [data] | object | Optional data to be used in your localized strings for [variable replacement]().
-[options]| object | Optional local override for `renderInnerHtml` option passed to the [initialize](/action-creators/#initializelanguages-options) action creator.
+[options]| object | Override `renderInnerHtml`, `defaultLanguage`, `missingTranslationMsg`, and `missingTranslationCallback` [initialize optons](/action-creators/#initializelanguages-options) for translation.
 
 ** Returns: **
 
@@ -70,7 +70,11 @@ const Article = props => (
 const Page = ({ translate }) => (
   <div>
     <h1>{ translate('heading') }</h1>
-    <p>{ translate('article.code', null, { renderInnerHtml: false }) }
+    <!-- Instead of pulling translation based on activeLanguage, specify language using defaultLanguage option -->
+    <p>{ translate('heading', null, { defaultLanguage: 'fr' }) }</p>
+    <!-- override renderHtml option for this translation -->
+    <p>{ translate('article.code', null, { renderInnerHtml: false }) }</p>
+    <!-- pass multiple translations -->
     <Article { ...translate(['article.title', 'article.author', 'article.desc'], { name: 'Ted' }) } />
   </div>
 );
