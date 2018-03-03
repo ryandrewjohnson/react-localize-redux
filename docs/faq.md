@@ -46,7 +46,7 @@ store.dispatch(initialize(languages, { defaultLanguage }));
 
 ---------------
 
-## How do I retreive a translation for a language other than active language?
+## How do I retrieve a translation for a language other than active language?
 
 Let's say your app's active language is English, but you want
 to display a single translation in French. You can accomplish this by overriding the `translate` function's `defaultLanguage` option. 
