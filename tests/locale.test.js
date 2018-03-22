@@ -1,9 +1,11 @@
+import React from 'react';
 import * as actions from 'locale';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, getTranslationsForSpecificLanguage, translationsEqualSelector, setLanguages, getTranslate, getTranslateSelector, defaultTranslateOptions, options } from 'locale';
 import { getLocalizedElement } from 'utils';
 import { INITIALIZE, SET_LANGUAGES, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION, ADD_TRANSLATION_FOR_LANGUGE } from 'locale';
+import { getTranslateComponent } from '../src/locale';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -704,6 +706,45 @@ describe('locale module', () => {
       expect(result).toEqual('hi-en');
     });
   });
+
+
+  describe('getTranslateComponent', () => {
+    let state = {};
+
+    beforeEach(() => {
+      state = {
+        languages: [{ code: 'en', active: false }, { code: 'fr', active: true }],
+        translations: {
+          hi: ['hi-en', 'hi-fr'],
+          yo: ['yo ${ name }', 'yo-fr ${ name }']
+        },
+        options: defaultTranslateOptions
+      };
+    });
+
+    it('should return a component with translation for id inserted for active language', () => {
+      const Translate = getTranslateComponent(state);
+      const wrapper = shallow(<Translate id="hi">hi-en</Translate>);
+      expect(wrapper.text()).toEqual('hi-fr');
+    });
+
+    it('should insert data into translation placeholders when data attribute is provided', () => {
+      const Translate = getTranslateComponent(state);
+      const wrapper = shallow(
+        <Translate id="yo" data={{name: 'Ted'}}>hi-en</Translate>
+      );
+      expect(wrapper.text()).toEqual('yo-fr Ted');
+    });
+
+    it('should accept same options as translate function', () => {
+      const Translate = getTranslateComponent(state);
+      const wrapper = shallow(
+        <Translate id="hi" options={{defaultLanguage: 'en'}}>hi-en</Translate>
+      );
+      expect(wrapper.text()).toEqual('hi-en');
+    });
+  });
+
 
   describe('translationsEqualSelector', () => {
     let languages = [];

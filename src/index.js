@@ -1,6 +1,8 @@
 // @flow
 export { localize } from './Localize';
 
+export { Translate } from './Translate';
+
 export { 
   localeReducer,
   

@@ -343,3 +343,10 @@ export const getTranslate: Selector<LocaleState, void, Translate> = createSelect
     }
   }
 );
+
+export const getTranslateComponent = createSelector(
+  getTranslate,
+  (translate) => (props) => {
+    return translate(props.id, props.data, props.options);
+  }
+);

@@ -77,6 +77,27 @@ describe('<Localize />', () => {
     expect(wrapper.props().translate).toBeDefined();
     expect(wrapper.props().translate('hi')).toEqual('hello');
   });
+
+  it.only('should', () => {
+    const store = mockStore({
+      locale: {
+        languages: [
+          {code: 'en', active: false},
+          {code: 'fr', active: true}
+        ],
+        translations: {
+          hi: ['hello', 'hello-fr']
+        }
+      }
+    });
+    const MockPageComponent = ({Translate}) => <Translate id="hi">hello</Translate>;
+    WrappedComponent = localize(MockPageComponent, 'locale');
+    wrapper = mount(<WrappedComponent />, { context: { store }});
+    expect(wrapper.find('MockPageComponent').props().Translate).toBeDefined();
+
+    console.log(wrapper.find('Component'));
+    // expect(wrapper.props().translate('hi')).toEqual('hello');
+  });
 });
 
 describe('<Localize /> unhappy path', function() {

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
-import { getActiveLanguage, getTranslate } from './locale';
+import { getActiveLanguage, getTranslate, getTranslateComponent } from './locale';
 import type { ComponentType } from 'react';
 import type { MapStateToProps } from 'react-redux';
 import type { LocaleState, Language, Translate } from './locale';
@@ -21,10 +21,12 @@ const mapStateToProps = (slice: ?string, getStateSlice: ?GetSliceStateFn): MapSt
   const language = getActiveLanguage(scopedState);
   const currentLanguage = language ? language.code : undefined;
   const translate = getTranslate(scopedState);
+  const Translate = getTranslateComponent(scopedState);
 
   return {
     currentLanguage,
-    translate
+    translate,
+    Translate
   };
 };
 
