@@ -1,5 +1,10 @@
 ## localize(Component, [reducerName], [getStateSlice])
 
+<div class="admonition error">
+  <p class="first admonition-title">Deprecated</p>
+  <p class="last">This feature will be removed in the next major version. See <a href="/getting-started/#4-add-translations-to-components">Add translations to components</a> for recommended options.</p>
+</div>
+
 <div class="admonition important">
   <p class="first admonition-title">Important</p>
   <p class="last">if your component is already using <a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options" target="_blank">connect</a> then you should use the <a href="/selectors/#gettranslatestate">getTranslate</a>, and <a href="/selectors#getactivelanguagestate">getActiveLanguage</a> selectors instead of <code>localize</code>.</p>

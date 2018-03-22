@@ -1,5 +1,4 @@
 // @flow
-import { localize } from 'react-localize-redux';
 import { addTranslation } from 'react-localize-redux';
 import InfoView from '../components/InfoView';
 
@@ -9,7 +8,7 @@ export default (store: any) => {
     getComponent: (nextState: any, next: any) => {
       const json = require('../assets/info.locale.json');
       store.dispatch(addTranslation(json));
-      next(null, localize(InfoView, 'locale'));
+      next(null, InfoView);
     }
   }
 };

@@ -9,7 +9,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 describe('locale module', () => {
 
-  const transformFunction = (data, codes) => {
+  const transformFunction = (data, codes) => {``
     return Object.keys(data).reduce((prev, cur, index) => {
       const languageData = data[cur];
       
@@ -704,6 +704,7 @@ describe('locale module', () => {
       expect(result).toEqual('hi-en');
     });
   });
+
 
   describe('translationsEqualSelector', () => {
     let languages = [];

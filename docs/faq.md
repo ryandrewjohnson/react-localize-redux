@@ -1,9 +1,7 @@
-## Do I have to connect every component that needs translations?
+## Change localeReducer default key name
 
-No you shouldn't have to connect every component. To avoid this add translate to a parent component, and then pass translations 
-down to stateless child components as props. See the [pass multiple translations to components](/features/#pass-multiple-translations-to-components) feature on one way to accomplish this.
+// TODO.....
 
----------------
 
 ## What if my translation data isn't in the required format?
 
@@ -49,25 +47,19 @@ store.dispatch(initialize(languages, { defaultLanguage }));
 ## How do I retrieve a translation for a language other than active language?
 
 Let's say your app's active language is English, but you want
-to display a single translation in French. You can accomplish this by overriding the `translate` function's `defaultLanguage` option. 
+to display a single translation in French. You can accomplish this by passing `Translate` the `defaultLanguage` option. 
 
 ```javascript
-import { getTranslate } from 'react-localize-redux';
+import { Translate } from 'react-localize-redux';
 
-const Greeting = ({ translate }) => (
+const Greeting = () => (
   <div>
     <!-- This will be English translation since active language is 'en' -->
-    <h1>{ translate('greeting') }</h1>
+    <h1><Translate id="greeting" /></h1>
     <!-- Since we specify defaultLanguage: 'fr' translation will be in French -->
-    <h1>{ translate('greeting', null, {defaultLanguage: 'fr'}) }</h1>
+    <h1><Translate id="greeting" options={{defaultLanguage: 'fr'}} /></h1>
   </div>
 );
-
-const mapStateToProps = state => ({
-  translate: getTranslate(state.locale)
-});
-
-export default connect(mapStateToProps)(Greeting);
 ```
 
 ---------------
@@ -123,7 +115,47 @@ const LocalizedTransactions = connect(mapStateToProps)(Transactions);
 
 ## Can I use [ImmutableJS](https://facebook.github.io/immutable-js/)?
 
-If your redux state is an ImmutableJS [Map](https://facebook.github.io/immutable-js/docs/#/Map), and you're using the [localize](/api/higher-order-component) HOC you'll need to use the [getStateSlice](/api/higher-order-component) option. This option allows you to instruct `localize` on how to read the state even though it's an ImmutableJS Map.
+If your redux state is an ImmutableJS [Map](https://facebook.github.io/immutable-js/docs/#/Map) you will need to do the following:
+
+
+** Using Translate **
+
+The Translate component uses React's [Legacy Context](https://reactjs.org/docs/legacy-context.html) to provide all instances of the Translate component with required config. In order for Translate to work with ImmutableJS you'll need to add `getLocaleState`, which you will take a function that converts the state back to plain ol' JS for Translate. You will want to add `getLocaleState` as high up in your component tree as possible.
+
+
+```javascript
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
+import { toJS } from 'immutable';
+
+class App extends React.Component<any, any> {
+  getChildContext() {
+    // state will be the entire redux store state tree
+    // you will want to return the state key you used for localeReducer
+    return {  
+      getLocaleState: state => state.toJS()['locale'];
+    };
+  }
+
+  render() {
+    return (
+      <Provider store={ store }>
+        ...
+      </Provider>
+    );
+  }
+}
+
+App.childContextTypes = {
+  getLocaleState:  PropTypes.func
+};
+```
+
+
+** Using localize HOC **
+
+If you're using the [localize](/api/localize) HOC you'll need to use the [getStateSlice](/api/localize) option. This option allows you to instruct `localize` on how to read the state even though it's an ImmutableJS Map.
 
 ```javascript
 import React from 'react';

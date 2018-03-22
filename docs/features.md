@@ -1,6 +1,38 @@
+## Keep default translations in your components
+
+If you are directly using the [translate](/api/selectors/#translatekey-string-string-data-options) function then your component might look something like this:
+
+```javascript
+import { getTranslate } from 'react-localize-redux';
+
+const Heading = ({ translate }) => (
+  <h1>{ translate('heading-01') }</h1>
+);
+
+const mapStateToProps = state => ({ translate: getTranslate(state.locale) });
+
+export default connect(mapStateToProps)(Greeting);
+```
+
+Now the above works well enough, but beyond the key name of `heading-01` you have no context for the translation copy that will be inserted. With the 
+[Translate](/api/translate/#translate) component you can include your default language's translation directly in the component, which can help with context, searching, and debugging.
+
+```javascript
+import { Translate } from 'react-localize-redux';
+
+export const Heading = ({ translate }) => (
+  <h1>
+    <Translate id="heading-01">Here is my English heading</Translate>
+  </h1>
+);
+```
+
+------------
+
+
+
 ## Pass multiple translations to components
 
-To avoid connecting every single component that needs translations you should instead pass translations down to child components.
 To retrieve multiple translations using [translate](/api/selectors#translatekey-string-string-data) pass an array of translation keys instead of a single key. This will return an object with translated strings mapped to translation keys.
 
 Since `translate` returns an object we can use the object spread operator to pass the translations as props for the `<Article>` component.
@@ -18,7 +50,11 @@ const translationData = {
 const Page = ({ translate }) => (
   <div>
     <h1>{ translate('heading') }</h1>
-    <Article { ...translate(['article.title', 'article.author', 'article.desc'], { name: 'Ted' }) } />
+    <Translate>
+      {translate => 
+        <Article { ...translate(['article.title', 'article.author', 'article.desc'], { name: 'Ted' }) } />
+      }
+    </Translate>
   </div>
 );
 
@@ -49,7 +85,21 @@ Insert dynamic content into your translation strings by inserting placeholders w
 }
 ```
 
-Then pass in the data you want to swap in for placeholders to the [translate](/api/selectors#translatekey-string-string-data) function.
+** Using Translate component **
+
+Use the **data** attribute to pass the data you want to swap in for placeholders.
+
+```javascript
+<h1>
+  <Translate id="greeting" data="Testy McTest">
+    {`Hello ${ name }`}
+  </Translate>
+</h1>
+```
+
+** Using translate function **
+
+Pass in the data you want to swap in for placeholders to the [translate](/api/selectors#translatekey-string-string-data) function.
 
 ```javascript
 <h1>{ translate('greeting', { name: 'Testy McTest' }) }</h1>
@@ -152,12 +202,15 @@ store.dispatch(initialize(languages, { missingTranslationMsg }));
 
 // Assuming there is no translation for "missing-key" doesn't exist it would render following:
 // <h1>Oh man you missed translation: missing-key for languge en!</h1>
-const MyComponent = props => <h1>{this.props.translate('missing-key')}</h1>;
+const MyComponent = props => <h1><Translate id="missing-key">No translations here!</Translate></h1>;
 
 // You also have the option to override the global missingTranslationMsg option
 // by passing a custom message directly to the translate function
  const missingTranslationMsg = 'Whoops! Missing translation!';
- const AnotherComponent = props => <h1>{this.props.translate('missing-key', null, { missingTranslationMsg })}</h1>
+ const AnotherComponent = props => 
+  <h1>
+    <Translate id="missing-key" options={{ missingTranslationMsg }}>Missing!</Translate>
+  </h1>;
 ```
 
 

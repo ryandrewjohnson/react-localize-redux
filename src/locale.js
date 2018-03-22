@@ -1,8 +1,9 @@
 // @flow
+import * as React from 'react';
 import { combineReducers } from 'redux';
 import { flatten } from 'flat';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
-import { getLocalizedElement, getIndexForLanguageCode, objectValuesToString, validateOptions, getTranslationsForLanguage } from './utils';
+import { getLocalizedElement, getIndexForLanguageCode, objectValuesToString, validateOptions, getTranslationsForLanguage, warning } from './utils';
 import type { Selector, SelectorCreator } from 'reselect';
 import type { Element } from 'react';
 
@@ -34,7 +35,8 @@ export type Options = {
   showMissingTranslationMsg?: boolean,
   missingTranslationMsg?: string,
   missingTranslationCallback?: MissingTranslationCallback,
-  translationTransform?: TransFormFunction
+  translationTransform?: TransFormFunction,
+  ignoreTranslateChildren?: boolean
 };
 
 export type LocaleState = {
@@ -213,7 +215,8 @@ export function options(state: Options = defaultTranslateOptions, action: Action
 export const defaultTranslateOptions: Options = {
   renderInnerHtml: true,
   showMissingTranslationMsg: true,
-  missingTranslationMsg: 'Missing translation key ${ key } for language ${ code }'
+  missingTranslationMsg: 'Missing translation key ${ key } for language ${ code }',
+  ignoreTranslateChildren: false
 };
 
 const initialState: LocaleState = {
@@ -250,10 +253,16 @@ export const addTranslationForLanguage = (translation: SingleLanguageTranslation
   payload: { translation, language }
 });
 
-export const setLanguages = (languages: Array<string|NamedLanguage>, activeLanguage?: string): SetLanguagesAction => ({
-  type: SET_LANGUAGES,
-  payload: { languages, activeLanguage }
-});
+export const setLanguages = (languages: Array<string|NamedLanguage>, activeLanguage?: string): SetLanguagesAction => {
+  warning(
+    'The setLanguages action will be removed in the next major version. ' + 
+    'Please use initialize action instead https://ryandrewjohnson.github.io/react-localize-redux/api/action-creators/#initializelanguages-options'
+  );
+  return {
+    type: SET_LANGUAGES,
+    payload: { languages, activeLanguage }
+  };
+};
 
 export const setActiveLanguage = (languageCode: string): SetActiveLanguageAction => ({
   type: SET_ACTIVE_LANGUAGE,
@@ -275,29 +284,31 @@ export const getActiveLanguage = (state: LocaleState): Language => {
   return languages.filter(language => language.active === true)[0];
 };
 
+/**
+ * A custom equality checker that checker that compares an objects keys and values instead of === comparison
+ * e.g. {name: 'Ted', sport: 'hockey'} would result in 'name,sport - Ted,hocker' which would be used for comparison
+ * 
+ * NOTE: This works with activeLanguage, languages, and translations data types.
+ * If a new data type is added to selector this would need to be updated to accomodate
+ */
 export const translationsEqualSelector = createSelectorCreator(
   defaultMemoize,
-  (cur: Object, prev: Object) => {
-    const isTranslationsData: boolean = cur && !(Array.isArray(cur) || Object.keys(cur).toString() === 'code,active');
+  (cur, prev) => {
+    const prevKeys: string = typeof prev === "object" ? Object.keys(prev).toString() : undefined;
+    const curKeys: string = typeof cur === "object" ? Object.keys(cur).toString() : undefined;
 
-    // for translations data use a combination of keys and values for comparison
-    if (isTranslationsData) {
-      const prevTranslations = (prev: Translations);
-      const curTranslations = (cur: Translations);
- 
-      const prevKeys: string = Object.keys(prevTranslations).toString();
-      const curKeys: string = Object.keys(curTranslations).toString();
+    const prevValues = typeof prev === "object" ? objectValuesToString(prev) : undefined;
+    const curValues = typeof cur === "object" ? objectValuesToString(cur) : undefined;
 
-      const prevValues = objectValuesToString(prevTranslations);
-      const curValues = objectValuesToString(curTranslations);
+    const prevCacheValue = (!prevKeys || !prevValues) 
+      ? `${ prevKeys } - ${ prevValues }` 
+      : prev;
 
-      const prevCacheValue = `${ prevKeys } - ${ prevValues }`;
-      const curCacheValue  = `${ curKeys } - ${ curValues }`;
+    const curCacheValue = (!curKeys || !curValues) 
+      ? `${ curKeys } - ${ curValues }`
+      : cur;
 
-      return prevCacheValue === curCacheValue;
-    }
-    
-    return prev === cur; 
+    return prevCacheValue === curCacheValue;
   }
 )
 
@@ -341,5 +352,12 @@ export const getTranslate: Selector<LocaleState, void, Translate> = createSelect
         throw new Error('react-localize-redux: Invalid key passed to getTranslate.');
       }
     }
+  }
+);
+
+export const getTranslateComponent = createSelector(
+  getTranslate,
+  (translate) => (props) => {
+    return translate(props.id, props.data, props.options);
   }
 );

@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import PropTypes from 'prop-types';
 import { applyMiddleware, compose, createStore, combineReducers } from 'redux';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -22,12 +23,30 @@ const store = createStore(combineReducers({
   }
 }), composeWithDevTools());
 
-const App = props => {
-  return (
-    <Provider store={ store }>
-      <Router history={ hashHistory } routes={ rootRoute(store) } />
-    </Provider>
-  );
+// const App = props => {
+//   return (
+//     <Provider store={ store }>
+//       <Router history={ hashHistory } routes={ rootRoute(store) } />
+//     </Provider>
+//   );
+// };
+
+class App extends React.Component<any, any> {
+  getChildContext() {
+    return {slice: 'locale'};
+  }
+
+  render() {
+    return (
+      <Provider store={ store }>
+        <Router history={ hashHistory } routes={ rootRoute(store) } />
+      </Provider>
+    );
+  }
+}
+
+App.childContextTypes = {
+  slice:  PropTypes.string
 };
 
 ReactDOM.render(<App />, ROOT_NODE);

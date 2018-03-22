@@ -72,3 +72,34 @@ export const getTranslationsForLanguage = (language: Language, languages: Langua
     }
   }, {});
 };
+
+export const storeDidChange = (store, onChange: (prevState) => void) => {
+  let currentState;
+
+  function handleChange() {
+    const nextState = store.getState();
+    if (nextState !== currentState) {
+      onChange(currentState);
+      currentState = nextState;
+    }
+  }
+
+  const unsubscribe = store.subscribe(handleChange);
+  handleChange();
+  return unsubscribe;
+}
+
+// Thanks react-redux for utility function
+// https://github.com/reactjs/react-redux/blob/master/src/utils/warning.js
+export const warning = (message: string) => {
+  if (typeof console !== 'undefined' && typeof console.error === 'function') {
+    console.error(message)
+  }
+
+  try {
+    // This error was thrown as a convenience so that if you enable
+    // "break on all exceptions" in your console,
+    // it would pause the execution at this line.
+    throw new Error(message)
+  } catch (e) {}
+}

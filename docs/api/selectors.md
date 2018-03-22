@@ -35,8 +35,8 @@ The [getTranslate](#gettranslatestate) selector will return the `translate` func
 name | Type | Description
 --------- | ----------| ------------
 key | string \| string [] | Pass a single key or multiple keys from your translation data.
-[data] | object | Optional data to be used in your localized strings for [variable replacement]().
-[options]| object | Override `renderInnerHtml`, `defaultLanguage`, `missingTranslationMsg`, and `missingTranslationCallback` [initialize optons](/action-creators/#initializelanguages-options) for translation.
+[data] | object | Optional data to be used in your localized strings for [variable replacement](/features/#insert-dynamic-content-into-translations).
+[options]| object | Override `renderInnerHtml`, `defaultLanguage`, `missingTranslationMsg`, and `missingTranslationCallback` [initialize optons](/api/action-creators/#initializelanguages-options) for translation.
 
 ** Returns: **
 

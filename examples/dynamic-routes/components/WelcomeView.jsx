@@ -1,35 +1,41 @@
 // @flow
 import React from 'react';
-import { getTranslate, addTranslation } from 'react-localize-redux';
+import { addTranslation, Translate } from 'react-localize-redux';
 import { connect } from 'react-redux';
 
-const WelcomeView = ({ translate, addTranslation, count }) => {
+const WelcomeView = ({ addTranslation, count }) => {
   return (
     <div>
       <p>Render Count: { count }</p>
-      <h1>{ translate('welcome.title', { name: 'Ryan Johsnon' }) }</h1>
-      <p>{ translate('welcome.body') }</p>
-      <button onClick={ () => addTranslation({ newstuff: ['newstuff EN', 'newstuff FR', 'newstuff ES']}) }>{ translate('welcome.click-here') }</button>
+      <h1>
+        <Translate id="welcome.title" data={{name: 'Ted Teddy'}}>
+          {'Hello ${ name } from Welcome Page!'}
+        </Translate>
+      </h1>
+      <p>
+        <Translate id="welcome.body" />
+      </p>
+      <button onClick={ () => addTranslation({ newstuff: ['newstuff EN', 'newstuff FR', 'newstuff ES']}) }>
+        <Translate id="welcome.click-here" />
+      </button>
 
-      <article>
-        <h2>{ translate('title') }</h2>
-        <p>{ translate('description') }</p>
-        <p>{ translate('author') }</p>
-        <code>{ translate('html', null, { renderInnerHtml: false })}</code>
-      </article>
-     
+      
+      <Translate>
+        {translate => 
+          <article>
+            <h2>{ translate('title') }</h2>
+            <p>{ translate('description') }</p>
+            <p>{ translate('author') }</p>
+            <code>{ translate('html', null, { renderInnerHtml: false })}</code>
+          </article>
+        }
+      </Translate>
     </div>  
   );
 }
-
-const mapStateToProps = state => {
-  return {
-    translate: getTranslate(state.locale)
-  };
-};
 
 const mapDispatchToProps = {
   addTranslation
 };
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { renderCountProp: 'count' })(WelcomeView);
+export default connect(null, mapDispatchToProps, null, { renderCountProp: 'count' })(WelcomeView);
