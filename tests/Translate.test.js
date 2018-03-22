@@ -27,9 +27,9 @@ describe('<Translate />', () => {
     }), {locale: initialState});
   };
 
-  const getComponent = (Component, state = initialState) => {
+  const getComponent = (Component, state = initialState, render = shallow) => {
     store = getStore(state);
-    return shallow(Component, { context: { store }});
+    return render(Component, { context: { store }});
   };
   
   it('should throw an error if redux store not found', () => {
@@ -48,6 +48,32 @@ describe('<Translate />', () => {
     const wrapper = getComponent(<Translate id="hi">Hey <a href="http://google.com">google</a></Translate>);
     expect(store.getState().locale.translations).toEqual({
       'hi': ['Hey <a href="http://google.com">google</a>', undefined]
+    });
+  });
+
+  it('should render HTML in translations', () => {
+    const wrapper = getComponent(
+      <Translate id="hi" options={{defaultLanguage: 'fr'}}>Hey <a href="http://google.com">google</a></Translate>,
+      {
+        ...initialState,
+        translations: {'hi': [undefined, '<a>Test</a>']}
+      },
+      mount
+    );
+    expect(wrapper.html()).toContain('<a>');
+  });
+
+  it('should convert <Translate>\'s children to a string when multi-line HTML markup is provided', () => {
+    const wrapper = getComponent(
+      <Translate id="hi">
+        <h1>Heading</h1>
+        <ul>
+          <li>Item #1</li>
+        </ul>
+      </Translate>
+    );
+    expect(store.getState().locale.translations).toEqual({
+      'hi': ['<h1>Heading</h1><ul><li>Item #1</li></ul>', undefined]
     });
   });
 
@@ -99,5 +125,50 @@ describe('<Translate />', () => {
       'hi': ['Hey ${name}!', undefined]
     });
     expect(wrapper.text()).toEqual('Hey Ted!');
+  });
+
+  it('should override renderInnerHtml option for <Translate/>', () => {
+    const wrapper = getComponent(
+      <Translate id="hi" options={{renderInnerHtml: false}}>Hi <strong>Ted</strong>!</Translate>
+    );
+
+    expect(() => wrapper.html()).toThrow();
+    expect(wrapper.text()).toEqual('Hi <strong>Ted</strong>!');
+  });
+
+  it('should override defaultLanguage option for <Translate/>', () => {
+    const wrapper = getComponent(
+      <Translate id="hi" options={{defaultLanguage: 'fr'}}>Hey</Translate>, 
+      {
+        ...initialState,
+        translations: {'hi': [undefined, 'Hey FR']}
+      }
+    );
+    expect(store.getState().locale.translations).toEqual({
+      'hi': ['Hey', 'Hey FR']
+    });
+  });
+
+  it('should override missingTranslationMsg option for <Translate/>', () => {
+    const options = {
+      defaultLanguage: 'fr',
+      missingTranslationMsg: 'Nope!'
+    };
+    const wrapper = getComponent(
+      <Translate id="nope" options={options}>Hey</Translate>
+    );
+    expect(wrapper.text()).toEqual('Nope!');
+  });
+
+  it('should override missingTranslationCallback option for <Translate/>', () => {
+    const callback = jest.fn();
+    const options = {
+      defaultLanguage: 'fr',
+      missingTranslationCallback: callback
+    };
+    const wrapper = getComponent(
+      <Translate id="nope" options={options}>Hey</Translate>
+    );
+    expect(callback).toHaveBeenCalled();
   });
 });

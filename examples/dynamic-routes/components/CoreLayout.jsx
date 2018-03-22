@@ -14,6 +14,14 @@ const Tester = translate => props => {
   return translate(props.id);
 };
 
+const Hello = props => {
+  return (
+    <strong>
+      <Translate id="welcome-page">Test</Translate>
+    </strong>
+  );
+};
+
 const CoreLayout = ({ children, currentLanguage, translate, count, click, Tester }) => {
   let items = [];
 
@@ -40,7 +48,12 @@ const CoreLayout = ({ children, currentLanguage, translate, count, click, Tester
         { children }
 
         {items.map((item, index) => 
-          <Translate key={index} id="info-page">Hey here is the new translation</Translate>
+          <Translate key={index} id="info-page">
+            <h1>Heading</h1>
+            <ul>
+              <li>Item #1</li>
+            </ul>
+          </Translate>
         )}
       </main>
     </div>

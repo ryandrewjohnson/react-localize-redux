@@ -3,6 +3,12 @@ import ReactDOMServer from 'react-dom/server';
 import PropTypes from 'prop-types';
 import { getTranslate, addTranslationForLanguage } from './locale';
 
+// TODO: 
+//- do we create an option to override whether copy in Translate overrides copy in translations if it already exists
+// - make sure works with ImmutableJS same interface used for Localize
+// - need a way to globally pass slice if possible (maybe?)
+
+
 export class Translate extends Component {
 
   static defaultProps = {
@@ -22,7 +28,7 @@ export class Translate extends Component {
     }
 
     if (!this.getStateSlice().languages) {
-      throw new Error(`react-localize-redux: cannot find state make sure to initialize`);
+      throw new Error(`react-localize-redux: cannot find state for slice: ${slice}`);
     }
 
     this.addDefaultTranslation();
@@ -40,9 +46,7 @@ export class Translate extends Component {
   getStateSlice() {
     const { storeKey, slice } = this.props;
     const state = this.context[storeKey].getState();
-    return slice !== undefined
-      ? state[slice]
-      : state;
+    return state[slice] || state;
   }
 
   render() {
