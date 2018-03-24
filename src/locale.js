@@ -34,7 +34,8 @@ export type Options = {
   showMissingTranslationMsg?: boolean,
   missingTranslationMsg?: string,
   missingTranslationCallback?: MissingTranslationCallback,
-  translationTransform?: TransFormFunction
+  translationTransform?: TransFormFunction,
+  ignoreTranslateChildren?: boolean
 };
 
 export type LocaleState = {
@@ -213,7 +214,8 @@ export function options(state: Options = defaultTranslateOptions, action: Action
 export const defaultTranslateOptions: Options = {
   renderInnerHtml: true,
   showMissingTranslationMsg: true,
-  missingTranslationMsg: 'Missing translation key ${ key } for language ${ code }'
+  missingTranslationMsg: 'Missing translation key ${ key } for language ${ code }',
+  ignoreTranslateChildren: false
 };
 
 const initialState: LocaleState = {

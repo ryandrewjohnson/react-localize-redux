@@ -2,6 +2,7 @@ import React from 'react';
 import Enzyme, { shallow, mount } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
+import { Map } from 'immutable';
 import { Translate } from 'Translate';
 import { createStore, combineReducers } from '../../../Library/Caches/typescript/2.7/node_modules/redux';
 import { localeReducer } from '../src';
@@ -11,7 +12,7 @@ Enzyme.configure({ adapter: new Adapter() });
 
 describe('<Translate />', () => {
   let store;
-  const mockStore = configureStore();
+
   const initialState = {
     languages: [
       { code: 'en', active: true },
@@ -20,6 +21,8 @@ describe('<Translate />', () => {
     translations: {},
     options: defaultTranslateOptions
   };
+
+  const mockStore = configureStore();
 
   const getStore = (initialState) => {
     return createStore(combineReducers({
@@ -38,9 +41,37 @@ describe('<Translate />', () => {
     ).toThrowError();
   });
 
-  it('should throw an error if locale slice is not found in state', () => {
+  it('should throw an error if locale state not found in store', () => {
     expect(
       () => getComponent(<Translate id="hi">Hi</Translate>, {})
+    ).toThrowError();
+  });
+
+  it('should use DEFAULT_LOCALE_STATE_NAME', () => {
+    expect(
+      () => getComponent(<Translate id="nope">Hey</Translate>)
+    ).not.toThrowError();
+  });
+
+  it('should use context.getLocaleState to get locale state from store', () => {
+    const store = createStore(combineReducers({
+      customSliceName: localeReducer
+    }), {customSliceName: initialState});
+
+    expect(
+      () => shallow(
+        <Translate id="nope">Hey</Translate>,
+        { context: { store, getLocaleState: (state) => state.customSliceName }}
+      )
+    ).not.toThrowError();
+  });
+
+  it('should throw error if context.getLocaleState is invalid', () => {
+    expect(
+      () => shallow(
+        <Translate id="nope">Hey</Translate>,
+        { context: { store: getStore(initialState), getLocaleState: (state) => state.nope }}
+      )
     ).toThrowError();
   });
 
@@ -104,6 +135,19 @@ describe('<Translate />', () => {
     });
     expect(store.getState().locale.translations).toEqual({
       'hi': ['Hey', undefined]
+    });
+  });
+
+  it('should NOT override existing translation for id with <Translate>\'s children when option.ignoreTranslateChildren = true', () => {
+    const wrapper = getComponent(<Translate id="hi">Hey</Translate>, {
+      ...initialState,
+      options: {
+        ignoreTranslateChildren: true
+      },
+      translations: {'hi': ['Hi Ho']}
+    });
+    expect(store.getState().locale.translations).toEqual({
+      'hi': ['Hi Ho']
     });
   });
 
@@ -171,4 +215,23 @@ describe('<Translate />', () => {
     );
     expect(callback).toHaveBeenCalled();
   });
+
+  // it('should allow for passing a custom function to return state slice', () => {
+  //   const immutableStore = mockStore(Map({
+  //     locale: {
+  //       ...initialState,
+  //       translations: {
+  //         hi: ['hello']
+  //       }
+  //     }
+  //   }));
+
+  //   const getStateSlice = (state) => state.toJS()['locale'];
+    
+  //   expect(() => shallow(
+  //       <Translate id="hi" getStateSlice={getStateSlice}>Hey</Translate>,
+  //       { context: { store: immutableStore }}
+  //     )
+  //   ).not.toThrow();
+  // });
 });

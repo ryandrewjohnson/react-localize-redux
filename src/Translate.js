@@ -3,50 +3,52 @@ import ReactDOMServer from 'react-dom/server';
 import PropTypes from 'prop-types';
 import { getTranslate, addTranslationForLanguage } from './locale';
 
-// TODO: 
-//- do we create an option to override whether copy in Translate overrides copy in translations if it already exists
-// - make sure works with ImmutableJS same interface used for Localize
-// - need a way to globally pass slice if possible (maybe?)
-
+const DEFAULT_LOCALE_STATE_NAME = 'locale';
+const DEFAULT_REDUX_STORE_KEY = 'store';
 
 export class Translate extends Component {
-
-  static defaultProps = {
-    storeKey: 'store',
-    slice: 'locale'
-  };
   
   translateFn;
 
   constructor(props, context) {
     super(props, context);
 
-    const { storeKey, slice } = this.props;
-
-    if (!context[storeKey]) {
-      throw new Error(`react-localize-redux: Unable to locate ${storeKey} prop in context. Ensure your app is wrapped with <Provider />.`);
+    if (!this.getStore()) {
+      throw new Error(`react-localize-redux: Unable to locate redux store in context. Ensure your app is wrapped with <Provider />.`);
     }
 
     if (!this.getStateSlice().languages) {
-      throw new Error(`react-localize-redux: cannot find state for slice: ${slice}`);
+      throw new Error(`react-localize-redux: cannot find languages ensure you have correctly dispatched initialize action.`);
     }
 
     this.addDefaultTranslation();
   }
 
   addDefaultTranslation() {
-    const { id, children, storeKey } = this.props;
-    const store = this.context[storeKey];
-    const translation = ReactDOMServer.renderToStaticMarkup(children);
     const locale = this.getStateSlice();
+
+    if (locale.options.ignoreTranslateChildren) {
+      return;
+    }
+
+    const store = this.getStore();
+    const { id, children } = this.props;
+    const translation = ReactDOMServer.renderToStaticMarkup(children);
     const defaultLanguage = locale.options.defaultLanguage || locale.languages[0].code;
     store.dispatch(addTranslationForLanguage({[id]: translation}, defaultLanguage));
   }
 
+  getStore() {
+    const { storeKey } = this.context;
+    return this.context[storeKey || DEFAULT_REDUX_STORE_KEY];
+  }
+
   getStateSlice() {
-    const { storeKey, slice } = this.props;
-    const state = this.context[storeKey].getState();
-    return state[slice] || state;
+    const { getLocaleState, storeKey } = this.context;
+    const state = this.getStore().getState();
+    return getLocaleState !== undefined
+      ? getLocaleState(state)
+      : state[DEFAULT_LOCALE_STATE_NAME] || state;
   }
 
   render() {
@@ -60,6 +62,8 @@ Translate.contextTypes = {
     subscribe: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     getState: PropTypes.func.isRequired
-  })
+  }),
+  getLocaleState: PropTypes.func,
+  storeKey: PropTypes.string
 };
 

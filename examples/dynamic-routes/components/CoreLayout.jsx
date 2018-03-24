@@ -47,14 +47,18 @@ const CoreLayout = ({ children, currentLanguage, translate, count, click, Tester
         
         { children }
 
-        {items.map((item, index) => 
+        <Translate id="info-page">
+          Tester
+        </Translate>
+
+        {/* {items.map((item, index) => 
           <Translate key={index} id="info-page">
             <h1>Heading</h1>
             <ul>
               <li>Item #1</li>
             </ul>
           </Translate>
-        )}
+        )} */}
       </main>
     </div>
   );
