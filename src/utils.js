@@ -72,3 +72,11 @@ export const getTranslationsForLanguage = (language: Language, languages: Langua
     }
   }, {});
 };
+
+export const observeStore(store, select, onChange) {
+  let currentState;
+
+  function handleChange() {
+    let nextState = select(store.getState());
+  }
+}

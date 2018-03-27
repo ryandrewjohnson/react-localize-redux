@@ -4,6 +4,7 @@ import { getTranslate, addTranslation } from 'react-localize-redux';
 import { connect } from 'react-redux';
 
 const WelcomeView = ({ translate, addTranslation, count }) => {
+  console.log('render WelcomeView');
   return (
     <div>
       <p>Render Count: { count }</p>

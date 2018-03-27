@@ -23,6 +23,8 @@ const DEFAULT_REDUX_STORE_KEY = 'store';
 
 export class Translate extends React.Component<TranslateProps> {
 
+  unsubscribeFromStore;
+
   constructor(props: TranslateProps, context: any) {
     super(props, context);
 
@@ -34,12 +36,35 @@ export class Translate extends React.Component<TranslateProps> {
       throw new Error(`react-localize-redux: cannot find languages ensure you have correctly dispatched initialize action.`);
     }
 
+    this.state = {
+      hasUpdated: false
+    };
+
     this.addDefaultTranslation();
   }
 
-  shouldComponentUpdate(nextProps: any) {
-    console.log('WILL RECIVE');
-    return true;
+  componentDidMount() {
+    const prevActiveLanguage = getActiveLanguage(this.getStateSlice());
+    this.unsubscribeFromStore = this.getStore().subscribe(() => {
+      const curActiveLanguage = getActiveLanguage(this.getStateSlice());
+
+      console.log(prevActiveLanguage.code, curActiveLanguage.code);
+
+      if (prevActiveLanguage !== curActiveLanguage) {
+        this.setState({ hasUpdated: true });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeFromStore();
+  }
+
+  subscribe() {
+    // this returns 
+    this.getStore().subscribe(() => {
+      console.log('***: store changed');
+    })
   }
 
   addDefaultTranslation() {
