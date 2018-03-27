@@ -11,7 +11,7 @@ const CoreLayout = ({ children, count, click, setActiveLanguage }) => {
   for(let i = 0; i < 1000; i++) {
     items.push(i);
   }
-  console.log('render CoreLayout');
+
   return (
     <div>
       <header>
@@ -60,12 +60,6 @@ const CoreLayout = ({ children, count, click, setActiveLanguage }) => {
     </div>
   );
 }
-
-const mapStateToProps = (state) => {
-  return {
-    languages: getLanguages(state.locale)
-  }
-};
 
 const mapDispatchToProps: any = (dispatch) => {
   return {

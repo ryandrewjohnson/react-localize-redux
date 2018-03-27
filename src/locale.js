@@ -3,7 +3,7 @@ import * as React from 'react';
 import { combineReducers } from 'redux';
 import { flatten } from 'flat';
 import { createSelector, createSelectorCreator, defaultMemoize } from 'reselect';
-import { getLocalizedElement, getIndexForLanguageCode, objectValuesToString, validateOptions, getTranslationsForLanguage } from './utils';
+import { getLocalizedElement, getIndexForLanguageCode, objectValuesToString, validateOptions, getTranslationsForLanguage, warning } from './utils';
 import type { Selector, SelectorCreator } from 'reselect';
 import type { Element } from 'react';
 
@@ -253,10 +253,16 @@ export const addTranslationForLanguage = (translation: SingleLanguageTranslation
   payload: { translation, language }
 });
 
-export const setLanguages = (languages: Array<string|NamedLanguage>, activeLanguage?: string): SetLanguagesAction => ({
-  type: SET_LANGUAGES,
-  payload: { languages, activeLanguage }
-});
+export const setLanguages = (languages: Array<string|NamedLanguage>, activeLanguage?: string): SetLanguagesAction => {
+  warning(
+    'The setLanguages action will be removed in the next major version. ' + 
+    'Please use initialize action instead https://ryandrewjohnson.github.io/react-localize-redux/api/action-creators/#initializelanguages-options'
+  );
+  return {
+    type: SET_LANGUAGES,
+    payload: { languages, activeLanguage }
+  };
+};
 
 export const setActiveLanguage = (languageCode: string): SetActiveLanguageAction => ({
   type: SET_ACTIVE_LANGUAGE,
@@ -278,29 +284,26 @@ export const getActiveLanguage = (state: LocaleState): Language => {
   return languages.filter(language => language.active === true)[0];
 };
 
+/**
+ * A custom equality checker that checker that compares an objects keys and values instead of === comparison
+ * e.g. {name: 'Ted', sport: 'hockey'} would result in 'name,sport - Ted,hocker' which would be used for comparison
+ * 
+ * NOTE: This works with activeLanguage, languages, and translations data types.
+ * If a new data type is added to selector this would need to be updated to accomodate
+ */
 export const translationsEqualSelector = createSelectorCreator(
   defaultMemoize,
   (cur: Object, prev: Object) => {
-    const isTranslationsData: boolean = cur && !(Array.isArray(cur) || Object.keys(cur).toString() === 'code,active');
+    const prevKeys: string = Object.keys(prev).toString();
+    const curKeys: string = Object.keys(cur).toString();
 
-    // for translations data use a combination of keys and values for comparison
-    if (isTranslationsData) {
-      const prevTranslations = (prev: Translations);
-      const curTranslations = (cur: Translations);
- 
-      const prevKeys: string = Object.keys(prevTranslations).toString();
-      const curKeys: string = Object.keys(curTranslations).toString();
+    const prevValues = objectValuesToString(prev);
+    const curValues = objectValuesToString(cur);
 
-      const prevValues = objectValuesToString(prevTranslations);
-      const curValues = objectValuesToString(curTranslations);
+    const prevCacheValue = `${ prevKeys } - ${ prevValues }`;
+    const curCacheValue  = `${ curKeys } - ${ curValues }`;
 
-      const prevCacheValue = `${ prevKeys } - ${ prevValues }`;
-      const curCacheValue  = `${ curKeys } - ${ curValues }`;
-
-      return prevCacheValue === curCacheValue;
-    }
-    
-    return prev === cur; 
+    return prevCacheValue === curCacheValue;
   }
 )
 

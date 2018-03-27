@@ -2,6 +2,7 @@
 import { routeError, loadMultipleRoutes } from '../utils/routes';
 import { addTranslation, addTranslationForLanguage, initialize, setActiveLanguage } from 'react-localize-redux';
 import CoreLayout from '../components/CoreLayout';
+import { setLanguages } from '../../../src/locale';
 
 export const PATH = '/(:lang)';
 
@@ -14,6 +15,11 @@ const mainRoute = (store: any) => {
     onEnter (nextState: any) {
       const language = nextState.params.lang || 'en';
       const json = require('../assets/global.locale.json');
+      store.dispatch(setLanguages([
+        { name: 'English', code: 'en' }, 
+        { name: 'French', code: 'fr' }, 
+        { name: 'Spanish', code: 'es' }
+      ]));
       store.dispatch(initialize([
         { name: 'English', code: 'en' }, 
         { name: 'French', code: 'fr' }, 

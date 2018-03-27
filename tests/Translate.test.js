@@ -160,6 +160,14 @@ describe('<Translate />', () => {
       'hi': ['Hey', 'Hey FR']
     });
   });
+
+  it('should not override default language translation if no children provided', () => {
+    const wrapper = getComponent(<Translate id="hi" />, {
+      ...initialState,
+      translations: {'hi': ['Hi Ho']}
+    });
+    expect(wrapper.text()).toEqual('Hi Ho');
+  });
   
   it('should insert data into translation placeholders when data attribute is provided', () => {
     const wrapper = getComponent(

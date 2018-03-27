@@ -2,8 +2,8 @@
 import * as React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import PropTypes from 'prop-types';
-import { getTranslate, addTranslationForLanguage, getLanguages } from './locale';
-import { getActiveLanguage } from '.';
+import { getTranslate, addTranslationForLanguage, getLanguages, getOptions, getActiveLanguage, getTranslationsForActiveLanguage } from './locale';
+import { storeDidChange } from './utils';
 import type { Options, TranslatePlaceholderData, Translate as TranslateFunction, Language} from './locale';
 
 export type TranslateProps = {
@@ -40,38 +40,47 @@ export class Translate extends React.Component<TranslateProps> {
       hasUpdated: false
     };
 
+    this.onStateDidChange = this.onStateDidChange.bind(this);
     this.addDefaultTranslation();
   }
 
   componentDidMount() {
-    const prevActiveLanguage = getActiveLanguage(this.getStateSlice());
-    this.unsubscribeFromStore = this.getStore().subscribe(() => {
-      const curActiveLanguage = getActiveLanguage(this.getStateSlice());
-
-      console.log(prevActiveLanguage.code, curActiveLanguage.code);
-
-      if (prevActiveLanguage !== curActiveLanguage) {
-        this.setState({ hasUpdated: true });
-      }
-    });
+    this.unsubscribeFromStore = storeDidChange(this.getStore(), this.onStateDidChange);
   }
 
   componentWillUnmount() {
     this.unsubscribeFromStore();
   }
 
-  subscribe() {
-    // this returns 
-    this.getStore().subscribe(() => {
-      console.log('***: store changed');
-    })
+  onStateDidChange(prevState) {
+    const prevLocaleState = this.getStateSlice(prevState);
+    const curLocaleState = this.getStateSlice();
+
+    const prevActiveLanguage = getActiveLanguage(prevLocaleState);
+    const curActiveLanguage = getActiveLanguage(curLocaleState);
+
+    const prevOptions = getOptions(prevLocaleState);
+    const curOptions = getOptions(curLocaleState);
+
+    const prevTranslations = getTranslationsForActiveLanguage(prevLocaleState);
+    const curTranslations = getTranslationsForActiveLanguage(curLocaleState);
+
+    const hasActiveLangaugeChanged = (prevActiveLanguage.code !== curActiveLanguage.code);
+    const hasOptionsChanged = (prevOptions !== curOptions);
+    const hasTranslationsChanged = (prevTranslations !== curTranslations);
+
+    // TODO: add babel plugin to strip unecessary prop-types 
+
+    if (hasActiveLangaugeChanged || hasOptionsChanged || hasTranslationsChanged) {
+      this.setState({ hasUpdated: true });
+    }
   }
 
   addDefaultTranslation() {
     const locale = this.getStateSlice();
     const { id, children } = this.props;
 
-    if (typeof children === 'function') {
+    if (children === undefined || typeof children === 'function') {
       return;
     }
 
@@ -92,9 +101,9 @@ export class Translate extends React.Component<TranslateProps> {
     return this.context[storeKey || DEFAULT_REDUX_STORE_KEY];
   }
 
-  getStateSlice() {
+  getStateSlice(myState) {
     const { getLocaleState, storeKey } = this.context;
-    const state = this.getStore().getState();
+    const state = myState || this.getStore().getState();
     return getLocaleState !== undefined
       ? getLocaleState(state)
       : state[DEFAULT_LOCALE_STATE_NAME] || state;
