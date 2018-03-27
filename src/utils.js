@@ -73,6 +73,11 @@ export const getTranslationsForLanguage = (language: Language, languages: Langua
   }, {});
 };
 
+/**
+ * Maybe do a storeDidChange(prevState, nextState) method ...
+ * const storeDidChange = observeStore(store, select) => (prevState, nextState);
+ * // then the comparison check is actually done to from the observer
+ */
 export const observeStore(store, select, onChange) {
   let currentState;
 
