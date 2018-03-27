@@ -1,16 +1,29 @@
-import React, { Component } from 'react';
+// @flow
+import * as React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import PropTypes from 'prop-types';
-import { getTranslate, addTranslationForLanguage } from './locale';
+import { getTranslate, addTranslationForLanguage, getLanguages } from './locale';
+import { getActiveLanguage } from '.';
+import type { Options, TranslatePlaceholderData, Translate as TranslateFunction, Language} from './locale';
+
+export type TranslateProps = {
+  id?: string,
+  options?: Options,
+  data?: TranslatePlaceholderData,
+  children: React.Node|TranslateChildFunction
+};
+
+export type TranslateChildFunction = (
+  translate: TranslateFunction, 
+  activeLanguage: Language, 
+  languages: Language[]) => React.Node;
 
 const DEFAULT_LOCALE_STATE_NAME = 'locale';
 const DEFAULT_REDUX_STORE_KEY = 'store';
 
-export class Translate extends Component {
-  
-  translateFn;
+export class Translate extends React.Component<TranslateProps> {
 
-  constructor(props, context) {
+  constructor(props: TranslateProps, context: any) {
     super(props, context);
 
     if (!this.getStore()) {
@@ -24,18 +37,29 @@ export class Translate extends Component {
     this.addDefaultTranslation();
   }
 
+  shouldComponentUpdate(nextProps: any) {
+    console.log('WILL RECIVE');
+    return true;
+  }
+
   addDefaultTranslation() {
     const locale = this.getStateSlice();
+    const { id, children } = this.props;
+
+    if (typeof children === 'function') {
+      return;
+    }
 
     if (locale.options.ignoreTranslateChildren) {
       return;
     }
-
-    const store = this.getStore();
-    const { id, children } = this.props;
-    const translation = ReactDOMServer.renderToStaticMarkup(children);
-    const defaultLanguage = locale.options.defaultLanguage || locale.languages[0].code;
-    store.dispatch(addTranslationForLanguage({[id]: translation}, defaultLanguage));
+    
+    if (id !== undefined) {
+      const store = this.getStore();
+      const translation = ReactDOMServer.renderToStaticMarkup(children);
+      const defaultLanguage = locale.options.defaultLanguage || locale.languages[0].code;
+      store.dispatch(addTranslationForLanguage({[id]: translation}, defaultLanguage));
+    }
   }
 
   getStore() {
@@ -52,8 +76,13 @@ export class Translate extends Component {
   }
 
   render() {
-    this.translateFn = getTranslate(this.getStateSlice());
-    return this.translateFn(this.props.id, this.props.data, this.props.options);
+    const translateFn = getTranslate(this.getStateSlice());
+    const activeLanguage = getActiveLanguage(this.getStateSlice());
+    const languages = getLanguages(this.getStateSlice());
+    const { id = '', data, options } = this.props;
+    return typeof this.props.children === 'function'
+      ? this.props.children(translateFn, activeLanguage, languages)
+      : (translateFn(id, data, options): any);
   }
 }
 

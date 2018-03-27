@@ -31,7 +31,7 @@ const store = createStore(combineReducers({
 //   );
 // };
 
-class App extends React.Component {
+class App extends React.Component<any, any> {
   getChildContext() {
     return {slice: 'locale'};
   }

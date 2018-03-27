@@ -216,22 +216,41 @@ describe('<Translate />', () => {
     expect(callback).toHaveBeenCalled();
   });
 
-  // it('should allow for passing a custom function to return state slice', () => {
-  //   const immutableStore = mockStore(Map({
-  //     locale: {
-  //       ...initialState,
-  //       translations: {
-  //         hi: ['hello']
-  //       }
-  //     }
-  //   }));
+  it('should allow for passing a custom function to return state slice', () => {
+    const immutableStore = mockStore(Map({
+      locale: {
+        ...initialState,
+        translations: {
+          hi: ['hello']
+        }
+      }
+    }));
 
-  //   const getStateSlice = (state) => state.toJS()['locale'];
-    
-  //   expect(() => shallow(
-  //       <Translate id="hi" getStateSlice={getStateSlice}>Hey</Translate>,
-  //       { context: { store: immutableStore }}
-  //     )
-  //   ).not.toThrow();
-  // });
+    const getLocaleState = (state) => state.toJS()['locale'];
+
+    expect(
+      () => shallow(
+        <Translate id="hi">Hey</Translate>,
+        { context: { store: immutableStore, getLocaleState }}
+      )
+    ).not.toThrowError();
+  });
+
+  it('should accept function as child, and pass translate, activeLanguage, and languages as params', () => {
+    const wrapper = getComponent(
+      <Translate>{(translate, activeLanguage, languages) => 
+        <h1>
+          {translate('hi')} 
+          {activeLanguage.code} 
+          {languages.map(lang => lang.code).toString()}
+        </h1>
+      }</Translate>, 
+      {
+        ...initialState,
+        translations: {'hi': ['Hi Ho']}
+      }
+    );
+
+    expect(wrapper.text()).toEqual('Hi Hoenen,fr');
+  });
 });

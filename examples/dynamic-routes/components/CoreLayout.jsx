@@ -2,54 +2,50 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { localize, getTranslate, getActiveLanguage } from 'react-localize-redux';
-import { Translate } from '../../../src';
+import { localize, getTranslate, getActiveLanguage, Translate, setActiveLanguage } from 'react-localize-redux';
 
-const Tester = translate => props => {
-  console.log(props.children);
-  // need to use default language, or let user pass language 
-  // check if the string in props.children is already stored in redux
-    // if yes bypass resaving it
-    // if no then save to redux, if props.data is set then run through template parser
-  return translate(props.id);
-};
-
-const Hello = props => {
-  return (
-    <strong>
-      <Translate id="welcome-page">Test</Translate>
-    </strong>
-  );
-};
-
-const CoreLayout = ({ children, currentLanguage, translate, count, click, Tester }) => {
+const CoreLayout = ({ children, count, click, setActiveLanguage }) => {
   let items = [];
 
   for(let i = 0; i < 1000; i++) {
     items.push(i);
   }
+  console.log('render CoreLayout');
   return (
     <div>
-      <Tester id="welcome-page">Here is my copy</Tester>
-      {/* <Tester /> */}
+      <header>
+        <Translate>
+          {(translate, activeLanguage, languages) =>
+            <ul>
+              {languages.map(language => 
+                <li key={language.code}>
+                  <button onClick={() => setActiveLanguage(language.code)}>{language.name} - ({language.code})</button>
+                </li>
+              )} 
+            </ul>
+          }
+        </Translate>
+      </header>
+
       <nav>
         <button onClick={ click }>Click count: { count }</button>
-        <ul>
-          <li>
-            <Link to={ `${ currentLanguage }/welcome` }>{ translate('welcome-page') }</Link>
-            <Link to={ `${ currentLanguage }/info` }>{ translate('info-page') }</Link>
-          </li>
-        </ul>
+      
+        <Translate>
+          {(translate, activeLanguage) => 
+            <ul>
+              <li>
+                <Link to={ `${ activeLanguage.code }/welcome` }>{ translate('welcome-page') }</Link>  
+              </li>
+              <li>
+                <Link to={ `${ activeLanguage.code }/info` }>{ translate('info-page') }</Link>
+              </li>
+            </ul>
+          }
+        </Translate>
+      
       </nav>
       <main>
-        
-        
-        
         { children }
-
-        <Translate id="info-page">
-          Tester
-        </Translate>
 
         {/* {items.map((item, index) => 
           <Translate key={index} id="info-page">
@@ -63,23 +59,12 @@ const CoreLayout = ({ children, currentLanguage, translate, count, click, Tester
     </div>
   );
 }
-  
 
-const mapStateToProps = state => {
-  const translate = getTranslate(state.locale);
-
+const mapDispatchToProps: any = (dispatch) => {
   return {
-    currentLanguage: getActiveLanguage(state.locale).code,
-    translate,
-    count: state.clicks,
-    Tester: Tester(translate)
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
+    setActiveLanguage: (code) => dispatch(setActiveLanguage(code)),
     click: () => dispatch({ type: 'CLICKED' })
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CoreLayout);
+export default connect(null, mapDispatchToProps)(CoreLayout);

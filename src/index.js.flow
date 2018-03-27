@@ -20,6 +20,8 @@ import type { SetLanguagesAction as _SetLanguagesAction } from './locale';
 import type { SetActiveLanguageAction as _SetActiveLanguageAction } from './locale';
 import type { Action as _Action } from './locale';
 
+import type { TranslateProps as _TranslateProps, TranslateChildFunction as _TranslateChildFunction } from './Translate';
+
 export type Language = _Language;
 export type NamedLanguage = _NamedLanguage;
 export type Options = _Options;
@@ -37,6 +39,9 @@ export type AddTranslationForLanguageAction = _AddTranslationForLanguageAction;
 export type SetLanguagesAction = _SetLanguagesAction;
 export type SetActiveLanguageAction = _SetActiveLanguageAction;
 export type Action = _Action;
+
+export type TranslateProps = _TranslateProps;
+export type TranslateChildFunction = _TranslateChildFunction;
 
 
 declare export function localeReducer(
@@ -86,3 +91,5 @@ declare export function getTranslate(
 declare export function localize(
   Component: ComponentType<any>, slice?: string, getStateSlice?: GetSliceStateFn
 ): (state: Object|LocaleState) => ComponentType<LocalizeStateProps>;
+
+declare export var Translate: React.ComponentType<TranslateProps>;

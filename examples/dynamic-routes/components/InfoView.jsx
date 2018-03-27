@@ -1,11 +1,13 @@
 import React from 'react';
+import { Translate } from 'react-localize-redux';
 
-const InfoView = ({ translate }) => {
+const InfoView = () => {
+  console.log('hey');
   return (
     <div>
-      <h1>{ translate('info.title') }</h1>
-      <p>{ translate('info.body') }</p>
-      <button>{ translate('info.click-here') }</button>
+      <h1><Translate id="info.title">Hello from Info Page!</Translate></h1>
+      {/* <p>{ translate('info.body') }</p> */}
+      {/* <button>{ translate('info.click-here') }</button> */}
     </div>
   );
 }
