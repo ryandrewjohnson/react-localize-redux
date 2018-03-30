@@ -18,7 +18,7 @@ Assuming your application has dispatched `setLanguages('en', 'fr', 'es')`:
     "Bonjour",    (fr)
     "Hola",       (es)
   ],
-  "farwell": [
+  "farewell": [
     "Goodbye",    (en)
     "Au revoir",  (fr)
     "Adiós"       (es)
@@ -44,19 +44,19 @@ Assuming your application `setLanguages('en', 'fr', 'es')`:
 // en.json
 {
   "greeting": "Hello",
-  "farwell": "Goodbye"
+  "farewell": "Goodbye"
 }
 
 // fr.json
 {
   "greeting":"Bonjour",
-  "farwell": "Au revoir"
+  "farewell": "Au revoir"
 }
 
 // es.json
 {
   "greeting": "Hola",
-  "farwell": "Adiós"
+  "farewell": "Adiós"
 }
 ```
 
@@ -165,7 +165,7 @@ Both types of translation data support nested data format to help with organizat
       "greeting": ["Hello", "Bonjour", "Hola"]
     },
     "footer": {
-      "farwell": ["Goodbye", "Au revoir", "Adiós"]
+      "farewell": ["Goodbye", "Au revoir", "Adiós"]
     }
   }
 }
@@ -181,7 +181,7 @@ Both types of translation data support nested data format to help with organizat
       "greeting": "Hello"
     },
     "footer": {
-      "farwell": "Goodbye"
+      "farewell": "Goodbye"
     }
   }
 }
@@ -193,7 +193,7 @@ Both types of translation data support nested data format to help with organizat
       "greeting": "Bonjour"
     },
     "footer": {
-      "farwell": "Au revoir"
+      "farewell": "Au revoir"
     }
   }
 }
@@ -205,7 +205,7 @@ Both types of translation data support nested data format to help with organizat
       "greeting": "Hola"
     },
     "footer": {
-      "farwell": "Adiós"
+      "farewell": "Adiós"
     }
   }
 }

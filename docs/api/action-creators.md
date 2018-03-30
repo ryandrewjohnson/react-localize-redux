@@ -101,7 +101,7 @@ data | json \| object  | Translation data in the [required format](/formatting-t
 // assuming your app has set languages ['en', 'fr']
 const welcomePageTranslations = {
   greeting: ['Hi!', 'Bonjour!'],
-  farwell: ['Bye!', 'Au revoir!']
+  farewell: ['Bye!', 'Au revoir!']
 };
 
 store.dispatch(addTranslation(welcomePageTranslations));
@@ -129,7 +129,7 @@ language | string  | The language code this translation data belongs to
 // assuming your app has set languages ['en', 'fr']
 const welcomePageEnglish = {
   greeting: 'Hi!',
-  farwell: 'Bye!'
+  farewell: 'Bye!'
 };
 
 store.dispatch(addTranslationForLanguage(welcomePageEnglish, 'en'));
