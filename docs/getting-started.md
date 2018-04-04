@@ -119,7 +119,7 @@ import { getTranslate, getActiveLanguage } from 'react-localize-redux';
 const Greeting = ({ translate, currentLanguage }) => (
   <div>
     <h1>{ translate('greeting') }</h1>
-    <button>{ translate('farwell') }</button>
+    <button>{ translate('farewell') }</button>
   </div>
 );
 
