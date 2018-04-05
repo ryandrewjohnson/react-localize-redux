@@ -49,25 +49,19 @@ store.dispatch(initialize(languages, { defaultLanguage }));
 ## How do I retrieve a translation for a language other than active language?
 
 Let's say your app's active language is English, but you want
-to display a single translation in French. You can accomplish this by overriding the `translate` function's `defaultLanguage` option. 
+to display a single translation in French. You can accomplish this by passing `Translate` the `defaultLanguage` option. 
 
 ```javascript
-import { getTranslate } from 'react-localize-redux';
+import { Translate } from 'react-localize-redux';
 
-const Greeting = ({ translate }) => (
+const Greeting = () => (
   <div>
     <!-- This will be English translation since active language is 'en' -->
-    <h1>{ translate('greeting') }</h1>
+    <h1><Translate id="greeting" /></h1>
     <!-- Since we specify defaultLanguage: 'fr' translation will be in French -->
-    <h1>{ translate('greeting', null, {defaultLanguage: 'fr'}) }</h1>
+    <h1><Translate id="greeting" options={{defaultLanguage: 'fr'}} /></h1>
   </div>
 );
-
-const mapStateToProps = state => ({
-  translate: getTranslate(state.locale)
-});
-
-export default connect(mapStateToProps)(Greeting);
 ```
 
 ---------------

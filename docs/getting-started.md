@@ -103,7 +103,7 @@ store.dispatch(addTranslationForLanguage(english, 'en'));
 
 
 
-## 4. Add translations to your components
+## 4. Add translations to components
 
 Once you've added your translation data you'll need a way to get it into your components. That is where the [Translate]() component comes in and it comes in a couple different flavours.
 
@@ -187,16 +187,10 @@ const LanguageSelector = props => (
 );
 ```
 
+<br/>
 
 
-
-
-
-
-
-
-
-** The Translate component is the recommended option, but you can use the following syntax **
+** You can also access the translate function directly in connected components **
 
 
 If you have a component that is already using [connect](https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options) use [getTranslate](/api/selectors#gettranslatestate) in your `mapStateToProps` to add the [translate](/api/selectors#translatekey-string-string-data) function to your component's props.

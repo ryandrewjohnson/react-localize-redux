@@ -293,15 +293,20 @@ export const getActiveLanguage = (state: LocaleState): Language => {
  */
 export const translationsEqualSelector = createSelectorCreator(
   defaultMemoize,
-  (cur: Object, prev: Object) => {
-    const prevKeys: string = Object.keys(prev).toString();
-    const curKeys: string = Object.keys(cur).toString();
+  (cur, prev) => {
+    const prevKeys: string = typeof prev === "object" ? Object.keys(prev).toString() : undefined;
+    const curKeys: string = typeof cur === "object" ? Object.keys(cur).toString() : undefined;
 
-    const prevValues = objectValuesToString(prev);
-    const curValues = objectValuesToString(cur);
+    const prevValues = typeof prev === "object" ? objectValuesToString(prev) : undefined;
+    const curValues = typeof cur === "object" ? objectValuesToString(cur) : undefined;
 
-    const prevCacheValue = `${ prevKeys } - ${ prevValues }`;
-    const curCacheValue  = `${ curKeys } - ${ curValues }`;
+    const prevCacheValue = (!prevKeys || !prevValues) 
+      ? `${ prevKeys } - ${ prevValues }` 
+      : prev;
+
+    const curCacheValue = (!curKeys || !curValues) 
+      ? `${ curKeys } - ${ curValues }`
+      : cur;
 
     return prevCacheValue === curCacheValue;
   }
