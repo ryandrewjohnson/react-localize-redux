@@ -1,6 +1,6 @@
 {
   "presets": ["es2015-no-commonjs", "react", "stage-0"],
-  "plugins": ["transform-flow-strip-types"],
+  "plugins": ["transform-flow-strip-types", "transform-react-remove-prop-types"],
   "env": {
     "development": {
       "plugins": ["transform-es2015-modules-commonjs"]

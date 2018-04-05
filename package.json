@@ -68,6 +68,7 @@
     "babel-loader": "^6.2.10",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.26.0",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
     "babel-preset-es2015-no-commonjs": "0.0.2",
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.16.0",
