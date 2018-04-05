@@ -1,3 +1,11 @@
+## Keep translations in your files
+
+// TODO.....
+
+------------
+
+
+
 ## Pass multiple translations to components
 
 To retrieve multiple translations using [translate](/api/selectors#translatekey-string-string-data) pass an array of translation keys instead of a single key. This will return an object with translated strings mapped to translation keys.

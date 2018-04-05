@@ -12,7 +12,8 @@ pages:
 - API Documentation: 
   - 'Action Creators': 'api/action-creators.md'
   - 'Selectors': 'api/selectors.md'
-  - 'Higher Order Component': 'api/higher-order-component.md'
+  - 'Translate': 'api/translate.md'
+  - 'localize - deprecated!': 'api/localize.md'
 
 theme: readthedocs
 # theme_dir: cinder

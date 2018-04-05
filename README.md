@@ -28,7 +28,7 @@ npm install react-localize-redux --save
 - API
   - [Action Creators](https://ryandrewjohnson.github.io/react-localize-redux/api/action-creators/)
   - [Selectors](https://ryandrewjohnson.github.io/react-localize-redux/api/selectors/)
-  - [Higher Order Component](https://ryandrewjohnson.github.io/react-localize-redux/api/higher-order-component/)
+  - [Translate]()
 
 ## Articles
 
