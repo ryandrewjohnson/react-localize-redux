@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
 import { Map } from 'immutable';
 import { Translate } from 'Translate';
-import { createStore, combineReducers } from '../../../Library/Caches/typescript/2.7/node_modules/redux';
+import { createStore, combineReducers } from 'redux';
 import { localeReducer } from '../src';
 import { defaultTranslateOptions } from '../src/locale';
 
