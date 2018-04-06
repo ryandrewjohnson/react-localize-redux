@@ -2,7 +2,7 @@
 
 <div class="admonition error">
   <p class="first admonition-title">Deprecated</p>
-  <p class="last">This feature will be removed in the next major version. See <a href="/getting-started/#4-add-translations-to-components">Add translations to components</a>for recommended options.</p>
+  <p class="last">This feature will be removed in the next major version. See <a href="/getting-started/#4-add-translations-to-components">Add translations to components</a> for recommended options.</p>
 </div>
 
 <div class="admonition important">

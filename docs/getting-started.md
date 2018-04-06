@@ -105,7 +105,7 @@ store.dispatch(addTranslationForLanguage(english, 'en'));
 
 ## 4. Add translations to components
 
-Once you've added your translation data you'll need a way to get it into your components. That is where the [Translate]() component comes in and it comes in a couple different flavours.
+Once you've added your translation data you'll need a way to get it into your components. That is where the [Translate](api/translate/) component comes in and it comes in a couple different flavours.
 
 ** Flavour 1 **
 
