@@ -16,3 +16,11 @@
 ```bash
 npm install react-localize-redux --save
 ```
+
+----
+
+
+## Articles
+
+- [Dead simple localization for your React components](https://medium.com/@ryandrewjohnson/adding-multi-language-support-to-your-react-redux-app-cf6e64250050)
+- [Migrating from v1 to v2?](MIGRATING.md)

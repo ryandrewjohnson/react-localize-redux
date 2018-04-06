@@ -1,6 +1,6 @@
 ## Translate
 
-The `<Translate />` component is the recommended way to access translations from your components.
+The `<Translate />` component is the recommended way to access translations in your components.
 
 ** props: **
 

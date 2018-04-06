@@ -1,6 +1,31 @@
-## Keep translations in your files
+## Keep default translations in your components
 
-// TODO.....
+If you are directly using the [translate](/api/selectors/#translatekey-string-string-data-options) function then your component might look something like this:
+
+```javascript
+import { getTranslate } from 'react-localize-redux';
+
+const Heading = ({ translate }) => (
+  <h1>{ translate('heading-01') }</h1>
+);
+
+const mapStateToProps = state => ({ translate: getTranslate(state.locale) });
+
+export default connect(mapStateToProps)(Greeting);
+```
+
+Now the above works well enough, but beyond the key name of `heading-01` you have no context for the translation copy that will be inserted. With the 
+[Translate](/api/translate/#translate) component you can include your default language's translation directly in the component, which can help with context, searching, and debugging.
+
+```javascript
+import { Translate } from 'react-localize-redux';
+
+export const Heading = ({ translate }) => (
+  <h1>
+    <Translate id="heading-01">Here is my English heading</Translate>
+  </h1>
+);
+```
 
 ------------
 
