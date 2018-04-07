@@ -13,6 +13,10 @@ export type TranslateProps = {
   children: React.Node|TranslateChildFunction
 };
 
+type TranslateState = {
+  hasUpdated: boolean;
+};
+
 export type TranslateChildFunction = (
   translate: TranslateFunction, 
   activeLanguage: Language, 
@@ -21,9 +25,10 @@ export type TranslateChildFunction = (
 const DEFAULT_LOCALE_STATE_NAME = 'locale';
 const DEFAULT_REDUX_STORE_KEY = 'store';
 
-export class Translate extends React.Component<TranslateProps> {
+export class Translate extends React.Component<TranslateProps, TranslateState> {
 
-  unsubscribeFromStore;
+  unsubscribeFromStore: any;
+  onStateDidChange: Function;
 
   constructor(props: TranslateProps, context: any) {
     super(props, context);
@@ -52,7 +57,7 @@ export class Translate extends React.Component<TranslateProps> {
     this.unsubscribeFromStore();
   }
 
-  onStateDidChange(prevState) {
+  onStateDidChange(prevState: any) {
     const prevLocaleState = this.getStateSlice(prevState);
     const curLocaleState = this.getStateSlice();
 
@@ -68,8 +73,6 @@ export class Translate extends React.Component<TranslateProps> {
     const hasActiveLangaugeChanged = (prevActiveLanguage.code !== curActiveLanguage.code);
     const hasOptionsChanged = (prevOptions !== curOptions);
     const hasTranslationsChanged = (prevTranslations !== curTranslations);
-
-    // TODO: add babel plugin to strip unecessary prop-types 
 
     if (hasActiveLangaugeChanged || hasOptionsChanged || hasTranslationsChanged) {
       this.setState({ hasUpdated: true });
@@ -101,7 +104,7 @@ export class Translate extends React.Component<TranslateProps> {
     return this.context[storeKey || DEFAULT_REDUX_STORE_KEY];
   }
 
-  getStateSlice(myState) {
+  getStateSlice(myState: any) {
     const { getLocaleState, storeKey } = this.context;
     const state = myState || this.getStore().getState();
     return getLocaleState !== undefined

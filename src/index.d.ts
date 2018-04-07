@@ -148,3 +148,5 @@ export function getTranslate(state: LocaleState): Translate;
 export function localize(Component: Component<any>, slice?: string, getStateSlice?: GetSliceStateFn): (state: Object|LocaleState) => ComponentClass<LocalizeProps>;
 
 export function TranslateChildFunction(translate: Translate, activeLanguage: Language, languages: Language[]): ReactNode;
+
+export default class TranslateComponent extends Component<TranslateProps> {}

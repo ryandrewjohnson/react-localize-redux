@@ -294,11 +294,11 @@ export const getActiveLanguage = (state: LocaleState): Language => {
 export const translationsEqualSelector = createSelectorCreator(
   defaultMemoize,
   (cur, prev) => {
-    const prevKeys: string = typeof prev === "object" ? Object.keys(prev).toString() : undefined;
-    const curKeys: string = typeof cur === "object" ? Object.keys(cur).toString() : undefined;
+    const prevKeys: any = typeof prev === "object" ? Object.keys(prev).toString() : undefined;
+    const curKeys: any = typeof cur === "object" ? Object.keys(cur).toString() : undefined;
 
-    const prevValues = typeof prev === "object" ? objectValuesToString(prev) : undefined;
-    const curValues = typeof cur === "object" ? objectValuesToString(cur) : undefined;
+    const prevValues: any = typeof prev === "object" ? objectValuesToString(prev) : undefined;
+    const curValues: any = typeof cur === "object" ? objectValuesToString(cur) : undefined;
 
     const prevCacheValue = (!prevKeys || !prevValues) 
       ? `${ prevKeys } - ${ prevValues }` 

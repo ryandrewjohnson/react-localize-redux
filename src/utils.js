@@ -73,7 +73,7 @@ export const getTranslationsForLanguage = (language: Language, languages: Langua
   }, {});
 };
 
-export const storeDidChange = (store, onChange: (prevState) => void) => {
+export const storeDidChange = (store: any, onChange: (prevState: any) => void) => {
   let currentState;
 
   function handleChange() {

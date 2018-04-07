@@ -92,4 +92,4 @@ declare export function localize(
   Component: ComponentType<any>, slice?: string, getStateSlice?: GetSliceStateFn
 ): (state: Object|LocaleState) => ComponentType<LocalizeStateProps>;
 
-declare export var Translate: React.ComponentType<TranslateProps>;
+declare export var TranslateComponent: ComponentType<TranslateProps>;
