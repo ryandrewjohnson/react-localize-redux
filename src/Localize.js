@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { getActiveLanguage, getTranslate } from './locale';
 import type { ComponentType } from 'react';
 import type { MapStateToProps } from 'react-redux';
-import type { LocaleState, Language, Translate } from './locale';
+import type { LocaleState, Language, TranslateFunction } from './locale';
 
 export type LocalizeStateProps = {
   currentLanguage?: string,
-  translate: Translate
+  translate: TranslateFunction
 };
 
 export type GetSliceStateFn = (state: Object|LocaleState) => LocaleState;

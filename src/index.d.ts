@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import { ReactElement, ReactNode, Component as ReactComponent  } from 'react';
 import { ComponentClass, Component } from 'react-redux';
 
 export as namespace ReactLocalizeRedux;
@@ -52,11 +52,16 @@ export interface TranslatePlaceholderData {
   [key: string]: string|number;
 }
 
+export type TranslateChildFunction = (
+  translate: TranslateFunction, 
+  activeLanguage: Language, 
+  languages: Language[]) => any;
+
 export interface TranslateProps {
   id?: string,
   options?: Options,
   data?: TranslatePlaceholderData,
-  children: ReactNode|TranslateChildFunction
+  children?: any|TranslateChildFunction
 }
 
 export type TranslateValue = string|string[];
@@ -66,7 +71,7 @@ interface BaseAction<T, P> {
   payload: P;
 }
 
-export type Translate = (value: TranslateValue, data?: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap; 
+export type TranslateFunction = (value: TranslateValue, data?: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap; 
 
 type InitializePayload = {
   languages: any[], 
@@ -93,7 +98,7 @@ type SetActiveLanguagePayload = {
 
 type LocalizeProps = {
   currentLanguage: string,
-  translate: Translate
+  translate: TranslateFunction
 };
 
 export type SingleLanguageTranslation = {
@@ -143,10 +148,10 @@ export function getOptions(state: LocaleState): Options;
 
 export function getActiveLanguage(state: LocaleState): Language;
 
-export function getTranslate(state: LocaleState): Translate;
+export function getTranslate(state: LocaleState): TranslateFunction;
 
 export function localize(Component: Component<any>, slice?: string, getStateSlice?: GetSliceStateFn): (state: Object|LocaleState) => ComponentClass<LocalizeProps>;
 
 export function TranslateChildFunction(translate: Translate, activeLanguage: Language, languages: Language[]): ReactNode;
 
-export default class TranslateComponent extends Component<TranslateProps> {}
+export default class Translate extends ReactComponent<TranslateProps> {}

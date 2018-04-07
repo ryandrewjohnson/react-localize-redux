@@ -61,7 +61,7 @@ export type TranslatePlaceholderData = {
 
 export type TranslateValue = string|string[];
 
-export type Translate = (value: TranslateValue, data?: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap; 
+export type TranslateFunction = (value: TranslateValue, data?: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap; 
 
 export type SingleLanguageTranslation = {
   [key: string]: Object | string
@@ -327,7 +327,7 @@ export const getTranslationsForSpecificLanguage = translationsEqualSelector(
   )
 );
 
-export const getTranslate: Selector<LocaleState, void, Translate> = createSelector(
+export const getTranslate: Selector<LocaleState, void, TranslateFunction> = createSelector(
   getTranslationsForActiveLanguage,
   getTranslationsForSpecificLanguage,
   getActiveLanguage,

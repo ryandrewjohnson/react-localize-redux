@@ -4,13 +4,13 @@ import ReactDOMServer from 'react-dom/server';
 import PropTypes from 'prop-types';
 import { getTranslate, addTranslationForLanguage, getLanguages, getOptions, getActiveLanguage, getTranslationsForActiveLanguage } from './locale';
 import { storeDidChange } from './utils';
-import type { Options, TranslatePlaceholderData, Translate as TranslateFunction, Language} from './locale';
+import type { Options, TranslatePlaceholderData, TranslateFunction, Language} from './locale';
 
 export type TranslateProps = {
   id?: string,
   options?: Options,
   data?: TranslatePlaceholderData,
-  children: React.Node|TranslateChildFunction
+  children?: any|TranslateChildFunction
 };
 
 type TranslateState = {
@@ -20,7 +20,7 @@ type TranslateState = {
 export type TranslateChildFunction = (
   translate: TranslateFunction, 
   activeLanguage: Language, 
-  languages: Language[]) => React.Node;
+  languages: Language[]) => any;
 
 const DEFAULT_LOCALE_STATE_NAME = 'locale';
 const DEFAULT_REDUX_STORE_KEY = 'store';
