@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta name="author" content="Ryan Johnson">
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Translate - react-localize-redux</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/highlight.css">
+  <link href="../../css/highlight-fix.css" rel="stylesheet">
+  <link href="../../css/highlight.css" rel="stylesheet">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Translate";
+    var mkdocs_page_input_path = "api/translate.md";
+    var mkdocs_page_url = "/api/translate/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> react-localize-redux</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../getting-started/">Getting Started</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../formatting-translation-data/">Formatting Translation Data</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../features/">Features</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../../faq/">FAQ</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">API Documentation</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../action-creators/">Action Creators</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../selectors/">Selectors</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Translate</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#translate">Translate</a></li>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../localize/">localize - deprecated!</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">react-localize-redux</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>API Documentation &raquo;</li>
+        
+      
+    
+    <li>Translate</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/ryandrewjohnson/react-localize-redux/edit/master/docs/api/translate.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="translate">Translate</h2>
+<p>The <code>&lt;Translate /&gt;</code> component is the recommended way to access translations in your components.</p>
+<p><strong> props: </strong></p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>string</td>
+<td>Pass the key of the translation data you want to insert.</td>
+</tr>
+<tr>
+<td>data</td>
+<td>object</td>
+<td>Optional data to be used in your localized strings for <a href="../../features/#insert-dynamic-content-into-translations">variable replacement</a>.</td>
+</tr>
+<tr>
+<td>options</td>
+<td>object</td>
+<td>Override <code>renderInnerHtml</code>, <code>defaultLanguage</code>, <code>missingTranslationMsg</code>, and <code>missingTranslationCallback</code> <a href="../../api/action-creators/#initializelanguages-options">initialize optons</a> for translation.</td>
+</tr>
+</tbody>
+</table>
+<p><strong> Usage: </strong></p>
+<p>If you want to include your default language's translations in your component you can pass the translations as <code>children</code> to the <code>&lt;Translate /&gt;</code> component. These translations will automatically be added to your redux store's translation data.</p>
+<pre><code class="javascript">import { addTranslation } from 'react-localize-redux';
+
+const translations = {
+  greeting: [
+    null, // default language translation will pull from Translate's children
+    'Bonjour'
+  ],
+  farewell: [
+    'goodbye',
+    'Au revoir'
+  ],
+  food: [
+    null,
+    '&lt;ul&gt;&lt;li&gt;Lait&lt;/li&gt;&lt;li&gt;biscuits&lt;/li&gt;&lt;/ul&gt;'
+  ],
+  date: [
+    null,
+    'La date d\'aujourd\'hui est ${date}'
+  ]
+};
+
+store.dispatch(addTranslation(translations));
+</code></pre>
+
+<p>Here we access the translations we added above:</p>
+<pre><code class="javascript">import { Translate } from 'react-localize-redux';
+
+const Welcome = props =&gt; (
+  &lt;div&gt;
+    &lt;!-- 
+      'Hello' would be inserted into translation data under the 
+      default language for 'greeting' key.
+    --&gt;
+    &lt;Translate id=&quot;greeting&quot;&gt;Hello&lt;/Translate&gt;
+
+    &lt;!-- 
+      Overide 'goodbye' with 'Bye Bye!' in translation data under the
+      default language for 'farewell' key.
+    --&gt;
+    &lt;Translate id=&quot;farewell&quot;&gt;Bye Bye!&lt;/Translate&gt;
+
+    &lt;!-- 
+      If you don't include the default translation in Translate's children
+      you will need to ensure you have set a value in your translation data.
+      In this case default translation would use 'goodbye' from translation data.
+    --&gt;
+    &lt;Translate id=&quot;farewell&quot; /&gt;
+
+    &lt;!-- 
+      You can include HTML markup as children, but ensure you include 
+      the same markup in your translation data.
+    --&gt;
+    &lt;Translate id=&quot;food&quot;&gt;
+      &lt;ul&gt;
+        &lt;li&gt;Milk&lt;/li&gt;
+        &lt;li&gt;Cookies&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/Translate&gt;
+
+    &lt;!-- 
+      You can insert translations with placeholder's for dynamic data.
+      Then pass data in using data prop.
+    --&gt;
+    &lt;Translate id=&quot;date&quot; data={{date: new Date()}}&gt;
+      {'Today\'s date is ${date}'}
+    &lt;/Translate&gt;
+
+    &lt;!-- 
+      You can override initialize options using the options prop.
+      Overriding renderInnerHtml to false to avoid rendering HTML markup.
+    --&gt;
+    &lt;Translate id=&quot;food&quot; options={{renderInnerHtml: false}}&gt;
+      &lt;ul&gt;
+        &lt;li&gt;Milk&lt;/li&gt;
+        &lt;li&gt;Cookies&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/Translate&gt;
+  &lt;/div&gt;
+);
+</code></pre>
+
+<p>You can also pass Translate a function as it's child that returns the elements you want to render. This function is commonly referred to as a <a href="https://reactjs.org/docs/render-props.html">render prop function</a>, and is called with the following arguments:</p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>translate</td>
+<td>Same as value returned from <a href="../../api/selectors/#translatekey-string-string-data-options">getTranslate</a> selector.</td>
+</tr>
+<tr>
+<td>activeLanguage</td>
+<td>Same as value returned from <a href="../../api/selectors/#getactivelanguagestate">getActiveLanguage</a> selector.</td>
+</tr>
+<tr>
+<td>languages</td>
+<td>Same as value returned from <a href="../../api/selectors/#getlanguagesstate">getLanguages</a> selector.</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="javascript">import { Translate } from 'react-localize-redux';
+
+const Welcome = props =&gt; (
+  &lt;Translate&gt;
+    {(translate, activeLanguage, languages) =&gt; 
+      &lt;div&gt;
+        &lt;h1&gt;The active language is: {activeLanguage.name}&lt;/h2&gt;
+
+        &lt;h2&gt;Languages:&lt;/h2&gt;
+        &lt;ul&gt;
+          {languages.map(language =&gt;
+            &lt;li&gt;{language.name} - {language.code}&lt;/li&gt;
+          )}
+        &lt;/ul&gt;
+
+        &lt;p&gt;{ translate('greeting') }&lt;/p&gt;
+        &lt;p&gt;{ translate('farewell') }&lt;/p&gt;
+        &lt;p&gt;{ translate('date', {date: new Date()}) }&lt;/p&gt;
+        &lt;p&gt;{ translate('food', null, {renderInnerHtml: false}) }&lt;/p&gt;
+      &lt;/div&gt;
+    }
+  &lt;/Translate&gt;
+);
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../localize/" class="btn btn-neutral float-right" title="localize - deprecated!">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../selectors/" class="btn btn-neutral" title="Selectors"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/ryandrewjohnson/react-localize-redux" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../selectors/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../localize/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../../js/theme.js"></script>
+
+</body>
+</html>

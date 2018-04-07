@@ -103,7 +103,11 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../api/higher-order-component/">Higher Order Component</a>
+    <a class="" href="../api/translate/">Translate</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../api/localize/">localize - deprecated!</a>
                 </li>
     </ul>
 	    </li>
@@ -160,7 +164,7 @@
     &quot;Bonjour&quot;,    (fr)
     &quot;Hola&quot;,       (es)
   ],
-  &quot;farwell&quot;: [
+  &quot;farewell&quot;: [
     &quot;Goodbye&quot;,    (en)
     &quot;Au revoir&quot;,  (fr)
     &quot;Adiós&quot;       (es)
@@ -178,19 +182,19 @@
 <pre><code class="json">// en.json
 {
   &quot;greeting&quot;: &quot;Hello&quot;,
-  &quot;farwell&quot;: &quot;Goodbye&quot;
+  &quot;farewell&quot;: &quot;Goodbye&quot;
 }
 
 // fr.json
 {
   &quot;greeting&quot;:&quot;Bonjour&quot;,
-  &quot;farwell&quot;: &quot;Au revoir&quot;
+  &quot;farewell&quot;: &quot;Au revoir&quot;
 }
 
 // es.json
 {
   &quot;greeting&quot;: &quot;Hola&quot;,
-  &quot;farwell&quot;: &quot;Adiós&quot;
+  &quot;farewell&quot;: &quot;Adiós&quot;
 }
 </code></pre>
 
@@ -265,7 +269,7 @@ store.dispatch(addTranslation(customTranslation));
       &quot;greeting&quot;: [&quot;Hello&quot;, &quot;Bonjour&quot;, &quot;Hola&quot;]
     },
     &quot;footer&quot;: {
-      &quot;farwell&quot;: [&quot;Goodbye&quot;, &quot;Au revoir&quot;, &quot;Adiós&quot;]
+      &quot;farewell&quot;: [&quot;Goodbye&quot;, &quot;Au revoir&quot;, &quot;Adiós&quot;]
     }
   }
 }
@@ -279,7 +283,7 @@ store.dispatch(addTranslation(customTranslation));
       &quot;greeting&quot;: &quot;Hello&quot;
     },
     &quot;footer&quot;: {
-      &quot;farwell&quot;: &quot;Goodbye&quot;
+      &quot;farewell&quot;: &quot;Goodbye&quot;
     }
   }
 }
@@ -291,7 +295,7 @@ store.dispatch(addTranslation(customTranslation));
       &quot;greeting&quot;: &quot;Bonjour&quot;
     },
     &quot;footer&quot;: {
-      &quot;farwell&quot;: &quot;Au revoir&quot;
+      &quot;farewell&quot;: &quot;Au revoir&quot;
     }
   }
 }
@@ -303,7 +307,7 @@ store.dispatch(addTranslation(customTranslation));
       &quot;greeting&quot;: &quot;Hola&quot;
     },
     &quot;footer&quot;: {
-      &quot;farwell&quot;: &quot;Adiós&quot;
+      &quot;farewell&quot;: &quot;Adiós&quot;
     }
   }
 }

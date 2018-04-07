@@ -106,7 +106,11 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../higher-order-component/">Higher Order Component</a>
+    <a class="" href="../translate/">Translate</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../localize/">localize - deprecated!</a>
                 </li>
     </ul>
 	    </li>
@@ -314,7 +318,7 @@ store.dispatch(setLanguages(languages, 'fr'));
 <pre><code class="javascript">// assuming your app has set languages ['en', 'fr']
 const welcomePageTranslations = {
   greeting: ['Hi!', 'Bonjour!'],
-  farwell: ['Bye!', 'Au revoir!']
+  farewell: ['Bye!', 'Au revoir!']
 };
 
 store.dispatch(addTranslation(welcomePageTranslations));
@@ -349,7 +353,7 @@ store.dispatch(addTranslation(welcomePageTranslations));
 <pre><code class="javascript">// assuming your app has set languages ['en', 'fr']
 const welcomePageEnglish = {
   greeting: 'Hi!',
-  farwell: 'Bye!'
+  farewell: 'Bye!'
 };
 
 store.dispatch(addTranslationForLanguage(welcomePageEnglish, 'en'));

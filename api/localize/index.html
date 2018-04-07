@@ -8,7 +8,7 @@
   
   <meta name="author" content="Ryan Johnson">
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Higher Order Component - react-localize-redux</title>
+  <title>localize - deprecated! - react-localize-redux</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -19,9 +19,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Higher Order Component";
-    var mkdocs_page_input_path = "api/higher-order-component.md";
-    var mkdocs_page_url = "/api/higher-order-component/";
+    var mkdocs_page_name = "localize - deprecated!";
+    var mkdocs_page_input_path = "api/localize.md";
+    var mkdocs_page_url = "/api/localize/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -86,9 +86,13 @@
                     
     <a class="" href="../selectors/">Selectors</a>
                 </li>
+                <li class="">
+                    
+    <a class="" href="../translate/">Translate</a>
+                </li>
                 <li class=" current">
                     
-    <a class="current" href="./">Higher Order Component</a>
+    <a class="current" href="./">localize - deprecated!</a>
     <ul class="subnav">
             
     <li class="toctree-l3"><a href="#localizecomponent-reducername-getstateslice">localize(Component, [reducerName], [getStateSlice])</a></li>
@@ -125,10 +129,10 @@
         
       
     
-    <li>Higher Order Component</li>
+    <li>localize - deprecated!</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/ryandrewjohnson/react-localize-redux/edit/master/docs/api/higher-order-component.md"
+        <a href="https://github.com/ryandrewjohnson/react-localize-redux/edit/master/docs/api/localize.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -139,6 +143,11 @@
             <div class="section">
               
                 <h2 id="localizecomponent-reducername-getstateslice">localize(Component, [reducerName], [getStateSlice])</h2>
+<div class="admonition error">
+  <p class="first admonition-title">Deprecated</p>
+  <p class="last">This feature will be removed in the next major version. See <a href="/getting-started/#4-add-translations-to-components">Add translations to components</a> for recommended options.</p>
+</div>
+
 <div class="admonition important">
   <p class="first admonition-title">Important</p>
   <p class="last">if your component is already using <a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options" target="_blank">connect</a> then you should use the <a href="/selectors/#gettranslatestate">getTranslate</a>, and <a href="/selectors#getactivelanguagestate">getActiveLanguage</a> selectors instead of <code>localize</code>.</p>
@@ -191,7 +200,7 @@ export default localize(Greeting, 'locale');
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="../selectors/" class="btn btn-neutral" title="Selectors"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../translate/" class="btn btn-neutral" title="Translate"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -219,7 +228,7 @@ export default localize(Greeting, 'locale');
           <a href="https://github.com/ryandrewjohnson/react-localize-redux" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../selectors/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../translate/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
     </span>

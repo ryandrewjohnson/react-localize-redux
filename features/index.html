@@ -69,6 +69,9 @@
     <a class="current" href="./">Features</a>
     <ul class="subnav">
             
+    <li class="toctree-l2"><a href="#keep-default-translations-in-your-components">Keep default translations in your components</a></li>
+    
+
     <li class="toctree-l2"><a href="#pass-multiple-translations-to-components">Pass multiple translations to components</a></li>
     
 
@@ -116,7 +119,11 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../api/higher-order-component/">Higher Order Component</a>
+    <a class="" href="../api/translate/">Translate</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../api/localize/">localize - deprecated!</a>
                 </li>
     </ul>
 	    </li>
@@ -156,9 +163,33 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="pass-multiple-translations-to-components">Pass multiple translations to components</h2>
-<p>To avoid connecting every single component that needs translations you should instead pass translations down to child components.
-To retrieve multiple translations using <a href="../api/selectors#translatekey-string-string-data">translate</a> pass an array of translation keys instead of a single key. This will return an object with translated strings mapped to translation keys.</p>
+                <h2 id="keep-default-translations-in-your-components">Keep default translations in your components</h2>
+<p>If you are directly using the <a href="../api/selectors/#translatekey-string-string-data-options">translate</a> function then your component might look something like this:</p>
+<pre><code class="javascript">import { getTranslate } from 'react-localize-redux';
+
+const Heading = ({ translate }) =&gt; (
+  &lt;h1&gt;{ translate('heading-01') }&lt;/h1&gt;
+);
+
+const mapStateToProps = state =&gt; ({ translate: getTranslate(state.locale) });
+
+export default connect(mapStateToProps)(Greeting);
+</code></pre>
+
+<p>Now the above works well enough, but beyond the key name of <code>heading-01</code> you have no context for the translation copy that will be inserted. With the 
+<a href="../api/translate/#translate">Translate</a> component you can include your default language's translation directly in the component, which can help with context, searching, and debugging.</p>
+<pre><code class="javascript">import { Translate } from 'react-localize-redux';
+
+export const Heading = ({ translate }) =&gt; (
+  &lt;h1&gt;
+    &lt;Translate id=&quot;heading-01&quot;&gt;Here is my English heading&lt;/Translate&gt;
+  &lt;/h1&gt;
+);
+</code></pre>
+
+<hr />
+<h2 id="pass-multiple-translations-to-components">Pass multiple translations to components</h2>
+<p>To retrieve multiple translations using <a href="../api/selectors#translatekey-string-string-data">translate</a> pass an array of translation keys instead of a single key. This will return an object with translated strings mapped to translation keys.</p>
 <p>Since <code>translate</code> returns an object we can use the object spread operator to pass the translations as props for the <code>&lt;Article&gt;</code> component.</p>
 <pre><code class="javascript">const translationData = {
   heading: [&quot;Heading&quot;, &quot;Heading French&quot;],
@@ -172,7 +203,11 @@ To retrieve multiple translations using <a href="../api/selectors#translatekey-s
 const Page = ({ translate }) =&gt; (
   &lt;div&gt;
     &lt;h1&gt;{ translate('heading') }&lt;/h1&gt;
-    &lt;Article { ...translate(['article.title', 'article.author', 'article.desc'], { name: 'Ted' }) } /&gt;
+    &lt;Translate&gt;
+      {translate =&gt; 
+        &lt;Article { ...translate(['article.title', 'article.author', 'article.desc'], { name: 'Ted' }) } /&gt;
+      }
+    &lt;/Translate&gt;
   &lt;/div&gt;
 );
 
@@ -196,7 +231,17 @@ const Article = props =&gt; (
 }
 </code></pre>
 
-<p>Then pass in the data you want to swap in for placeholders to the <a href="../api/selectors#translatekey-string-string-data">translate</a> function.</p>
+<p><strong> Using Translate component </strong></p>
+<p>Use the <strong>data</strong> attribute to pass the data you want to swap in for placeholders.</p>
+<pre><code class="javascript">&lt;h1&gt;
+  &lt;Translate id=&quot;greeting&quot; data=&quot;Testy McTest&quot;&gt;
+    {`Hello ${ name }`}
+  &lt;/Translate&gt;
+&lt;/h1&gt;
+</code></pre>
+
+<p><strong> Using translate function </strong></p>
+<p>Pass in the data you want to swap in for placeholders to the <a href="../api/selectors#translatekey-string-string-data">translate</a> function.</p>
 <pre><code class="javascript">&lt;h1&gt;{ translate('greeting', { name: 'Testy McTest' }) }&lt;/h1&gt;
 </code></pre>
 
@@ -264,12 +309,15 @@ store.dispatch(initialize(languages, { missingTranslationMsg }));
 
 // Assuming there is no translation for &quot;missing-key&quot; doesn't exist it would render following:
 // &lt;h1&gt;Oh man you missed translation: missing-key for languge en!&lt;/h1&gt;
-const MyComponent = props =&gt; &lt;h1&gt;{this.props.translate('missing-key')}&lt;/h1&gt;;
+const MyComponent = props =&gt; &lt;h1&gt;&lt;Translate id=&quot;missing-key&quot;&gt;No translations here!&lt;/Translate&gt;&lt;/h1&gt;;
 
 // You also have the option to override the global missingTranslationMsg option
 // by passing a custom message directly to the translate function
  const missingTranslationMsg = 'Whoops! Missing translation!';
- const AnotherComponent = props =&gt; &lt;h1&gt;{this.props.translate('missing-key', null, { missingTranslationMsg })}&lt;/h1&gt;
+ const AnotherComponent = props =&gt; 
+  &lt;h1&gt;
+    &lt;Translate id=&quot;missing-key&quot; options={{ missingTranslationMsg }}&gt;Missing!&lt;/Translate&gt;
+  &lt;/h1&gt;;
 </code></pre>
 
 <hr />

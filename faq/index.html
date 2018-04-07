@@ -74,7 +74,7 @@
     <a class="current" href="./">FAQ</a>
     <ul class="subnav">
             
-    <li class="toctree-l2"><a href="#do-i-have-to-connect-every-component-that-needs-translations">Do I have to connect every component that needs translations?</a></li>
+    <li class="toctree-l2"><a href="#change-localereducer-default-key-name">Change localeReducer default key name</a></li>
     
 
     <li class="toctree-l2"><a href="#what-if-my-translation-data-isnt-in-the-required-format">What if my translation data isn't in the required format?</a></li>
@@ -112,7 +112,11 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../api/higher-order-component/">Higher Order Component</a>
+    <a class="" href="../api/translate/">Translate</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../api/localize/">localize - deprecated!</a>
                 </li>
     </ul>
 	    </li>
@@ -152,10 +156,8 @@
           <div role="main">
             <div class="section">
               
-                <h2 id="do-i-have-to-connect-every-component-that-needs-translations">Do I have to connect every component that needs translations?</h2>
-<p>No you shouldn't have to connect every component. To avoid this add translate to a parent component, and then pass translations 
-down to stateless child components as props. See the <a href="../features/#pass-multiple-translations-to-components">pass multiple translations to components</a> feature on one way to accomplish this.</p>
-<hr />
+                <h2 id="change-localereducer-default-key-name">Change localeReducer default key name</h2>
+<p>// TODO.....</p>
 <h2 id="what-if-my-translation-data-isnt-in-the-required-format">What if my translation data isn't in the required format?</h2>
 <p>If you don't have control over the translation data for your application you can use the <a href="../api/action-creators/#initializelanguages-options">translationTransform</a> option. 
 This allows you to write a function that takes in your custom translation data, and outputs the data in the required format.
@@ -186,23 +188,17 @@ store.dispatch(initialize(languages, { defaultLanguage }));
 <hr />
 <h2 id="how-do-i-retrieve-a-translation-for-a-language-other-than-active-language">How do I retrieve a translation for a language other than active language?</h2>
 <p>Let's say your app's active language is English, but you want
-to display a single translation in French. You can accomplish this by overriding the <code>translate</code> function's <code>defaultLanguage</code> option. </p>
-<pre><code class="javascript">import { getTranslate } from 'react-localize-redux';
+to display a single translation in French. You can accomplish this by passing <code>Translate</code> the <code>defaultLanguage</code> option. </p>
+<pre><code class="javascript">import { Translate } from 'react-localize-redux';
 
-const Greeting = ({ translate }) =&gt; (
+const Greeting = () =&gt; (
   &lt;div&gt;
     &lt;!-- This will be English translation since active language is 'en' --&gt;
-    &lt;h1&gt;{ translate('greeting') }&lt;/h1&gt;
+    &lt;h1&gt;&lt;Translate id=&quot;greeting&quot; /&gt;&lt;/h1&gt;
     &lt;!-- Since we specify defaultLanguage: 'fr' translation will be in French --&gt;
-    &lt;h1&gt;{ translate('greeting', null, {defaultLanguage: 'fr'}) }&lt;/h1&gt;
+    &lt;h1&gt;&lt;Translate id=&quot;greeting&quot; options={{defaultLanguage: 'fr'}} /&gt;&lt;/h1&gt;
   &lt;/div&gt;
 );
-
-const mapStateToProps = state =&gt; ({
-  translate: getTranslate(state.locale)
-});
-
-export default connect(mapStateToProps)(Greeting);
 </code></pre>
 
 <hr />
@@ -252,7 +248,39 @@ const LocalizedTransactions = connect(mapStateToProps)(Transactions);
 
 <hr />
 <h2 id="can-i-use-immutablejs">Can I use <a href="https://facebook.github.io/immutable-js/">ImmutableJS</a>?</h2>
-<p>If your redux state is an ImmutableJS <a href="https://facebook.github.io/immutable-js/docs/#/Map">Map</a>, and you're using the <a href="../api/higher-order-component">localize</a> HOC you'll need to use the <a href="../api/higher-order-component">getStateSlice</a> option. This option allows you to instruct <code>localize</code> on how to read the state even though it's an ImmutableJS Map.</p>
+<p>If your redux state is an ImmutableJS <a href="https://facebook.github.io/immutable-js/docs/#/Map">Map</a> you will need to do the following:</p>
+<p><strong> Using Translate </strong></p>
+<p>The Translate component uses React's <a href="https://reactjs.org/docs/legacy-context.html">Legacy Context</a> to provide all instances of the Translate component with required config. In order for Translate to work with ImmutableJS you'll need to add <code>getLocaleState</code>, which you will take a function that converts the state back to plain ol' JS for Translate. You will want to add <code>getLocaleState</code> as high up in your component tree as possible.</p>
+<pre><code class="javascript">import React from 'react';
+import PropTypes from 'prop-types';
+import { Provider } from 'react-redux';
+import { toJS } from 'immutable';
+
+class App extends React.Component&lt;any, any&gt; {
+  getChildContext() {
+    // state will be the entire redux store state tree
+    // you will want to return the state key you used for localeReducer
+    return {  
+      getLocaleState: state =&gt; state.toJS()['locale'];
+    };
+  }
+
+  render() {
+    return (
+      &lt;Provider store={ store }&gt;
+        ...
+      &lt;/Provider&gt;
+    );
+  }
+}
+
+App.childContextTypes = {
+  getLocaleState:  PropTypes.func
+};
+</code></pre>
+
+<p><strong> Using localize HOC </strong></p>
+<p>If you're using the <a href="../api/localize">localize</a> HOC you'll need to use the <a href="../api/localize">getStateSlice</a> option. This option allows you to instruct <code>localize</code> on how to read the state even though it's an ImmutableJS Map.</p>
 <pre><code class="javascript">import React from 'react';
 import { toJS } from 'immutable';
 import { localize } from 'Localize';

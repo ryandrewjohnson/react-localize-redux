@@ -68,10 +68,10 @@
     <li class="toctree-l2"><a href="#3-add-translation-data">3. Add translation data</a></li>
     
 
-    <li class="toctree-l2"><a href="#4-change-language">4. Change language</a></li>
+    <li class="toctree-l2"><a href="#4-add-translations-to-components">4. Add translations to components</a></li>
     
 
-    <li class="toctree-l2"><a href="#5-translate-components">5. Translate components</a></li>
+    <li class="toctree-l2"><a href="#5-change-language">5. Change language</a></li>
     
 
     </ul>
@@ -106,7 +106,11 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../api/higher-order-component/">Higher Order Component</a>
+    <a class="" href="../api/translate/">Translate</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../api/localize/">localize - deprecated!</a>
                 </li>
     </ul>
 	    </li>
@@ -149,7 +153,7 @@
                 <h2 id="1-add-reducer">1. Add reducer</h2>
 <div class="admonition note">
   <p class="first admonition-title">Note</p>
-  <p class="last">Although this example uses <strong>locale</strong> for the reducer name, you can change this to a name of your choosing. Just ensure that you use your name when passing the state to selectors.</p>
+  <p class="last">By default <strong>react-localize-redux</strong> assumes the reducer is mounted under the <strong>locale</strong> key. TODO: ... instruct on how to add custom slice for Translate</p>
 </div>
 
 <pre><code class="javascript">import { createStore, combineReducers } from 'redux';
@@ -169,7 +173,12 @@ const App = props =&gt; {
 
 <hr />
 <h2 id="2-initialize-languages">2. Initialize languages</h2>
-<p>Dispatch <a href="../api/action-creators#initializelanguages-options">initialize</a> action creator and pass in the languages for your app. By default the first language in the array will be set as the active language.</p>
+<p>Dispatch <a href="../api/action-creators#initializelanguages-options">initialize</a> action creator with the languages you wish to support. By default the first language in the array will be set as the active language.</p>
+<div class="admonition note">
+  <p class="first admonition-title">Note</p>
+  <p class="last">Ensure you dispatch <strong>initialize</strong> before mounting any components that need translations. For example in your root component's <a href="https://reactjs.org/docs/react-component.html#constructor" target="_blank">constructor</a>.</p>
+</div>
+
 <pre><code class="javascript">import { initialize } from 'react-localize-redux';
 
 const languages = ['en', 'fr', 'es'];
@@ -194,42 +203,125 @@ store.dispatch(initialize(languages));
 <h2 id="3-add-translation-data">3. Add translation data</h2>
 <p>Typically you will store your translation data in json files, but the data can also be a vanilla JS object. </p>
 <p>In order to add translation data to your application there are two action creators available - <a href="../api/action-creators#addtranslationdata">addTranslation</a> and <a href="../api/action-creators#addtranslationforlanguagedata-language">addTranslationForLanguage</a>. Which one you use will depend on which format your translation data is in - see <a href="../formatting-translation-data">formatting translation data</a> for more information.</p>
-<div class="admonition note">
-  <p class="first admonition-title">Note</p>
-  <p class="last">The following assumes you are using <a href="https://webpack.github.io/" target="_blank">webpack</a> to bundle json</p>
-</div>
-
 <p><strong> Multiple language format </strong></p>
 <pre><code class="javascript">import { addTranslation } from 'react-localize-redux';
 
-const json = require('global.locale.json');
-store.dispatch(addTranslation(json));
+const translations = {
+  greeting: ['Hello', 'Bonjour', 'Hola'],
+  farewell: ['Goodbye', 'Au revoir', 'Adiós']
+};
+
+store.dispatch(addTranslation(translations));
 </code></pre>
 
 <p><strong> Single language format </strong></p>
 <pre><code class="javascript">import { addTranslationForLanguage } from 'react-localize-redux';
 
+const english = {
+  greeting: 'Hello',
+  farewell: 'Goodbye'
+};
+
 const json = require('en.json');
-store.dispatch(addTranslationForLanguage(json, 'en'));
+store.dispatch(addTranslationForLanguage(english, 'en'));
 </code></pre>
 
 <hr />
-<h2 id="4-change-language">4. Change language</h2>
-<p>Dispatch <a href="../api/action-creators#setactivelanguagelanguage">setActiveLanguage</a> and pass the language.</p>
-<pre><code class="javascript">import { setActiveLanguage } from 'react-localize-redux';
+<h2 id="4-add-translations-to-components">4. Add translations to components</h2>
+<p>Once you've added your translation data you'll need a way to get it into your components. That is where the <a href="../api/translate/">Translate</a> component comes in and it comes in a couple different flavours.</p>
+<p><strong> Flavour 1 </strong></p>
+<p>The <code>id</code> prop should match the key of the translation data you want to insert. Any copy added as Translate's <code>children</code> will automatically be added to your translation data for that key under the default language. </p>
+<pre><code class="javascript">import { Translate } from 'react-localize-redux';
 
-store.dispatch(setActiveLanguage('fr'));
+const Greeting = props =&gt; (
+  &lt;h1&gt;&lt;Translate id=&quot;greeting&quot;&gt;Hello&lt;/Translate&gt;&lt;/h1&gt;
+);
 </code></pre>
 
-<hr />
-<h2 id="5-translate-components">5. Translate components</h2>
+<p>You can include HTML markup as <code>children</code>, but ensure you include the same markup in your translation data. Since the default language's translation will automatically be pulled from Translate's <code>children</code> you can set it to <code>null</code>.</p>
+<pre><code class="javascript">import { Translate } from 'react-localize-redux';
+
+const translations = {
+  food: [
+    null,
+    '&lt;ul&gt;&lt;li&gt;Lait&lt;/li&gt;&lt;li&gt;biscuits&lt;/li&gt;&lt;/ul&gt;'
+  ]
+};
+
+const Foods = props =&gt; (
+  &lt;Translate id=&quot;food&quot;&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Milk&lt;/li&gt;
+      &lt;li&gt;Cookies&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/Translate&gt;
+);
+</code></pre>
+
+<p>You can insert translations with placeholder's for dynamic data.</p>
+<pre><code class="javascript">import { Translate } from 'react-localize-redux';
+
+const Profile = props =&gt; (
+  &lt;Translate id=&quot;profile&quot; data={{ name: 'Ted', date: new Date() }}&gt;
+    {'User: ${name} last login ${date}'}
+  &lt;/Translate&gt;
+);
+</code></pre>
+
+<p><br/></p>
+<p><strong> Flavour 2 - render prop function </strong></p>
+<p>You can also pass Translate a function as it's child that returns the elements you want to render. This function is commonly referred to as a <a href="https://reactjs.org/docs/render-props.html">render prop function</a>, and is called with the following arguments:</p>
+<table>
+<thead>
+<tr>
+<th>name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>translate</td>
+<td>Same as value returned from <a href="../api/selectors/#translatekey-string-string-data-options">getTranslate</a> selector.</td>
+</tr>
+<tr>
+<td>activeLanguage</td>
+<td>Same as value returned from <a href="../api/selectors/#getactivelanguagestate">getActiveLanguage</a> selector.</td>
+</tr>
+<tr>
+<td>languages</td>
+<td>Same as value returned from <a href="../api/selectors/#getlanguagesstate">getLanguages</a> selector.</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="javascript">import { Translate } from 'react-localize-redux';
+
+const LanguageSelector = props =&gt; (
+  &lt;Translate&gt;
+    {(translate, activeLanguage, languages) =&gt;
+      &lt;div&gt;
+        &lt;h2&gt;{ translate('heading') } - ({ activeLanguage.code })&lt;/h2&gt;
+        &lt;ul&gt;
+          {languages.map(languge =&gt;
+            &lt;li&gt;
+              &lt;a href={`/${language.code}`}&gt;{ language.name }&lt;/a&gt;
+            &lt;/li&gt;
+          )}
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    }
+  &lt;/Translate&gt;
+);
+</code></pre>
+
+<p><br/></p>
+<p><strong> You can also access the translate function directly in connected components </strong></p>
 <p>If you have a component that is already using <a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options">connect</a> use <a href="../api/selectors#gettranslatestate">getTranslate</a> in your <code>mapStateToProps</code> to add the <a href="../api/selectors#translatekey-string-string-data">translate</a> function to your component's props.</p>
 <pre><code class="javascript">import { getTranslate, getActiveLanguage } from 'react-localize-redux';
 
 const Greeting = ({ translate, currentLanguage }) =&gt; (
   &lt;div&gt;
     &lt;h1&gt;{ translate('greeting') }&lt;/h1&gt;
-    &lt;button&gt;{ translate('farwell') }&lt;/button&gt;
+    &lt;button&gt;{ translate('farewell') }&lt;/button&gt;
   &lt;/div&gt;
 );
 
@@ -241,22 +333,12 @@ const mapStateToProps = state =&gt; ({
 export default connect(mapStateToProps)(Greeting);
 </code></pre>
 
-<p>For components where you only need access to <a href="../api/selectors#translatekey-string-string-data">translate</a> and <code>currentLanguage</code> you can use <a href="../api/higher-order-component#localizecomponent-reducername">localize</a>. This will automatically connect your component with the <code>translate</code> function and <code>currentLanguage</code> prop. </p>
-<div class="admonition warning">
-  <p class="first admonition-title">Warning</p>
-  <p class="last">Components that use <strong>localize</strong> still use <a href="https://github.com/reactjs/react-redux/blob/master/docs/api.md#connectmapstatetoprops-mapdispatchtoprops-mergeprops-options" target="_blank">connect</a> behind the scenes, which means you will want to avoid overusing <strong>localize</strong>. Instead <a href="../features/#pass-multiple-translations-to-components">pass multiple translations to components</a> when possible.</p>
-</div>
+<hr />
+<h2 id="5-change-language">5. Change language</h2>
+<p>Dispatch <a href="../api/action-creators#setactivelanguagelanguage">setActiveLanguage</a> and pass the language.</p>
+<pre><code class="javascript">import { setActiveLanguage } from 'react-localize-redux';
 
-<pre><code class="javascript">import { localize } from 'react-localize-redux';
-
-const Greeting = ({ translate, currentLanguage }) =&gt; (
-  &lt;div&gt;
-    &lt;h1&gt;{ translate('greeting') }&lt;/h1&gt;
-    &lt;button&gt;{ translate('farwell') }&lt;/button&gt;
-  &lt;/div&gt;
-);
-
-export default localize(Greeting, 'locale');
+store.dispatch(setActiveLanguage('fr'));
 </code></pre>
               
             </div>
