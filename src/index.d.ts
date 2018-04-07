@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode } from 'react';
+import React, { ReactElement, ReactNode  } from 'react';
 import { ComponentClass, Component } from 'react-redux';
 
 export as namespace ReactLocalizeRedux;
@@ -58,6 +58,8 @@ export interface TranslateProps {
   data?: TranslatePlaceholderData,
   children: ReactNode|TranslateChildFunction
 }
+
+export type TranslateChildFunction = (translate: Translate, activeLanguage: Language, languages: Language[]) => ReactNode
 
 export type TranslateValue = string|string[];
 
@@ -149,4 +151,4 @@ export function localize(Component: Component<any>, slice?: string, getStateSlic
 
 export function TranslateChildFunction(translate: Translate, activeLanguage: Language, languages: Language[]): ReactNode;
 
-export default class TranslateComponent extends Component<TranslateProps> {}
+export default class TranslateComponent extends React.Component<TranslateProps> {}
