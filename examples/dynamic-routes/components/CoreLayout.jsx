@@ -15,6 +15,8 @@ const CoreLayout = ({ children, count, click, setActiveLanguage }) => {
   return (
     <div>
       <header>
+        <Translate id="welcome-page" />
+
         <Translate>
           {(translate, activeLanguage, languages) =>
             <ul>

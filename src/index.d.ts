@@ -58,10 +58,10 @@ export type TranslateChildFunction = (
   languages: Language[]) => any;
 
 export interface TranslateProps {
-  id?: string,
-  options?: Options,
-  data?: TranslatePlaceholderData,
-  children?: any|TranslateChildFunction
+  id?: string;
+  options?: Options;
+  data?: TranslatePlaceholderData;
+  children?: any|TranslateChildFunction;
 }
 
 export type TranslateValue = string|string[];
