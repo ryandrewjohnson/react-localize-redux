@@ -154,4 +154,4 @@ export function localize(Component: Component<any>, slice?: string, getStateSlic
 
 export function TranslateChildFunction(translate: Translate, activeLanguage: Language, languages: Language[]): ReactNode;
 
-export default class Translate extends ReactComponent<TranslateProps> {}
+export class Translate extends ReactComponent<TranslateProps> {}
