@@ -1,6 +1,5 @@
-import * as React from "react";
-import { render } from "react-dom";
-import Hello from "./Hello";
+import * as React from 'react';
+import { render } from 'react-dom';
 import { Translate, localeReducer, addTranslation, initialize } from 'react-localize-redux';
 import { createStore, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
@@ -15,36 +14,33 @@ store.dispatch(initialize([
 ]));
 
 const translations = {
-  "welcome-page": [
-    "Welcome Page",
-    "Page d’accueil",
-    "Página de bienvenida"
+  'welcome-page': [
+    'Welcome Page',
+    'Page d’accueil',
+    'Página de bienvenida'
   ],
-  "info-page": [
-    "Info Page",
-    "Page d’informations",
-    "Página de información"
+  'info-page': [
+    'Info Page',
+    'Page d’informations',
+    'Página de información'
   ]
-}
+};
 
 store.dispatch(addTranslation(translations));
 
 const styles = {
-  fontFamily: "sans-serif",
-  textAlign: "center"
+  fontFamily: 'sans-serif',
+  textAlign: 'center'
 };
-
-
 
 const App = () => (
   <Provider store={store}>
     <div style={styles}>
-      <Hello name="CodeSandbox" />
-      <h2>Start editing to see some magic happen {"\u2728"}</h2>
+      <h2>Start editing to see some magic happen {'\u2728'}</h2>
 
       <Translate id="welcome-page" />
     </div>
   </Provider>
 );
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));
