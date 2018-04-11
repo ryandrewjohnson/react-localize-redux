@@ -1,6 +1,0 @@
-{
-  "title": "My Article title",
-  "description": "My article description",
-  "author": "Ted Tedson",
-  "html": "<strong>The strong tag should not be rendered</strong>"
-}

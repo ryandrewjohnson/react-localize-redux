@@ -1,4 +1,5 @@
 import { ReactElement, ReactNode, Component as ReactComponent  } from 'react';
+import { Store } from 'redux';
 import { ComponentClass, Component } from 'react-redux';
 
 export as namespace ReactLocalizeRedux;
@@ -20,22 +21,35 @@ export interface Translations {
 
 type TransFormFunction = (data: Object, languageCodes: string[]) => Translations;
 
-type MissingTranslationCallback = (key: string, languageCode: string) => any;
+type onMissingTranslationFunction = ({translationId: string, languageCode: string, defaultTranslation: string}) => string;
 
-export interface Options {
+export interface InitializeOptions {
   renderInnerHtml?: boolean;
+  onMissingTranslation?: onMissingTranslationFunction;
   defaultLanguage?: string;
-  showMissingTranslationMsg?: boolean;
-  missingTranslationMsg?: string;
-  missingTranslationCallback?: MissingTranslationCallback;
   translationTransform?: TransFormFunction;
-  ignoreTranslateChildren?: boolean;
 }
 
-export interface LocaleState {
+export interface LocalizeState {
   languages: Language[];
   translations: Translations;
-  options: Options;
+  options: InitializeOptions;
+}
+
+export interface LocalizeContextProps {
+  translate: TranslateFunction,
+  languages: Language[],
+  activeLanguage: Language,
+  defaultLanguage: string,
+  initialize: (payload: InitializePayload) => void,
+  addTranslation: (translation: MultipleLanguageTranslation) => void,
+  addTranslationForLanguage: (translation: SingleLanguageTranslation, language: string) => void,
+  setActiveLanguage: (languageCode: string) => void
+}
+
+export interface LocalizeProviderProps {
+  store?: Store<any>,
+  children: any
 }
 
 export interface TranslatedLanguage {
@@ -52,30 +66,28 @@ export interface TranslatePlaceholderData {
   [key: string]: string|number;
 }
 
-export type TranslateChildFunction = (
-  translate: TranslateFunction, 
-  activeLanguage: Language, 
-  languages: Language[]) => any;
+export type TranslateChildFunction = (context: LocalizeContextProps) => any;
 
 export interface TranslateProps {
   id?: string;
-  options?: Options;
+  options?: InitializeOptions;
   data?: TranslatePlaceholderData;
-  children?: any|TranslateChildFunction;
+  children?: TranslateChildFunction;
 }
 
 export type TranslateValue = string|string[];
-
+ 
 interface BaseAction<T, P> {
   type: T;
   payload: P;
 }
 
-export type TranslateFunction = (value: TranslateValue, data?: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap; 
-
-type InitializePayload = {
-  languages: any[], 
-  options?: Options
+export type TranslateFunction = (value: TranslateValue, data?: TranslatePlaceholderData, options?: InitializeOptions) => LocalizedElement|LocalizedElementMap; 
+       
+export type InitializePayload = {
+  languages: Array<string|NamedLanguage>,
+  translation?: Object,
+  options?: InitializeOptions
 };
 
 type AddTranslationPayload = {
@@ -87,18 +99,8 @@ type AddTranslationForLanguagePayload = {
   language: string
 };
 
-type SetLanguagesPayload = {
-  languages: string[]|NamedLanguage[],
-  activeLanguage?: string
-};
-
 type SetActiveLanguagePayload = {
   languageCode: string
-};
-
-type LocalizeProps = {
-  currentLanguage: string,
-  translate: TranslateFunction
 };
 
 export type SingleLanguageTranslation = {
@@ -111,9 +113,8 @@ export type MultipleLanguageTranslation = {
 
 export type InitializeAction = BaseAction<'@@localize/INITIALIZE', InitializePayload>;
 export type AddTranslationAction = BaseAction<'@@localize/ADD_TRANSLATION', AddTranslationPayload>;
-export type AddTranslationForLanguageAction = BaseAction<'@@localize/ADD_TRANSLATION_FOR_LANGUGE', AddTranslationForLanguagePayload>;
+export type AddTranslationForLanguageAction = BaseAction<'@@localize/ADD_TRANSLATION_FOR_LANGUAGE', AddTranslationForLanguagePayload>;
 export type SetActiveLanguageAction = BaseAction<'@@localize/SET_ACTIVE_LANGUAGE', SetActiveLanguagePayload>;
-export type SetLanguagesAction = BaseAction<'@@localize/SET_LANGUAGES', SetLanguagesPayload>;
 
 export type Action = BaseAction<
   string, 
@@ -121,37 +122,32 @@ export type Action = BaseAction<
   & AddTranslationPayload 
   & AddTranslationForLanguagePayload 
   & SetActiveLanguagePayload
-  & SetLanguagesPayload
 >;
-
-export type GetSliceStateFn = (state: Object|LocaleState) => LocaleState;
 
 export type ActionLanguageCodes = Action & { languageCodes: string[] };
 
-export function localeReducer(state: LocaleState, action: Action): LocaleState;
+export function localizeReducer(state: LocalizeState, action: Action): LocalizeState;
 
-export function initialize(languages: Array<string|NamedLanguage>, options?: Options): InitializeAction;
+export function initialize(payload: InitializePayload): InitializeAction;
 
 export function addTranslation(translation: MultipleLanguageTranslation): AddTranslationAction;
 
 export function addTranslationForLanguage(translation: SingleLanguageTranslation, language: string): AddTranslationForLanguageAction;
 
-export function setLanguages(languages: Array<string|NamedLanguage>, activeLanguage?: string): SetLanguagesAction;
-
 export function setActiveLanguage(languageCode: string): SetActiveLanguageAction;
 
-export function getTranslations(state: LocaleState): Translations;
+export function getTranslations(state: LocalizeState): Translations;
 
-export function getLanguages(state: LocaleState): Language[];
+export function getLanguages(state: LocalizeState): Language[];
 
-export function getOptions(state: LocaleState): Options;
+export function getOptions(state: LocalizeState): InitializeOptions;
 
-export function getActiveLanguage(state: LocaleState): Language;
+export function getActiveLanguage(state: LocalizeState): Language;
 
-export function getTranslate(state: LocaleState): TranslateFunction;
+export function getTranslate(state: LocalizeState): TranslateFunction;
 
-export function localize(Component: Component<any>, slice?: string, getStateSlice?: GetSliceStateFn): (state: Object|LocaleState) => ComponentClass<LocalizeProps>;
+export function withLocalize<Props extends {}>(WrappedComponent: ReactComponent<Props>): ReactComponent<Props & LocalizeContextProps>;
 
-export function TranslateChildFunction(translate: Translate, activeLanguage: Language, languages: Language[]): ReactNode;
+export function TranslateChildFunction(context: LocalizeContextProps): ReactNode;
 
 export default class Translate extends ReactComponent<TranslateProps> {}

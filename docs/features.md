@@ -196,12 +196,12 @@ import { initialize } from 'react-localize-redux';
 const languages = ['en', 'fr', 'es'];
 
 // just like the default message you can include the ${key} and ${code} placeholders
-const missingTranslationMsg = 'Oh man you missed translation: ${key} for languge ${code}!';
+const missingTranslationMsg = 'Oh man you missed translation: ${key} for language ${code}!';
 
 store.dispatch(initialize(languages, { missingTranslationMsg }));
 
 // Assuming there is no translation for "missing-key" doesn't exist it would render following:
-// <h1>Oh man you missed translation: missing-key for languge en!</h1>
+// <h1>Oh man you missed translation: missing-key for language en!</h1>
 const MyComponent = props => <h1><Translate id="missing-key">No translations here!</Translate></h1>;
 
 // You also have the option to override the global missingTranslationMsg option

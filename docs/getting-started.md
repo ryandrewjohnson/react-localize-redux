@@ -175,7 +175,7 @@ const LanguageSelector = props => (
       <div>
         <h2>{ translate('heading') } - ({ activeLanguage.code })</h2>
         <ul>
-          {languages.map(languge =>
+          {languages.map(language =>
             <li>
               <a href={`/${language.code}`}>{ language.name }</a>
             </li>
