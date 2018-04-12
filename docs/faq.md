@@ -182,3 +182,43 @@ localize(Component, 'locale', getStateSlice);
 <br/>
 * For further discussion on this topic see [original github issue](https://github.com/ryandrewjohnson/react-localize-redux/issues/21).
 
+
+---------------
+
+## Can I use Translate component with React 15.x.x?
+
+If you want to use the [Translate]() component it is recommended that you update to React 16, but if you don't have that luxury the 
+following work arounds may work for you:
+
+**1.** Only use Translate's render props API option.
+
+```html
+// use this...
+<Translate>
+  {translate =>
+    <h1>{ translate('heading') }</h1>
+  }
+</Translate>
+
+// not this...
+<Translate id="heading">Hello</Translate>
+```
+
+<br/>
+
+**2.** Wrap any text only translations in an HTML element
+
+React 16 supports rendering [fragements and strings](https://reactjs.org/blog/2017/09/26/react-v16.0.html#new-render-return-types-fragments-and-strings), which allows for components to render plain text. Previous React versions you would need to manually wrap your text in an HTML element, which is what you will need to do for text passed to Translate.
+
+<div class="admonition error">
+  <p class="first admonition-title">Important</p>
+  <p class="last">I recommend not overusing this approach, as it results in unecessary HTML markup being added to your translation data.</p>
+</div>
+
+```js
+const translations = {
+  heading: ['<span>Hello</span>', '<span>Bonjour</span>']
+};
+
+<Translate id="heading" />
+```

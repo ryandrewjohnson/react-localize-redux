@@ -19,6 +19,18 @@ npm install react-localize-redux --save
 
 ----
 
+#### Not using React 16?
+
+If you are using an older version of react, and plan on using the [Translate](/api/translate/) component
+you have the following options:
+
+* Update react to a version > 16 as `Translate` requires the ability to render [fragments and strings](https://reactjs.org/blog/2017/09/26/react-v16.0.html#new-render-return-types-fragments-and-strings) (**recommended**).
+
+* [Using Translate component with React 15](/faq/#can-i-use-translate-component-with-react-15xx)
+
+
+----
+
 
 ## Articles
 
