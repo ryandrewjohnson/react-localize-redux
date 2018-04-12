@@ -95,6 +95,9 @@
     <li class="toctree-l2"><a href="#how-does-react-localize-redux-differ-from-react-intl">How does react-localize-redux differ from react-intl?</a></li>
     
 
+    <li class="toctree-l2"><a href="#can-i-use-translate-component-with-react-15xx">Can I use Translate component with React 15.x.x?</a></li>
+    
+
     </ul>
 	    </li>
           
@@ -304,6 +307,36 @@ localize(Component, 'locale', getStateSlice);
 <br/></li>
 <li>For further discussion on this topic see <a href="https://github.com/ryandrewjohnson/react-localize-redux/issues/21">original github issue</a>.</li>
 </ul>
+<hr />
+<h2 id="can-i-use-translate-component-with-react-15xx">Can I use Translate component with React 15.x.x?</h2>
+<p>If you want to use the <a href="">Translate</a> component it is recommended that you update to React 16, but if you don't have that luxury the 
+following work arounds may work for you:</p>
+<p><strong>1.</strong> Only use Translate's render props API option.</p>
+<pre><code class="html">// use this...
+&lt;Translate&gt;
+  {translate =&gt;
+    &lt;h1&gt;{ translate('heading') }&lt;/h1&gt;
+  }
+&lt;/Translate&gt;
+
+// not this...
+&lt;Translate id=&quot;heading&quot;&gt;Hello&lt;/Translate&gt;
+</code></pre>
+
+<p><br/></p>
+<p><strong>2.</strong> Wrap any text only translations in an HTML element</p>
+<p>React 16 supports rendering <a href="https://reactjs.org/blog/2017/09/26/react-v16.0.html#new-render-return-types-fragments-and-strings">fragements and strings</a>, which allows for components to render plain text. Previous React versions you would need to manually wrap your text in an HTML element, which is what you will need to do for text passed to Translate.</p>
+<div class="admonition error">
+  <p class="first admonition-title">Important</p>
+  <p class="last">I recommend not overusing this approach, as it results in unecessary HTML markup being added to your translation data.</p>
+</div>
+
+<pre><code class="js">const translations = {
+  heading: ['&lt;span&gt;Hello&lt;/span&gt;', '&lt;span&gt;Bonjour&lt;/span&gt;']
+};
+
+&lt;Translate id=&quot;heading&quot; /&gt;
+</code></pre>
               
             </div>
           </div>
