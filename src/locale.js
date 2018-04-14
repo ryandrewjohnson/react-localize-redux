@@ -61,7 +61,7 @@ export type TranslatePlaceholderData = {
 
 export type TranslateValue = string|string[];
 
-export type TranslateFunction = (value: TranslateValue, data?: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap; 
+export type TranslateFunction = (value: TranslateValue, data?: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap;
 
 export type SingleLanguageTranslation = {
   [key: string]: Object | string
@@ -101,20 +101,20 @@ type BaseAction<T, P> = {
 
 export type InitializeAction = BaseAction<'@@localize/INITIALIZE', InitializePayload>;
 export type AddTranslationAction = BaseAction<'@@localize/ADD_TRANSLATION', AddTranslationPayload>;
-export type AddTranslationForLanguageAction = BaseAction<'@@localize/ADD_TRANSLATION_FOR_LANGUGE', AddTranslationForLanguagePayload>;
+export type AddTranslationForLanguageAction = BaseAction<'@@localize/ADD_TRANSLATION_FOR_LANGUAGE', AddTranslationForLanguagePayload>;
 export type SetActiveLanguageAction = BaseAction<'@@localize/SET_ACTIVE_LANGUAGE', SetActiveLanguagePayload>;
 export type SetLanguagesAction = BaseAction<'@@localize/SET_LANGUAGES', SetLanguagesPayload>;
 
 export type Action = BaseAction<
-  string, 
+  string,
   & InitializePayload
-  & AddTranslationPayload 
-  & AddTranslationForLanguagePayload 
+  & AddTranslationPayload
+  & AddTranslationForLanguagePayload
   & SetActiveLanguagePayload
   & SetLanguagesPayload
 >;
 
-export type ActionDetailed = Action & { 
+export type ActionDetailed = Action & {
   languageCodes: string[],
   translationTransform: TransFormFunction
 };
@@ -124,7 +124,7 @@ export type ActionDetailed = Action & {
  */
 export const INITIALIZE                   = '@@localize/INITIALIZE';
 export const ADD_TRANSLATION              = '@@localize/ADD_TRANSLATION';
-export const ADD_TRANSLATION_FOR_LANGUGE  = '@@localize/ADD_TRANSLATION_FOR_LANGUGE';
+export const ADD_TRANSLATION_FOR_LANGUAGE  = '@@localize/ADD_TRANSLATION_FOR_LANGUAGE';
 export const SET_LANGUAGES                = '@@localize/SET_LANGUAGES';
 export const SET_ACTIVE_LANGUAGE          = '@@localize/SET_ACTIVE_LANGUAGE';
 export const TRANSLATE                    = '@@localize/TRANSLATE';
@@ -144,7 +144,7 @@ export function languages(state: Language[] = [], action: Action): Language[] {
             ? code === activeLanguage
             : index === 0;
         };
-        // check if it's using array of Language objects, or array of languge codes
+        // check if it's using array of Language objects, or array of language codes
         return typeof language === 'string'
           ? { code: language, active: isActive(language) }    // language codes
           : { ...language, active: isActive(language.code) }; // language objects
@@ -171,12 +171,12 @@ export function translations(state: Translations = {}, action: ActionDetailed): 
         ...state,
         ...flatten(translations, { safe: true })
       };
-    case ADD_TRANSLATION_FOR_LANGUGE:
+    case ADD_TRANSLATION_FOR_LANGUAGE:
     const languageIndex = action.languageCodes.indexOf(action.payload.language);
     const flattenedTranslations = languageIndex >= 0 ? flatten(action.payload.translation) : {};
       // convert single translation data into multiple
       const languageTranslations = Object.keys(flattenedTranslations).reduce((prev, cur: string) => {
-        // loop through each language, and for languages that don't match active language 
+        // loop through each language, and for languages that don't match active language
         // keep existing translation data, and for active language store new translation data
         const translationValues = action.languageCodes.map((code, index) => {
           const existingValues = state[cur] || [];
@@ -249,13 +249,13 @@ export const addTranslation = (translation: MultipleLanguageTranslation): AddTra
 });
 
 export const addTranslationForLanguage = (translation: SingleLanguageTranslation, language: string): AddTranslationForLanguageAction => ({
-  type: ADD_TRANSLATION_FOR_LANGUGE,
+  type: ADD_TRANSLATION_FOR_LANGUAGE,
   payload: { translation, language }
 });
 
 export const setLanguages = (languages: Array<string|NamedLanguage>, activeLanguage?: string): SetLanguagesAction => {
   warning(
-    'The setLanguages action will be removed in the next major version. ' + 
+    'The setLanguages action will be removed in the next major version. ' +
     'Please use initialize action instead https://ryandrewjohnson.github.io/react-localize-redux/api/action-creators/#initializelanguages-options'
   );
   return {
@@ -287,7 +287,7 @@ export const getActiveLanguage = (state: LocaleState): Language => {
 /**
  * A custom equality checker that checker that compares an objects keys and values instead of === comparison
  * e.g. {name: 'Ted', sport: 'hockey'} would result in 'name,sport - Ted,hocker' which would be used for comparison
- * 
+ *
  * NOTE: This works with activeLanguage, languages, and translations data types.
  * If a new data type is added to selector this would need to be updated to accomodate
  */
@@ -300,11 +300,11 @@ export const translationsEqualSelector = createSelectorCreator(
     const prevValues: any = typeof prev === "object" ? objectValuesToString(prev) : undefined;
     const curValues: any = typeof cur === "object" ? objectValuesToString(cur) : undefined;
 
-    const prevCacheValue = (!prevKeys || !prevValues) 
-      ? `${ prevKeys } - ${ prevValues }` 
+    const prevCacheValue = (!prevKeys || !prevValues)
+      ? `${ prevKeys } - ${ prevValues }`
       : prev;
 
-    const curCacheValue = (!curKeys || !curValues) 
+    const curCacheValue = (!curKeys || !curValues)
       ? `${ curKeys } - ${ curValues }`
       : cur;
 
@@ -336,7 +336,7 @@ export const getTranslate: Selector<LocaleState, void, TranslateFunction> = crea
     return (value, data = {}, optionsOverride = {}) => {
       const {defaultLanguage, ...rest} = optionsOverride;
       const translateOptions: Options = {...options, ...rest};
-      const translations = defaultLanguage !== undefined 
+      const translations = defaultLanguage !== undefined
         ? getTranslationsForLanguage({code: defaultLanguage, active: false})
         : translationsForActiveLanguage;
       if (typeof value === 'string') {
