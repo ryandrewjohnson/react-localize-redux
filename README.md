@@ -13,6 +13,13 @@
   <a href="https://travis-ci.org/ryandrewjohnson/react-localize-redux"><img src="https://img.shields.io/travis/ryandrewjohnson/react-localize-redux/master.svg?style=flat-square"></a>
 </p>
 
+---
+
+**Next major relases v3.0 is coming!! - [details here](https://github.com/ryandrewjohnson/react-localize-redux/issues/67#issue-312731598)**
+
+---
+
+
 ## Installation
 
 ```
