@@ -15,7 +15,7 @@
 
 ---
 
-**Next major relases v3.0 is coming!! - [details here](https://github.com/ryandrewjohnson/react-localize-redux/issues/67#issue-312731598)**
+🎉 **Release candidate for v3.0 is ready!!** 🎉 **- [Try it now](https://github.com/ryandrewjohnson/react-localize-redux/issues/67#issuecomment-384493024)**
 
 ---
 
