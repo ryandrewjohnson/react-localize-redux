@@ -16,7 +16,6 @@ tests
 .babelrc
 .flowconfig
 .gitignore
-.npmignore
 .travis.yml
 mkdocs.yml
 package-lock.json

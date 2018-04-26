@@ -1,17 +1,11 @@
 {
   "name": "react-localize-redux",
-  "version": "3.0.0-rc2",
+  "version": "3.0.0-rc3",
   "description": "Localization library for React/Redux",
   "main": "./lib/index.js",
   "module": "./es/index.js",
   "jsnext:main": "./es/index.js",
   "typings": "lib/index.d.ts",
-  "files": [
-    "*.md",
-    "es",
-    "lib",
-    "dist"
-  ],
   "scripts": {
     "build": "npm run build:commonjs && npm run build:es && npm run copy:flow && npm run build:umd && npm run build:umd:min && npm run copy:ts",
     "build:commonjs": "rimraf lib && cross-env BABEL_ENV=commonjs babel ./src -d lib",
