@@ -27,7 +27,18 @@ export interface InitializeOptions {
   renderInnerHtml?: boolean;
   onMissingTranslation?: onMissingTranslationFunction;
   defaultLanguage?: string;
+}
+
+export interface TranslateOptions {
+  language?: string;
+  renderInnerHtml?: boolean;
+  onMissingTranslation?: onMissingTranslationFunction;
+  ignoreTranslateChildren?: boolean;
+}
+
+export interface AddTranslationOptions {
   translationTransform?: TransFormFunction;
+  language?: string;
 }
 
 export interface LocalizeState {
@@ -82,7 +93,7 @@ interface BaseAction<T, P> {
   payload: P;
 }
 
-export type TranslateFunction = (value: TranslateValue, data?: TranslatePlaceholderData, options?: InitializeOptions) => LocalizedElement|LocalizedElementMap; 
+export type TranslateFunction = (value: TranslateValue, data?: TranslatePlaceholderData, options?: TranslateOptions) => LocalizedElement|LocalizedElementMap; 
        
 export type InitializePayload = {
   languages: Array<string|NamedLanguage>,
@@ -91,7 +102,8 @@ export type InitializePayload = {
 };
 
 type AddTranslationPayload = {
-  translation: Object
+  translation: Object,
+  translationOptions?: AddTranslationOptions
 };
 
 type AddTranslationForLanguagePayload = {
@@ -130,7 +142,7 @@ export function localizeReducer(state: LocalizeState, action: Action): LocalizeS
 
 export function initialize(payload: InitializePayload): InitializeAction;
 
-export function addTranslation(translation: MultipleLanguageTranslation): AddTranslationAction;
+export function addTranslation(translation: MultipleLanguageTranslation, options?: AddTranslationOptions): AddTranslationAction;
 
 export function addTranslationForLanguage(translation: SingleLanguageTranslation, language: string): AddTranslationForLanguageAction;
 

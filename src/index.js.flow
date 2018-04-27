@@ -5,6 +5,7 @@ import type { Selector, SelectorCreator } from 'reselect';
 import type { Language as _Language } from './localize';
 import type { NamedLanguage as _NamedLanguage } from './localize';
 import type { InitializeOptions as _InitializeOptions } from './localize';
+import type { TranslateOptions as _TranslateOptions } from './localize';
 import type { LocalizeState as _LocalizeState } from './localize';
 import type { Translations as _Translations } from './localize';
 import type { SingleLanguageTranslation as _SingleLanguageTranslation } from './localize';
@@ -17,6 +18,7 @@ import type { AddTranslationForLanguageAction as _AddTranslationForLanguageActio
 import type { SetActiveLanguageAction as _SetActiveLanguageAction } from './localize';
 import type { Action as _Action } from './localize';
 import type { InitializePayload as _InitializePayload } from './localize';
+import type { AddTranslationOptions as _AddTranslationOptions } from './localize';
 
 import type { TranslateProps as _TranslateProps, TranslateChildFunction as _TranslateChildFunction } from './Translate';
 import type { LocalizeContextProps as _LocalizeContextProps } from './LocalizeContext';
@@ -26,6 +28,7 @@ import type { Context } from 'create-react-context';
 export type Language = _Language;
 export type NamedLanguage = _NamedLanguage;
 export type InitializeOptions = _InitializeOptions;
+export type TranslateOptions = _TranslateOptions;
 export type LocalizeState = _LocalizeState;
 export type Translations = _Translations;
 export type SingleLanguageTranslation = _SingleLanguageTranslation;
@@ -38,6 +41,7 @@ export type AddTranslationForLanguageAction = _AddTranslationForLanguageAction;
 export type SetActiveLanguageAction = _SetActiveLanguageAction;
 export type Action = _Action;
 export type InitializePayload = _InitializePayload;
+export type AddTranslationOptions = _AddTranslationOptions;
 
 export type TranslateProps = _TranslateProps;
 export type TranslateChildFunction = _TranslateChildFunction;
@@ -54,7 +58,8 @@ declare export function initialize(
 ): InitializeAction;
 
 declare export function addTranslation(
-  translation: MultipleLanguageTranslation
+  translation: MultipleLanguageTranslation,
+  options?: AddTranslationOptions
 ): AddTranslationAction;
 
 declare export function addTranslationForLanguage(

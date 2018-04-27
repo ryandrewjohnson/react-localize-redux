@@ -9,6 +9,7 @@
 * typo updates for action from outstanding PR
 * getFunctionSlice stuff to handle immutablejs has been removed
 * initialize now takes a single argument instead of multiple arguments
+* remove translationTransform form initializeOptions and add to addTranslation specific options 
 
 # TODO:
 * test old version of react, see if can catch errors for <Translate>

@@ -59,10 +59,6 @@ export const objectValuesToString = (data: Object): string => {
 };
 
 export const validateOptions = (options: InitializeOptions): InitializeOptions => {
-  if (options.translationTransform !== undefined && typeof options.translationTransform !== 'function') {
-    throw new Error('react-localize-redux: an invalid translationTransform function was provided.');
-  }
-
   if (options.onMissingTranslation !== undefined && typeof options.onMissingTranslation !== 'function') {
     throw new Error('react-localize-redux: an invalid onMissingTranslation function was provided.');
   }

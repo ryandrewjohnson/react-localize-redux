@@ -138,15 +138,6 @@ describe('locale utils', () => {
       const result = utils.validateOptions(options);
       expect(result).toEqual(options);
     });
-
-    it('should throw error if translationTransform is not a function', () => {
-      const options = {
-        renderInnerHtml: false,
-        defaultLanguage: 'en',
-        translationTransform: false
-      };
-      expect(() => utils.validateOptions(options)).toThrow();
-    });
     
     it('should throw error if onMissingTranslation is not a function', () => {
       const options = {

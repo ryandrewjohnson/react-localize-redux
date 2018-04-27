@@ -30,8 +30,7 @@ export type TransFormFunction = (data: Object, languageCodes: string[]) => Trans
 export type InitializeOptions = {
   renderInnerHtml?: boolean, 
   onMissingTranslation?: onMissingTranslationFunction,
-  defaultLanguage?: string,  
-  translationTransform?: TransFormFunction
+  defaultLanguage?: string
 };
 
 export type TranslateOptions = {
@@ -39,6 +38,11 @@ export type TranslateOptions = {
   renderInnerHtml?: boolean,
   onMissingTranslation?: onMissingTranslationFunction,
   ignoreTranslateChildren?: boolean
+};
+
+export type AddTranslationOptions = {
+  translationTransform?: TransFormFunction,
+  language?: string 
 };
 
 export type LocalizeState = {
@@ -82,7 +86,8 @@ export type InitializePayload = {
 };
 
 type AddTranslationPayload = {
-  translation: Object
+  translation: Object,
+  translationOptions?: AddTranslationOptions
 };
 
 type AddTranslationForLanguagePayload = {
@@ -106,15 +111,14 @@ export type SetActiveLanguageAction = BaseAction<'@@localize/SET_ACTIVE_LANGUAGE
 
 export type Action = BaseAction<
   string, 
-  & InitializePayload
+  InitializePayload
   & AddTranslationPayload 
   & AddTranslationForLanguagePayload 
   & SetActiveLanguagePayload
 >;
 
 export type ActionDetailed = Action & { 
-  languageCodes: string[],
-  translationTransform: TransFormFunction
+  languageCodes: string[]
 };
 
 /**
@@ -170,14 +174,10 @@ export function translations(state: Translations = {}, action: ActionDetailed): 
       const firstLanguage = typeof action.payload.languages[0] === 'string' ? action.payload.languages[0] : action.payload.languages[0].code;
       const defaultLanguage =  options.defaultLanguage || firstLanguage;
       const isMultiLanguageTranslation = Object.keys(flattenedTranslations).some(item => Array.isArray(flattenedTranslations[item]));
+      
       // add translation based on whether it is single vs multi language translation data
       const newTranslation = isMultiLanguageTranslation
-        ? action.translationTransform !== undefined
-          ? flatten(
-            action.translationTransform(action.payload.translation || {}, action.languageCodes),
-            { safe: true }
-          )
-          : flattenedTranslations
+        ? flattenedTranslations
         : getSingleToMultilanguageTranslation(
           defaultLanguage,
           action.languageCodes,
@@ -190,8 +190,8 @@ export function translations(state: Translations = {}, action: ActionDetailed): 
         ...newTranslation
       };
     case ADD_TRANSLATION:
-      translationWithTransform = action.translationTransform !== undefined
-        ? action.translationTransform(action.payload.translation || {}, action.languageCodes)
+      translationWithTransform = action.payload.translationOptions && action.payload.translationOptions.translationTransform !== undefined
+        ? action.payload.translationOptions.translationTransform(action.payload.translation || {}, action.languageCodes)
         : action.payload.translation;
       return {
         ...state,
@@ -240,10 +240,9 @@ const initialState: LocalizeState = {
 
 export const localizeReducer = (state: LocalizeState = initialState, action: Action): LocalizeState => {
   const languageCodes = state.languages.map(language => language.code);
-  const translationTransform = state.options.translationTransform;
   return {
     languages: languages(state.languages, action),
-    translations: translations(state.translations, { ...action, languageCodes, translationTransform }),
+    translations: translations(state.translations, { ...action, languageCodes }),
     options: options(state.options, action)
   };
 };
@@ -256,9 +255,12 @@ export const initialize = (payload: InitializePayload): InitializeAction => ({
   payload
 });
 
-export const addTranslation = (translation: MultipleLanguageTranslation): AddTranslationAction => ({
+export const addTranslation = (translation: MultipleLanguageTranslation, options?: AddTranslationOptions): AddTranslationAction => ({
   type: ADD_TRANSLATION,
-  payload: { translation }
+  payload: { 
+    translation,
+    translationOptions: options
+  }
 });
 
 export const addTranslationForLanguage = (translation: SingleLanguageTranslation, language: string): AddTranslationForLanguageAction => ({
@@ -338,7 +340,7 @@ export const getTranslate: Selector<LocalizeState, void, TranslateFunction> = cr
   getOptions,
   (translationsForActiveLanguage, getTranslationsForLanguage, activeLanguage, initializeOptions) => {
     return (value, data = {}, translateOptions = {}) => {
-      const {defaultLanguage, translationTransform, ...defaultOptions} = initializeOptions;
+      const {defaultLanguage, ...defaultOptions} = initializeOptions;
       const overrideLanguage = translateOptions.language;
 
       const translations = overrideLanguage !== undefined 

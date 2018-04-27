@@ -266,10 +266,12 @@ describe('localize', () => {
         const action = {
           type: ADD_TRANSLATION,
           payload: {
-            translation: translationData
+            translation: translationData,
+            translationOptions: {
+              translationTransform: transformFunction
+            }
           },
-          languageCodes: ['en', 'fr'],
-          translationTransform: transformFunction
+          languageCodes: ['en', 'fr']
         };
 
         const result = translations({}, action);
@@ -407,19 +409,6 @@ describe('localize', () => {
       const result = options({}, action);
       expect(result.translationTransform).toBeDefined();
       expect(typeof result.translationTransform).toEqual('function');
-    });
-
-    it('should throw error if translationTransform is not a function', () => {
-      const action = {
-        type: INITIALIZE,
-        payload: {
-          options: {
-            translationTransform: false
-          }
-        }
-      };
-
-      expect(() => options({}, action)).toThrow();
     });
 
     it('should override default onMissingTranslation option', () => {
