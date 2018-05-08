@@ -3,7 +3,7 @@ import React from 'react';
 import { defaultTranslateOptions } from './locale';
 import type { TranslatePlaceholderData, TranslatedLanguage, Translations, Options, LocalizedElement, Language } from './locale';
 
-export const getLocalizedElement = (key: string, translations: TranslatedLanguage, data: TranslatePlaceholderData, activeLanguage: Language, options: Options = defaultTranslateOptions): LocalizedElement => {
+export const getLocalizedElement = (key: string, translations: TranslatedLanguage, data: TranslatePlaceholderData, activeLanguage: Language = {}, options: Options = defaultTranslateOptions): LocalizedElement => {
   const onMissingTranslation = () => {
     if (options.missingTranslationCallback) {
       options.missingTranslationCallback(key, activeLanguage.code);
