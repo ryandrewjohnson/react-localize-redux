@@ -1,7 +1,7 @@
 {
   "name": "react-localize-redux",
   "version": "3.0.0-rc3",
-  "description": "Localization library for React/Redux",
+  "description": "Localization library for handling translations in React",
   "main": "./lib/index.js",
   "module": "./es/index.js",
   "jsnext:main": "./es/index.js",
@@ -39,7 +39,9 @@
   ],
   "tags": [
     "react",
-    "redux"
+    "redux",
+    "i18n",
+    "localization"
   ],
   "author": "Ryan Johnson",
   "license": "MIT",

@@ -1,11 +1,11 @@
 <p align="center">
-  <a href="https://ryandrewjohnson.github.io/react-localize-redux/getting-started/">
-    <img alt="React Localize Redux" src="https://cdn-images-1.medium.com/max/600/1*3Hg5LMvLmWCmEg-ICeUtjg.png">
+  <a href="https://github.com/ryandrewjohnson/react-localize">
+    <img alt="React Localize" src="https://ryandrewjohnson.github.io/react-localize-docs/images/logo.png">
   </a>
 </p>
 
 <p align="center">
-  Localization library for <a href="https://facebook.github.io/react">React</a>/<a href="http://redux.js.org/">Redux</a>.
+  Localization library for handling translations in <a href="https://facebook.github.io/react">React</a>.
 </p>
 
 <p align="center">
@@ -18,21 +18,6 @@
 ```
 npm install react-localize-redux --save
 ```
-
-## Docs
-
-- [Getting Started](https://ryandrewjohnson.github.io/react-localize-redux/getting-started/)
-- [Formatting Translation Data](https://ryandrewjohnson.github.io/react-localize-redux/formatting-translation-data/)
-- [Features](https://ryandrewjohnson.github.io/react-localize-redux/features/)
-- [FAQ](https://ryandrewjohnson.github.io/react-localize-redux/faq/)
-- API
-  - [Action Creators](https://ryandrewjohnson.github.io/react-localize-redux/api/action-creators/)
-  - [Selectors](https://ryandrewjohnson.github.io/react-localize-redux/api/selectors/)
-  - [Translate]()
-
-## Articles
-
-- [Dead simple localization for your React components](https://medium.com/@ryandrewjohnson/adding-multi-language-support-to-your-react-redux-app-cf6e64250050)
 
 
 
