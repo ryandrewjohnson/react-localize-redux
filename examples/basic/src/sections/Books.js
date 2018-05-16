@@ -3,6 +3,7 @@ import React from 'react';
 import { withLocalize, Translate } from 'react-localize-redux';
 import translations from '../translations/books.json';
 import '../Main.css';
+import FormatCurrency from '../FormatCurrency';
 
 class Books extends React.Component<any, any> {
   
@@ -38,6 +39,8 @@ class Books extends React.Component<any, any> {
         <h2>
           <Translate id="books.heading" data={{count: this.state.books.length}}>{'Top ${count} books:'}</Translate>
         </h2>
+
+        <p>Money: <FormatCurrency>1000.00</FormatCurrency></p>
 
         <Translate>
           {({translate}) => 

@@ -24,6 +24,13 @@ class Main extends React.Component<any, any> {
     });
   }
 
+  componentDidUpdate(prevProps) {
+    const prevLangCode = prevProps.activeLanguage && prevProps.activeLanguage.code;
+    const curLangCode = this.props.activeLanguage && this.props.activeLanguage.code;
+    const hasLanguageChanged = prevLangCode !== curLangCode;
+    console.log('test', hasLanguageChanged);
+  }
+
   render() {
     return (
       <div>
