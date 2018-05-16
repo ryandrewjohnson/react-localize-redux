@@ -38,7 +38,6 @@ export interface TranslateOptions {
 
 export interface AddTranslationOptions {
   translationTransform?: TransFormFunction;
-  language?: string;
 }
 
 export interface LocalizeState {

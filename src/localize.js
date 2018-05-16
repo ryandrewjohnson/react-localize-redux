@@ -41,8 +41,7 @@ export type TranslateOptions = {
 };
 
 export type AddTranslationOptions = {
-  translationTransform?: TransFormFunction,
-  language?: string 
+  translationTransform?: TransFormFunction
 };
 
 export type LocalizeState = {
