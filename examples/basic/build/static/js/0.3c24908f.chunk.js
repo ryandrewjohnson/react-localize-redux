@@ -1,2 +1,0 @@
-webpackJsonp([0],{136:function(e,i){e.exports={movie1:{title:"French - Jurassic Park",description:"French - here is description"},movie2:{title:"French - Back to the Future",description:"French - fasdfsafsadf"}}}});
-//# sourceMappingURL=0.3c24908f.chunk.js.map
