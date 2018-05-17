@@ -1,7 +1,7 @@
 ## 3.0.0 
 
 * Now works without Redux by defualt.
-* Add [<LoclaizeProvider/>](https://ryandrewjohnson.github.io/react-localize-docs/#localizeprovider) a wrapper around React's [Context.Provider](https://reactjs.org/docs/context.html#provider)
+* Add [LoclaizeProvider](https://ryandrewjohnson.github.io/react-localize-docs/#localizeprovider) a wrapper around React's [Context.Provider](https://reactjs.org/docs/context.html#provider)
 * Add [LocalizeContext](https://reactjs.org/docs/context.html#reactcreatecontext) built on [React.createContext](https://reactjs.org/docs/context.html#reactcreatecontext).
 * Add [withLocalize](https://ryandrewjohnson.github.io/react-localize-docs/#withlocalize) higher-order component 
 * Add [onMissingTranslation](https://ryandrewjohnson.github.io/react-localize-docs/#initialize) initialize option that provides more control over handling missing translations.
@@ -31,6 +31,6 @@
 
 * If using Redux, `localeReducer` is now named `localizeReducer`.
 
-* Fix typos in `ADD_TRANSLATION_FOR_LANGUAGE` action (Issue #65)(https://github.com/ryandrewjohnson/react-localize-redux/issues/65)
+* Fix typos in `ADD_TRANSLATION_FOR_LANGUAGE` action [(Issue #65)](https://github.com/ryandrewjohnson/react-localize-redux/issues/65)
 
 
