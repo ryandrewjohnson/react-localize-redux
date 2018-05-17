@@ -1,7 +1,11 @@
-<a href="https://github.com/ryandrewjohnson/react-localize-redux">
-  <img alt="React Localize" src="https://ryandrewjohnson.github.io/react-localize-docs/images/logo.png">
-</a>
------
+<p>
+  <a href="https://github.com/ryandrewjohnson/react-localize-redux">
+    <img alt="React Localize" src="https://ryandrewjohnson.github.io/react-localize-docs/images/react-localize-redux-new.png">
+  </a>
+</p>
+
+</hr>
+
 <p>
   <a href="https://www.npmjs.com/package/react-localize-redux"><img src="https://img.shields.io/npm/dm/react-localize-redux.svg?style=flat-square"></a>
   <a href="https://travis-ci.org/ryandrewjohnson/react-localize-redux"><img src="https://img.shields.io/travis/ryandrewjohnson/react-localize-redux/master.svg?style=flat-square"></a>
