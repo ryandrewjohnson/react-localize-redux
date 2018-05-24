@@ -19,6 +19,7 @@ showMissingTranslationMsg | boolean | true | Controls whether missing translatio
 missingTranslationMsg | string | Missing translation key ${key} for language ${code} | A message that will be rendered in place of missing translations
 missingTranslationCallback | function | undefined | A function that will be called when attempting to get an undefined translation. See [Handle missing translations](/features/#handle-missing-translations) for details.
 translationTransform | function | undefined | A transformation function that will be applied to translation data. See [Custom data format](/formatting-translation-data#custom-data-format) for details.
+ignoreTranslateChildren | boolean | false | A flag that determines whether or not to add the children of `<Translate>` to the default language. This can be useful for defining default values in tests without adding them to translations.
 
 <div class="admonition error">
   <p class="first admonition-title">Deprecated</p>
