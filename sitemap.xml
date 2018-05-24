@@ -4,7 +4,7 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2018-04-11</lastmod>
+     <lastmod>2018-05-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -12,7 +12,7 @@
     
     <url>
      <loc>/getting-started/</loc>
-     <lastmod>2018-04-11</lastmod>
+     <lastmod>2018-05-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -20,7 +20,7 @@
     
     <url>
      <loc>/formatting-translation-data/</loc>
-     <lastmod>2018-04-11</lastmod>
+     <lastmod>2018-05-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -28,7 +28,7 @@
     
     <url>
      <loc>/features/</loc>
-     <lastmod>2018-04-11</lastmod>
+     <lastmod>2018-05-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -36,7 +36,7 @@
     
     <url>
      <loc>/faq/</loc>
-     <lastmod>2018-04-11</lastmod>
+     <lastmod>2018-05-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
@@ -45,25 +45,25 @@
         
     <url>
      <loc>/api/action-creators/</loc>
-     <lastmod>2018-04-11</lastmod>
+     <lastmod>2018-05-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/api/selectors/</loc>
-     <lastmod>2018-04-11</lastmod>
+     <lastmod>2018-05-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/api/translate/</loc>
-     <lastmod>2018-04-11</lastmod>
+     <lastmod>2018-05-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
     <url>
      <loc>/api/localize/</loc>
-     <lastmod>2018-04-11</lastmod>
+     <lastmod>2018-05-23</lastmod>
      <changefreq>daily</changefreq>
     </url>
         
