@@ -22,6 +22,7 @@ describe('<Translate />', () => {
       bye: ['Goodbye', 'Goodbye FR'],
       missing: ['Missing'],
       html: ['Hey <a href="http://google.com">google</a>', ''],
+      htmlPlaceholder: ['Hey <a href="http://google.com">${ name }</a>', ''],
       multiline: [null, ''],
       placeholder: ['Hey ${name}!', '']
     },
@@ -90,6 +91,27 @@ describe('<Translate />', () => {
       "en"
     );
   });
+
+  it('should render React in translations', () => {
+    const Comp = ({ name }) => <strong>{name}</strong>;
+    const Translate = getTranslateWithContext();
+    const wrapper = mount(
+      <Translate id='placeholder' data={{ name: <Comp name='google' /> }} />
+    );
+    expect(wrapper.find(Comp).length).toBe(1);
+    expect(wrapper.text()).toContain('google');
+  });
+
+  it.skip('should return an empty string if passing React components to a translation with HTML tags', () => {
+    const Comp = ({ name }) => <strong>{name}</strong>;
+    const Translate = getTranslateWithContext();
+    
+    const wrapper = mount(
+      <Translate id='htmlPlaceholder' data={{ name: <Comp name='google' /> }} />
+    )
+
+    expect(wrapper.text()).toBe('')
+  })
 
   it('should add <Translate>\'s children to translations under languages[0].code for id', () => {
     const Translate = getTranslateWithContext();
