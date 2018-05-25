@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import ReactDOMServer from 'react-dom/server';
 import PropTypes from 'prop-types';
 import { getTranslate, addTranslationForLanguage, getLanguages, getOptions, getActiveLanguage, getTranslationsForActiveLanguage } from './localize';
 import { storeDidChange } from './utils';
@@ -44,6 +43,8 @@ export class Translate extends React.Component<TranslateProps, TranslateState> {
     
     const { id, children, options = {} } = this.props;
     const defaultLanguage = options.language || context.defaultLanguage;
+    const fallbackRenderToStaticMarkup = (value) => value;
+    const renderToStaticMarkup = context.renderToStaticMarkup || fallbackRenderToStaticMarkup;
 
     if (children === undefined || typeof children === 'function') {
       return;
@@ -54,7 +55,7 @@ export class Translate extends React.Component<TranslateProps, TranslateState> {
     }
     
     if (id !== undefined && defaultLanguage !== undefined) {
-      const translation = ReactDOMServer.renderToStaticMarkup(children);
+      const translation = renderToStaticMarkup(children);
       context.addTranslationForLanguage && context.addTranslationForLanguage({[id]: translation}, defaultLanguage);
     }
   }

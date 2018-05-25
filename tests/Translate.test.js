@@ -4,6 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import { Map } from 'immutable';
 import { localizeReducer, getTranslate, getLanguages, getActiveLanguage } from '../src';
 import { defaultTranslateOptions } from '../src/localize';
+import { renderToStaticMarkup } from 'react-dom/server';
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -42,7 +43,8 @@ describe('<Translate />', () => {
       initialize: jest.fn(),
       addTranslation: jest.fn(),
       addTranslationForLanguage: jest.fn(),
-      setActiveLanguage: jest.fn()
+      setActiveLanguage: jest.fn(),
+      renderToStaticMarkup
     };
 
     jest.doMock('../src/LocalizeContext', () => {
@@ -75,7 +77,7 @@ describe('<Translate />', () => {
     expect(wrapper.text()).toEqual('Hey <a href="http://google.com">google</a>');
   });
 
-  it('should convert <Translate>\'s children to a string when multi-line HTML markup is provided', () => {
+  it('should convert <Translate>\'s children to a string when multi-line HTML markup is provided, and renderToStaticMarkup was set', () => {
     const Translate = getTranslateWithContext();
     const wrapper = mount(
       <Translate id="multiline">
@@ -108,10 +110,29 @@ describe('<Translate />', () => {
     
     const wrapper = mount(
       <Translate id='htmlPlaceholder' data={{ name: <Comp name='google' /> }} />
-    )
+    );
 
-    expect(wrapper.text()).toBe('')
-  })
+    expect(wrapper.text()).toBe('');
+  });
+
+  it('should just pass through string when renderToStaticMarkup not set', () => {
+    const Translate = getTranslateWithContext({
+      ...initialState,
+      options: {
+        ...initialState.options,
+        renderToStaticMarkup: false
+      }
+    });
+
+    const wrapper = mount(
+      <Translate id="test">Hello</Translate>
+    );
+
+    expect(defaultContext.addTranslationForLanguage).toHaveBeenLastCalledWith(
+      {"test": "Hello"}, 
+      "en"
+    );
+  });
 
   it('should add <Translate>\'s children to translations under languages[0].code for id', () => {
     const Translate = getTranslateWithContext();

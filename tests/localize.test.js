@@ -371,13 +371,17 @@ describe('localize', () => {
         const action = {
           type: INITIALIZE,
           payload: { 
-            options: { defaultLanguage: 'fr' }
+            options: { 
+              defaultLanguage: 'fr',
+              renderToStaticMarkup: false
+            }
           }
         };
         const result = options(defaultTranslateOptions, action);
         expect(result).toEqual({
           ...defaultTranslateOptions,
-          defaultLanguage: 'fr'
+          defaultLanguage: 'fr',
+          renderToStaticMarkup: false
         });
       });
 
@@ -385,13 +389,17 @@ describe('localize', () => {
         const action = {
           type: INITIALIZE,
           payload: { 
-            options: { renderInnerHtml: false }
+            options: { 
+              renderInnerHtml: false,
+              renderToStaticMarkup: false
+            }
           }
         };
         const result = options(defaultTranslateOptions, action);
         expect(result).toEqual({
           ...defaultTranslateOptions,
-          renderInnerHtml: false
+          renderInnerHtml: false,
+          renderToStaticMarkup: false
         });
       });
     });
@@ -401,7 +409,8 @@ describe('localize', () => {
         type: INITIALIZE,
         payload: {
           options: {
-            translationTransform: () => ({})
+            translationTransform: () => ({}),
+            renderToStaticMarkup: false
           }
         }
       };
@@ -419,7 +428,8 @@ describe('localize', () => {
         type: INITIALIZE,
         payload: {
           options: {
-            onMissingTranslation: callback
+            onMissingTranslation: callback,
+            renderToStaticMarkup: false
           }
         }
       };
@@ -430,6 +440,43 @@ describe('localize', () => {
       expect(result.onMissingTranslation).toBeDefined();
       expect(callback).toHaveBeenCalled();
       expect(value).toEqual('Override missing!');
+    });
+
+    it('should set renderToStaticMarkup when function provided', () => {
+      const action = {
+        type: INITIALIZE,
+        payload: {
+          options: {
+            renderToStaticMarkup: () => {}
+          }
+        }
+      };
+      const result = options({}, action);
+      expect(result.renderToStaticMarkup).toEqual(action.payload.options.renderToStaticMarkup);
+    });
+
+    it('should set renderToStaticMarkup to false when provided', () => {
+      const action = {
+        type: INITIALIZE,
+        payload: {
+          options: {
+            renderToStaticMarkup: false
+          }
+        }
+      };
+      const result = options({}, action);
+      expect(result.renderToStaticMarkup).toBe(false);
+    });
+
+    it('should throw an error when invalid renderToStaticMarkup not provided', () => {
+      const action = {
+        type: INITIALIZE,
+        payload: {
+          options: {}
+        }
+      };
+      const result = () => options({}, action);
+      expect(result).toThrow();
     });
   });
 

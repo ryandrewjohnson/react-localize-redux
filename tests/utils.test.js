@@ -133,7 +133,8 @@ describe('locale utils', () => {
       const options = {
         renderInnerHtml: false,
         defaultLanguage: 'en',
-        translationTransform: (data, codes) => ({})
+        translationTransform: (data, codes) => ({}),
+        renderToStaticMarkup: false
       };
       const result = utils.validateOptions(options);
       expect(result).toEqual(options);
@@ -143,7 +144,26 @@ describe('locale utils', () => {
       const options = {
         renderInnerHtml: false,
         defaultLanguage: 'en',
-        onMissingTranslation: false
+        onMissingTranslation: false,
+        renderToStaticMarkup: false
+      };
+      expect(() => utils.validateOptions(options)).toThrow();
+    });
+
+    it('should throw error if renderToStaticMarkup is not a function', () => {
+      const options = {
+        renderInnerHtml: false,
+        defaultLanguage: 'en',
+        renderToStaticMarkup: ''
+      };
+      expect(() => utils.validateOptions(options)).toThrow();
+    });
+
+    it('should throw error if renderToStaticMarkup is not false', () => {
+      const options = {
+        renderInnerHtml: false,
+        defaultLanguage: 'en',
+        renderToStaticMarkup: true
       };
       expect(() => utils.validateOptions(options)).toThrow();
     });
