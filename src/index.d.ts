@@ -21,7 +21,9 @@ export interface Translations {
 
 type TransFormFunction = (data: Object, languageCodes: string[]) => Translations;
 
-type onMissingTranslationFunction = ({translationId: string, languageCode: string, defaultTranslation: string}) => string;
+type MissingTranslationOptions = {translationId: string, languageCode: string, defaultTranslation: string};
+
+export type onMissingTranslationFunction = (options: MissingTranslationOptions) => string;
 
 type renderToStaticMarkupFunction = (element: any) => string;
 

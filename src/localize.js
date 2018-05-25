@@ -79,7 +79,9 @@ export type MultipleLanguageTranslation = {
   [key: string]: Object | string[]
 };
 
-export type onMissingTranslationFunction = ({translationId: string, languageCode: string, defaultTranslation: string}) => string;
+type MissingTranslationOptions = {translationId: string, languageCode: string, defaultTranslation: string};
+
+export type onMissingTranslationFunction = (options: MissingTranslationOptions) => string;
 
 export type InitializePayload = {
   languages: Array<string|NamedLanguage>,
