@@ -27,7 +27,10 @@ export type Translations = {
 
 export type TransFormFunction = (data: Object, languageCodes: string[]) => Translations;
 
+export type renderToStaticMarkupFunction = (element: any) => string;
+
 export type InitializeOptions = {
+  renderToStaticMarkup: renderToStaticMarkupFunction|false,
   renderInnerHtml?: boolean, 
   onMissingTranslation?: onMissingTranslationFunction,
   defaultLanguage?: string
@@ -215,7 +218,7 @@ export function translations(state: Translations = {}, action: ActionDetailed): 
 export function options(state: InitializeOptions = defaultTranslateOptions, action: Action): InitializeOptions {
   switch(action.type) {
     case INITIALIZE:
-      const options = action.payload.options || {};
+      const options: any = action.payload.options || {};
       return {
         ...state,
         ...validateOptions(options)
@@ -226,6 +229,7 @@ export function options(state: InitializeOptions = defaultTranslateOptions, acti
 };
 
 export const defaultTranslateOptions: InitializeOptions = {
+  renderToStaticMarkup: false,
   renderInnerHtml: false,
   ignoreTranslateChildren: false,
   onMissingTranslation: ({translationId, languageCode}) => 'Missing translationId: ${ translationId } for language: ${ languageCode }'

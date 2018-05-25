@@ -2,7 +2,7 @@
 import React from 'react';
 import createReactContext, { type Context } from 'create-react-context';
 import { createSelector, type Selector } from 'reselect';
-import { type TranslateFunction, type Language, type MultipleLanguageTranslation, type SingleLanguageTranslation, type InitializePayload, type LocalizeState } from './localize';
+import { type TranslateFunction, type Language, type MultipleLanguageTranslation, type SingleLanguageTranslation, type InitializePayload, type LocalizeState, type renderToStaticMarkupFunction } from './localize';
 import { localizeReducer, getTranslate, initialize, addTranslation, addTranslationForLanguage, setActiveLanguage, getLanguages, getActiveLanguage, getOptions } from './localize';
 
 export type LocalizeContextProps = {
@@ -13,7 +13,8 @@ export type LocalizeContextProps = {
   initialize: (payload: InitializePayload) => void,
   addTranslation: (translation: MultipleLanguageTranslation) => void,
   addTranslationForLanguage: (translation: SingleLanguageTranslation, language: string) => void,
-  setActiveLanguage: (languageCode: string) => void
+  setActiveLanguage: (languageCode: string) => void,
+  renderToStaticMarkup: renderToStaticMarkupFunction|false
 };
 
 const dispatchInitialize = (dispatch: Function) => (payload: InitializePayload) => {
@@ -32,8 +33,6 @@ const dispatchSetActiveLanguage = (dispatch: Function) => (languageCode: string)
   return dispatch(setActiveLanguage(languageCode));
 };
 
-// getContextPropsSelector: Selector<LocalizeState, void, LocalizeContextProps>;
-
 export const getContextPropsFromState = (dispatch: Function): Selector<LocalizeState, void, LocalizeContextProps> => createSelector(
   getTranslate,
   getLanguages,
@@ -41,6 +40,7 @@ export const getContextPropsFromState = (dispatch: Function): Selector<LocalizeS
   getOptions,
   (translate, languages, activeLanguage, options) => {
     const defaultLanguage = options.defaultLanguage || (languages[0] && languages[0].code);
+    const renderToStaticMarkup = options.renderToStaticMarkup;
     return {
       translate,
       languages,
@@ -49,7 +49,8 @@ export const getContextPropsFromState = (dispatch: Function): Selector<LocalizeS
       initialize: dispatchInitialize(dispatch),
       addTranslation: dispatchAddTranslation(dispatch),
       addTranslationForLanguage: dispatchAddTranslationForLanguage(dispatch),
-      setActiveLanguage: dispatchSetActiveLanguage(dispatch)
+      setActiveLanguage: dispatchSetActiveLanguage(dispatch),
+      renderToStaticMarkup
     };
   }
 );

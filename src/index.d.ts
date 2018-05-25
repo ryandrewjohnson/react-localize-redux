@@ -23,7 +23,10 @@ type TransFormFunction = (data: Object, languageCodes: string[]) => Translations
 
 type onMissingTranslationFunction = ({translationId: string, languageCode: string, defaultTranslation: string}) => string;
 
+type renderToStaticMarkupFunction = (element: any) => string;
+
 export interface InitializeOptions {
+  renderToStaticMarkup: renderToStaticMarkupFunction|false;
   renderInnerHtml?: boolean;
   onMissingTranslation?: onMissingTranslationFunction;
   defaultLanguage?: string;
@@ -47,19 +50,20 @@ export interface LocalizeState {
 }
 
 export interface LocalizeContextProps {
-  translate: TranslateFunction,
-  languages: Language[],
-  activeLanguage: Language,
-  defaultLanguage: string,
-  initialize: (payload: InitializePayload) => void,
-  addTranslation: (translation: MultipleLanguageTranslation) => void,
-  addTranslationForLanguage: (translation: SingleLanguageTranslation, language: string) => void,
-  setActiveLanguage: (languageCode: string) => void
+  translate: TranslateFunction;
+  languages: Language[];
+  activeLanguage: Language;
+  defaultLanguage: string;
+  initialize: (payload: InitializePayload) => void;
+  addTranslation: (translation: MultipleLanguageTranslation) => void;
+  addTranslationForLanguage: (translation: SingleLanguageTranslation, language: string) => void;
+  setActiveLanguage: (languageCode: string) => void;
+  renderToStaticMarkup: (element: any) => string|false;
 }
 
 export interface LocalizeProviderProps {
-  store?: Store<any>,
-  children: any
+  store?: Store<any>;
+  children: any;
 }
 
 export interface TranslatedLanguage {
@@ -161,4 +165,6 @@ export function withLocalize<Props extends {}>(WrappedComponent: ReactComponent<
 
 export function TranslateChildFunction(context: LocalizeContextProps): ReactNode;
 
-export default class Translate extends ReactComponent<TranslateProps> {}
+export class Translate extends ReactComponent<TranslateProps> {}
+
+export class LocalizeProvider extends ReactComponent<LocalizeProviderProps> {}

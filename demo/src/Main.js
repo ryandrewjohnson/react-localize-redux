@@ -1,5 +1,6 @@
 // @flow
 import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { Route, NavLink } from 'react-router-dom';
 import ToggleButton from 'react-toggle-button'
 import { withLocalize, Translate } from 'react-localize-redux';
@@ -20,7 +21,8 @@ class Main extends React.Component<any, any> {
         { name: 'French', code: 'fr' }, 
         { name: 'Spanish', code: 'es' }
       ],
-      translation: globalTranslations
+      translation: globalTranslations,
+      options: { renderToStaticMarkup }
     });
   }
 

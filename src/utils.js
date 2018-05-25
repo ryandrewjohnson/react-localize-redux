@@ -63,6 +63,13 @@ export const validateOptions = (options: InitializeOptions): InitializeOptions =
     throw new Error('react-localize-redux: an invalid onMissingTranslation function was provided.');
   }
 
+  if (options.renderToStaticMarkup !== false && typeof options.renderToStaticMarkup !== 'function') {
+    throw new Error(`
+      react-localize-redux: initialize option renderToStaticMarkup is invalid. 
+      Please see https://ryandrewjohnson.github.io/react-localize-docs/#initialize.
+    `);
+  }
+
   return options;
 };
 
