@@ -88,7 +88,7 @@ export interface TranslateProps {
   id?: string;
   options?: InitializeOptions;
   data?: TranslatePlaceholderData;
-  children?: TranslateChildFunction;
+  children?: TranslateChildFunction|ReactNode;
 }
 
 export type TranslateValue = string|string[];
