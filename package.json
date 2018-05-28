@@ -1,6 +1,6 @@
 {
   "name": "react-localize-redux",
-  "version": "3.0.0-rc3",
+  "version": "3.0.0-rc4",
   "description": "Localization library for handling translations in React",
   "main": "./lib/index.js",
   "module": "./es/index.js",
@@ -19,7 +19,8 @@
     "test": "cross-env BABEL_ENV=test jest",
     "test:dev": "jest --watch",
     "flow": "flow",
-    "types": "flow-typed install -i dev"
+    "types": "flow-typed install -i dev",
+    "prettier": "prettier --write src/**/*"
   },
   "repository": {
     "type": "git",
@@ -72,6 +73,7 @@
     "jest": "^22.4.3",
     "json-loader": "^0.5.4",
     "ncp": "^2.0.0",
+    "prettier": "1.12.1",
     "progress-bar-webpack-plugin": "^1.9.1",
     "raf": "^3.3.2",
     "react": "^16.3.1",

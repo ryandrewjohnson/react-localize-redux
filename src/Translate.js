@@ -1,32 +1,43 @@
 // @flow
-import * as React from 'react';
-import PropTypes from 'prop-types';
-import { getTranslate, addTranslationForLanguage, getLanguages, getOptions, getActiveLanguage, getTranslationsForActiveLanguage } from './localize';
-import { storeDidChange } from './utils';
-import { LocalizeContext, type LocalizeContextProps } from './LocalizeContext';
-import { withLocalize } from './withLocalize';
-import type { TranslateOptions, TranslatePlaceholderData, TranslateFunction, Language} from './localize';
+import * as React from "react";
+import PropTypes from "prop-types";
+import {
+  getTranslate,
+  addTranslationForLanguage,
+  getLanguages,
+  getOptions,
+  getActiveLanguage,
+  getTranslationsForActiveLanguage
+} from "./localize";
+import { storeDidChange } from "./utils";
+import { LocalizeContext, type LocalizeContextProps } from "./LocalizeContext";
+import { withLocalize } from "./withLocalize";
+import type {
+  TranslateOptions,
+  TranslatePlaceholderData,
+  TranslateFunction,
+  Language
+} from "./localize";
 
 export type TranslateProps = {
   id?: string,
   options?: TranslateOptions,
   data?: TranslatePlaceholderData,
-  children?: any|TranslateChildFunction
+  children?: any | TranslateChildFunction
 };
 
 type TranslateState = {
-  hasAddedDefaultTranslation: boolean;
+  hasAddedDefaultTranslation: boolean
 };
 
 export type TranslateChildFunction = (context: LocalizeContextProps) => any;
 
 export class Translate extends React.Component<TranslateProps, TranslateState> {
-
   unsubscribeFromStore: any;
 
   constructor(props: TranslateProps) {
     super(props);
-    
+
     this.state = {
       hasAddedDefaultTranslation: false
     };
@@ -40,32 +51,37 @@ export class Translate extends React.Component<TranslateProps, TranslateState> {
     if (this.state.hasAddedDefaultTranslation) {
       return;
     }
-    
+
     const { id, children, options = {} } = this.props;
     const defaultLanguage = options.language || context.defaultLanguage;
-    const fallbackRenderToStaticMarkup = (value) => value;
-    const renderToStaticMarkup = context.renderToStaticMarkup || fallbackRenderToStaticMarkup;
+    const fallbackRenderToStaticMarkup = value => value;
+    const renderToStaticMarkup =
+      context.renderToStaticMarkup || fallbackRenderToStaticMarkup;
 
-    if (children === undefined || typeof children === 'function') {
+    if (children === undefined || typeof children === "function") {
       return;
     }
 
-    if (options.ignoreTranslateChildren ) {
+    if (options.ignoreTranslateChildren) {
       return;
     }
-    
+
     if (id !== undefined && defaultLanguage !== undefined) {
       const translation = renderToStaticMarkup(children);
-      context.addTranslationForLanguage && context.addTranslationForLanguage({[id]: translation}, defaultLanguage);
+      context.addTranslationForLanguage &&
+        context.addTranslationForLanguage(
+          { [id]: translation },
+          defaultLanguage
+        );
     }
   }
 
   renderChildren(context: LocalizeContextProps) {
-    const { id = '', options, data } = this.props;
+    const { id = "", options, data } = this.props;
 
     this.addDefaultTranslation(context);
-    
-    return typeof this.props.children === 'function'
+
+    return typeof this.props.children === "function"
       ? this.props.children(context)
       : context.translate && (context.translate(id, data, options): any);
   }
@@ -73,9 +89,8 @@ export class Translate extends React.Component<TranslateProps, TranslateState> {
   render() {
     return (
       <LocalizeContext.Consumer>
-        { context => this.renderChildren(context) }
+        {context => this.renderChildren(context)}
       </LocalizeContext.Consumer>
     );
   }
 }
-
