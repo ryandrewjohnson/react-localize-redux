@@ -1,9 +1,20 @@
 // @flow
-import React, { Component } from 'react';
-import { type Store } from 'redux';
-import { localizeReducer, getActiveLanguage, getOptions, getTranslationsForActiveLanguage, type LocalizeState, type Action } from './localize';
-import { LocalizeContext, type LocalizeContextProps, getContextPropsFromState } from './LocalizeContext';
-import { storeDidChange } from './utils';
+import React, { Component } from "react";
+import { type Store } from "redux";
+import {
+  localizeReducer,
+  getActiveLanguage,
+  getOptions,
+  getTranslationsForActiveLanguage,
+  type LocalizeState,
+  type Action
+} from "./localize";
+import {
+  LocalizeContext,
+  type LocalizeContextProps,
+  getContextPropsFromState
+} from "./LocalizeContext";
+import { storeDidChange } from "./utils";
 
 type LocalizeProviderState = {
   localize: LocalizeState
@@ -14,8 +25,10 @@ export type LocalizeProviderProps = {
   children: any
 };
 
-export class LocalizeProvider extends Component<LocalizeProviderProps, LocalizeProviderState> {
-
+export class LocalizeProvider extends Component<
+  LocalizeProviderProps,
+  LocalizeProviderState
+> {
   unsubscribeFromStore: Function;
   getContextPropsSelector: any;
   contextProps: LocalizeContextProps;
@@ -26,13 +39,13 @@ export class LocalizeProvider extends Component<LocalizeProviderProps, LocalizeP
     const dispatch = this.props.store
       ? this.props.store.dispatch
       : this.dispatch.bind(this);
-    
+
     this.getContextPropsSelector = getContextPropsFromState(dispatch);
 
     this.state = {
       localize: localizeReducer(undefined, ({}: any))
     };
-  } 
+  }
 
   static getDerivedStateFromProps(nextProps: any, nextState: any) {
     return null;
@@ -40,7 +53,10 @@ export class LocalizeProvider extends Component<LocalizeProviderProps, LocalizeP
 
   componentDidMount() {
     if (this.props.store) {
-      this.unsubscribeFromStore = storeDidChange(this.props.store, this.onStateDidChange.bind(this));
+      this.unsubscribeFromStore = storeDidChange(
+        this.props.store,
+        this.onStateDidChange.bind(this)
+      );
     }
   }
 
@@ -52,35 +68,43 @@ export class LocalizeProvider extends Component<LocalizeProviderProps, LocalizeP
     if (!this.props.store) {
       return;
     }
-    
+
     const prevLocalizeState = prevState && prevState.localize;
     const curLocalizeState = this.props.store.getState().localize;
 
-    const prevActiveLanguage = prevState && getActiveLanguage(prevLocalizeState);
+    const prevActiveLanguage =
+      prevState && getActiveLanguage(prevLocalizeState);
     const curActiveLanguage = getActiveLanguage(curLocalizeState);
 
     const prevOptions = prevState && getOptions(prevLocalizeState);
     const curOptions = getOptions(curLocalizeState);
 
-    const prevTranslations = prevState && getTranslationsForActiveLanguage(prevLocalizeState);
+    const prevTranslations =
+      prevState && getTranslationsForActiveLanguage(prevLocalizeState);
     const curTranslations = getTranslationsForActiveLanguage(curLocalizeState);
 
-    const hasActiveLangaugeChanged = ((prevActiveLanguage && prevActiveLanguage.code) !== (curActiveLanguage && curActiveLanguage.code));
-    const hasOptionsChanged = (prevOptions !== curOptions);
-    const hasTranslationsChanged = (prevTranslations !== curTranslations);
+    const hasActiveLangaugeChanged =
+      (prevActiveLanguage && prevActiveLanguage.code) !==
+      (curActiveLanguage && curActiveLanguage.code);
+    const hasOptionsChanged = prevOptions !== curOptions;
+    const hasTranslationsChanged = prevTranslations !== curTranslations;
 
-    if (hasActiveLangaugeChanged || hasOptionsChanged || hasTranslationsChanged) {
+    if (
+      hasActiveLangaugeChanged ||
+      hasOptionsChanged ||
+      hasTranslationsChanged
+    ) {
       this.setState({ localize: curLocalizeState });
     }
   }
 
   dispatch(action: any) {
-    console.log('action', action);
+    console.log("action", action);
 
-    this.setState((prevState) => {
+    this.setState(prevState => {
       return {
         localize: localizeReducer(prevState.localize, action)
-      }
+      };
     });
   }
 
@@ -91,6 +115,6 @@ export class LocalizeProvider extends Component<LocalizeProviderProps, LocalizeP
       <LocalizeContext.Provider value={this.contextProps}>
         {this.props.children}
       </LocalizeContext.Provider>
-    ); 
+    );
   }
 }
