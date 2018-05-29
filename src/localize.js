@@ -1,12 +1,12 @@
 // @flow
-import * as React from "react";
-import { combineReducers } from "redux";
-import { flatten } from "flat";
+import * as React from 'react';
+import { combineReducers } from 'redux';
+import { flatten } from 'flat';
 import {
   createSelector,
   createSelectorCreator,
   defaultMemoize
-} from "reselect";
+} from 'reselect';
 import {
   getLocalizedElement,
   getIndexForLanguageCode,
@@ -15,9 +15,9 @@ import {
   getTranslationsForLanguage,
   warning,
   getSingleToMultilanguageTranslation
-} from "./utils";
-import type { Selector, SelectorCreator } from "reselect";
-import type { Element } from "react";
+} from './utils';
+import type { Selector, SelectorCreator } from 'reselect';
+import type { Element } from 'react';
 
 /**
  * TYPES
@@ -72,7 +72,7 @@ export type TranslatedLanguage = {
   [string]: string
 };
 
-export type LocalizedElement = Element<"span"> | string;
+export type LocalizedElement = Element<'span'> | string;
 
 export type LocalizedElementMap = {
   [string]: LocalizedElement
@@ -134,19 +134,19 @@ type BaseAction<T, P> = {
 };
 
 export type InitializeAction = BaseAction<
-  "@@localize/INITIALIZE",
+  '@@localize/INITIALIZE',
   InitializePayload
 >;
 export type AddTranslationAction = BaseAction<
-  "@@localize/ADD_TRANSLATION",
+  '@@localize/ADD_TRANSLATION',
   AddTranslationPayload
 >;
 export type AddTranslationForLanguageAction = BaseAction<
-  "@@localize/ADD_TRANSLATION_FOR_LANGUAGE",
+  '@@localize/ADD_TRANSLATION_FOR_LANGUAGE',
   AddTranslationForLanguagePayload
 >;
 export type SetActiveLanguageAction = BaseAction<
-  "@@localize/SET_ACTIVE_LANGUAGE",
+  '@@localize/SET_ACTIVE_LANGUAGE',
   SetActiveLanguagePayload
 >;
 
@@ -165,12 +165,12 @@ export type ActionDetailed = Action & {
 /**
  * ACTIONS
  */
-export const INITIALIZE = "@@localize/INITIALIZE";
-export const ADD_TRANSLATION = "@@localize/ADD_TRANSLATION";
+export const INITIALIZE = '@@localize/INITIALIZE';
+export const ADD_TRANSLATION = '@@localize/ADD_TRANSLATION';
 export const ADD_TRANSLATION_FOR_LANGUAGE =
-  "@@localize/ADD_TRANSLATION_FOR_LANGUAGE";
-export const SET_ACTIVE_LANGUAGE = "@@localize/SET_ACTIVE_LANGUAGE";
-export const TRANSLATE = "@@localize/TRANSLATE";
+  '@@localize/ADD_TRANSLATION_FOR_LANGUAGE';
+export const SET_ACTIVE_LANGUAGE = '@@localize/SET_ACTIVE_LANGUAGE';
+export const TRANSLATE = '@@localize/TRANSLATE';
 
 /**
  * REDUCERS
@@ -186,7 +186,7 @@ export function languages(state: Language[] = [], action: Action): Language[] {
             : index === 0;
         };
         // check if it's using array of Language objects, or array of language codes
-        return typeof language === "string"
+        return typeof language === 'string'
           ? { code: language, active: isActive(language) } // language codes
           : { ...language, active: isActive(language.code) }; // language objects
       });
@@ -219,7 +219,7 @@ export function translations(
       });
       const options = action.payload.options || {};
       const firstLanguage =
-        typeof action.payload.languages[0] === "string"
+        typeof action.payload.languages[0] === 'string'
           ? action.payload.languages[0]
           : action.payload.languages[0].code;
       const defaultLanguage = options.defaultLanguage || firstLanguage;
@@ -293,7 +293,7 @@ export const defaultTranslateOptions: InitializeOptions = {
   renderInnerHtml: false,
   ignoreTranslateChildren: false,
   onMissingTranslation: ({ translationId, languageCode }) =>
-    "Missing translationId: ${ translationId } for language: ${ languageCode }"
+    'Missing translationId: ${ translationId } for language: ${ languageCode }'
 };
 
 const initialState: LocalizeState = {
@@ -380,14 +380,14 @@ export const translationsEqualSelector = createSelectorCreator(
   defaultMemoize,
   (prev, cur) => {
     const prevKeys: any =
-      typeof prev === "object" ? Object.keys(prev).toString() : undefined;
+      typeof prev === 'object' ? Object.keys(prev).toString() : undefined;
     const curKeys: any =
-      typeof cur === "object" ? Object.keys(cur).toString() : undefined;
+      typeof cur === 'object' ? Object.keys(cur).toString() : undefined;
 
     const prevValues: any =
-      typeof prev === "object" ? objectValuesToString(prev) : undefined;
+      typeof prev === 'object' ? objectValuesToString(prev) : undefined;
     const curValues: any =
-      typeof cur === "object" ? objectValuesToString(cur) : undefined;
+      typeof cur === 'object' ? objectValuesToString(cur) : undefined;
 
     const prevCacheValue =
       prevKeys !== undefined && prevValues !== undefined
@@ -482,7 +482,7 @@ export const getTranslate: Selector<
         onMissingTranslation
       };
 
-      if (typeof value === "string") {
+      if (typeof value === 'string') {
         return getLocalizedElement({ translationId: value, ...sharedParams });
       } else if (Array.isArray(value)) {
         return value.reduce((prev, cur) => {
@@ -493,7 +493,7 @@ export const getTranslate: Selector<
         }, {});
       } else {
         throw new Error(
-          "react-localize-redux: Invalid key passed to getTranslate."
+          'react-localize-redux: Invalid key passed to getTranslate.'
         );
       }
     };

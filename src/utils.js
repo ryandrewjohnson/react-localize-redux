@@ -1,11 +1,11 @@
 // @flow
-import React from "react";
-import { type Store } from "redux";
-import { flatten } from "flat";
+import React from 'react';
+import { type Store } from 'redux';
+import { flatten } from 'flat';
 import {
   defaultTranslateOptions,
   type MultipleLanguageTranslation
-} from "./localize";
+} from './localize';
 import type {
   TranslatePlaceholderData,
   TranslatedLanguage,
@@ -13,7 +13,7 @@ import type {
   InitializeOptions,
   LocalizedElement,
   Language
-} from "./localize";
+} from './localize';
 
 type LocalizedElementOptions = {
   translationId: string,
@@ -45,7 +45,7 @@ export const getLocalizedElement = (
   const translatedValue = templater(localizedString, placeholderData);
 
   return renderInnerHtml === true && hasHtmlTags(translatedValue)
-    ? React.createElement("span", {
+    ? React.createElement('span', {
         dangerouslySetInnerHTML: { __html: translatedValue }
       })
     : translatedValue;
@@ -65,8 +65,8 @@ export const hasHtmlTags = (value: string): boolean => {
  */
 export const templater = (strings: string, data: Object = {}): string => {
   for (let prop in data) {
-    const pattern = "\\${\\s*" + prop + "\\s*}";
-    const regex = new RegExp(pattern, "gmi");
+    const pattern = '\\${\\s*' + prop + '\\s*}';
+    const regex = new RegExp(pattern, 'gmi');
     strings = strings.replace(regex, data[prop]);
   }
   return strings;
@@ -92,16 +92,16 @@ export const validateOptions = (
 ): InitializeOptions => {
   if (
     options.onMissingTranslation !== undefined &&
-    typeof options.onMissingTranslation !== "function"
+    typeof options.onMissingTranslation !== 'function'
   ) {
     throw new Error(
-      "react-localize-redux: an invalid onMissingTranslation function was provided."
+      'react-localize-redux: an invalid onMissingTranslation function was provided.'
     );
   }
 
   if (
     options.renderToStaticMarkup !== false &&
-    typeof options.renderToStaticMarkup !== "function"
+    typeof options.renderToStaticMarkup !== 'function'
   ) {
     throw new Error(`
       react-localize-redux: initialize option renderToStaticMarkup is invalid. 
@@ -179,7 +179,7 @@ export const getSingleToMultilanguageTranslation = (
 // Thanks react-redux for utility function
 // https://github.com/reactjs/react-redux/blob/master/src/utils/warning.js
 export const warning = (message: string) => {
-  if (typeof console !== "undefined" && typeof console.error === "function") {
+  if (typeof console !== 'undefined' && typeof console.error === 'function') {
     console.error(message);
   }
 
