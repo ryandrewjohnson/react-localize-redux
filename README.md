@@ -50,5 +50,5 @@ on the same page before any work is done.
 
 \*\* For additional info:
 
-See [Issue Template](.github/issue_template.md).
+See [Issue Template](.github/ISSUE_TEMPLATE.md).
 See [Pull Request Templete](.github/pull_request_template.md).
