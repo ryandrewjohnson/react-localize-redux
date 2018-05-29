@@ -48,7 +48,7 @@ Want to help? Contributions are welcome, but please be sure before submitting a 
 have first opened an issue to discuss the work with the maintainers first. This will ensure we're all
 on the same page before any work is done.
 
-\*\* For additional info:
+**For additional info:**
 
-See [Issue Template](.github/ISSUE_TEMPLATE.md).
-See [Pull Request Templete](.github/pull_request_template.md).
+* See [Issue Template](.github/ISSUE_TEMPLATE.md).
+* See [Pull Request Templete](.github/PULL_REQUEST_TEMPLATE.md).
