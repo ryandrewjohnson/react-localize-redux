@@ -3,6 +3,6 @@ node_js:
   - stable
   - "6"
 script:
-  - npm test
+  - yarn test
 after_success:
-  - npm run coverage
+  - yarn run coverage

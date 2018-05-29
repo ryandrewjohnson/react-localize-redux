@@ -39,7 +39,7 @@ The official documentation can be found [online](https://ryandrewjohnson.github.
 ## Not using React 16?
 
 If you are unable to upgrade to at least react `v16.0.0` in your app you do have the ability to use an
-older version of react, but should only be used as a last resort. The [Transalte](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#translate-2) component
+older version of react, but should only be used as a last resort. The [Translate](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#translate-2) component
 requires the ability to render [fragments and strings](https://reactjs.org/blog/2017/09/26/react-v16.0.html#new-render-return-types-fragments-and-strings), which isn't available in older versions of react. See [Can I use older versions of React?](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#can-i-use-older-versions-of-react) for workarounds to this issue.
 
 ## Contributing
