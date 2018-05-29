@@ -1,6 +1,6 @@
 <p>
   <a href="https://github.com/ryandrewjohnson/react-localize-redux">
-    <img alt="React Localize" src="https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/images/react-localize-redux-new.png">
+    <img alt="React Localize" src="https://ryandrewjohnson.github.io/react-localize-redux-docs/images/react-localize-redux-new.png">
   </a>
 </p>
 
