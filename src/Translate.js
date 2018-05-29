@@ -1,6 +1,6 @@
 // @flow
-import * as React from "react";
-import PropTypes from "prop-types";
+import * as React from 'react';
+import PropTypes from 'prop-types';
 import {
   getTranslate,
   addTranslationForLanguage,
@@ -8,16 +8,16 @@ import {
   getOptions,
   getActiveLanguage,
   getTranslationsForActiveLanguage
-} from "./localize";
-import { storeDidChange } from "./utils";
-import { LocalizeContext, type LocalizeContextProps } from "./LocalizeContext";
-import { withLocalize } from "./withLocalize";
+} from './localize';
+import { storeDidChange } from './utils';
+import { LocalizeContext, type LocalizeContextProps } from './LocalizeContext';
+import { withLocalize } from './withLocalize';
 import type {
   TranslateOptions,
   TranslatePlaceholderData,
   TranslateFunction,
   Language
-} from "./localize";
+} from './localize';
 
 export type TranslateProps = {
   id?: string,
@@ -58,7 +58,7 @@ export class Translate extends React.Component<TranslateProps, TranslateState> {
     const renderToStaticMarkup =
       context.renderToStaticMarkup || fallbackRenderToStaticMarkup;
 
-    if (children === undefined || typeof children === "function") {
+    if (children === undefined || typeof children === 'function') {
       return;
     }
 
@@ -77,11 +77,11 @@ export class Translate extends React.Component<TranslateProps, TranslateState> {
   }
 
   renderChildren(context: LocalizeContextProps) {
-    const { id = "", options, data } = this.props;
+    const { id = '', options, data } = this.props;
 
     this.addDefaultTranslation(context);
 
-    return typeof this.props.children === "function"
+    return typeof this.props.children === 'function'
       ? this.props.children(context)
       : context.translate && (context.translate(id, data, options): any);
   }

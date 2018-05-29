@@ -1,5 +1,5 @@
-import React, { Component, type ComponentType } from "react";
-import { LocalizeContext, type LocalizeContextProps } from "./LocalizeContext";
+import React, { Component, type ComponentType } from 'react';
+import { LocalizeContext, type LocalizeContextProps } from './LocalizeContext';
 
 export function withLocalize<Props: {}>(
   WrappedComponent: ComponentType<Props>

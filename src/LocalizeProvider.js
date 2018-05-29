@@ -1,6 +1,6 @@
 // @flow
-import React, { Component } from "react";
-import { type Store } from "redux";
+import React, { Component } from 'react';
+import { type Store } from 'redux';
 import {
   localizeReducer,
   getActiveLanguage,
@@ -8,13 +8,13 @@ import {
   getTranslationsForActiveLanguage,
   type LocalizeState,
   type Action
-} from "./localize";
+} from './localize';
 import {
   LocalizeContext,
   type LocalizeContextProps,
   getContextPropsFromState
-} from "./LocalizeContext";
-import { storeDidChange } from "./utils";
+} from './LocalizeContext';
+import { storeDidChange } from './utils';
 
 type LocalizeProviderState = {
   localize: LocalizeState
@@ -99,7 +99,7 @@ export class LocalizeProvider extends Component<
   }
 
   dispatch(action: any) {
-    console.log("action", action);
+    console.log('action', action);
 
     this.setState(prevState => {
       return {

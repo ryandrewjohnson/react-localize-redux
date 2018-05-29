@@ -1,6 +1,6 @@
-import { ReactElement, ReactNode, Component as ReactComponent } from "react";
-import { Store } from "redux";
-import { ComponentClass, Component } from "react-redux";
+import { ReactElement, ReactNode, Component as ReactComponent } from 'react';
+import { Store } from 'redux';
+import { ComponentClass, Component } from 'react-redux';
 
 export as namespace ReactLocalizeRedux;
 
@@ -84,7 +84,7 @@ export interface TranslatedLanguage {
   [key: string]: string;
 }
 
-export type LocalizedElement = ReactElement<"span"> | string;
+export type LocalizedElement = ReactElement<'span'> | string;
 
 export interface LocalizedElementMap {
   [key: string]: LocalizedElement;
@@ -145,19 +145,19 @@ export type MultipleLanguageTranslation = {
 };
 
 export type InitializeAction = BaseAction<
-  "@@localize/INITIALIZE",
+  '@@localize/INITIALIZE',
   InitializePayload
 >;
 export type AddTranslationAction = BaseAction<
-  "@@localize/ADD_TRANSLATION",
+  '@@localize/ADD_TRANSLATION',
   AddTranslationPayload
 >;
 export type AddTranslationForLanguageAction = BaseAction<
-  "@@localize/ADD_TRANSLATION_FOR_LANGUAGE",
+  '@@localize/ADD_TRANSLATION_FOR_LANGUAGE',
   AddTranslationForLanguagePayload
 >;
 export type SetActiveLanguageAction = BaseAction<
-  "@@localize/SET_ACTIVE_LANGUAGE",
+  '@@localize/SET_ACTIVE_LANGUAGE',
   SetActiveLanguagePayload
 >;
 

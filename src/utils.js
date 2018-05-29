@@ -1,11 +1,11 @@
 // @flow
-import React from "react";
-import { type Store } from "redux";
-import { flatten } from "flat";
+import React from 'react';
+import { type Store } from 'redux';
+import { flatten } from 'flat';
 import {
   defaultTranslateOptions,
   type MultipleLanguageTranslation
-} from "./localize";
+} from './localize';
 import type {
   TranslatePlaceholderData,
   TranslatedLanguage,
@@ -13,7 +13,7 @@ import type {
   InitializeOptions,
   LocalizedElement,
   Language
-} from "./localize";
+} from './localize';
 
 type LocalizedElementOptions = {
   translationId: string,
@@ -45,9 +45,9 @@ export const getLocalizedElement = (
   const translatedValueOrArray = templater(localizedString, placeholderData);
 
   // if result of templater is string, do the usual stuff
-  if (typeof translatedValueOrArray === "string") {
+  if (typeof translatedValueOrArray === 'string') {
     return renderInnerHtml === true && hasHtmlTags(translatedValueOrArray)
-      ? React.createElement("span", {
+      ? React.createElement('span', {
           dangerouslySetInnerHTML: { __html: translatedValueOrArray }
         })
       : translatedValueOrArray;
@@ -56,16 +56,16 @@ export const getLocalizedElement = (
   // at this point we know we have react components;
   // check if there are HTMLTags in the translation (not allowed)
   for (let portion of translatedValueOrArray) {
-    if (typeof portion === "string" && hasHtmlTags(portion)) {
+    if (typeof portion === 'string' && hasHtmlTags(portion)) {
       warning(
-        "HTML tags in the translation string are not supported when passing React components as arguments to the translation."
+        'HTML tags in the translation string are not supported when passing React components as arguments to the translation.'
       );
-      return "";
+      return '';
     }
   }
 
   // return as Element
-  return React.createElement("span", null, ...translatedValueOrArray);
+  return React.createElement('span', null, ...translatedValueOrArray);
 };
 
 export const hasHtmlTags = (value: string): boolean => {
@@ -81,24 +81,24 @@ export const hasHtmlTags = (value: string): boolean => {
  * @return {string} The template string with the data merged in
  */
 export const templater = (strings: string, data: Object = {}): string => {
-  if (!strings) return "";
+  if (!strings) return '';
 
   // ${**}
   // brackets to include it in the result of .split()
-  const genericPlaceholderPattern = "(\\${\\s*[^\\s]+\\s*})";
+  const genericPlaceholderPattern = '(\\${\\s*[^\\s]+\\s*})';
 
   // split: from 'Hey ${name}' -> ['Hey', '${name}']
   // filter: clean empty strings
   // map: replace ${prop} with data[prop]
   let splitStrings = strings
-    .split(new RegExp(genericPlaceholderPattern, "gmi"))
+    .split(new RegExp(genericPlaceholderPattern, 'gmi'))
     .filter(str => !!str)
     .map(templatePortion => {
       let matched;
       for (let prop in data) {
         if (matched) break;
-        const pattern = "\\${\\s*" + prop + "\\s*}";
-        const regex = new RegExp(pattern, "gmi");
+        const pattern = '\\${\\s*' + prop + '\\s*}';
+        const regex = new RegExp(pattern, 'gmi');
         if (regex.test(templatePortion)) matched = data[prop];
       }
       return matched || templatePortion;
@@ -112,7 +112,7 @@ export const templater = (strings: string, data: Object = {}): string => {
   // otherwise concatenate all portions into the translated value
   return splitStrings.reduce((translated, portion) => {
     return translated + `${portion}`;
-  }, "");
+  }, '');
 };
 
 export const getIndexForLanguageCode = (
@@ -135,16 +135,16 @@ export const validateOptions = (
 ): InitializeOptions => {
   if (
     options.onMissingTranslation !== undefined &&
-    typeof options.onMissingTranslation !== "function"
+    typeof options.onMissingTranslation !== 'function'
   ) {
     throw new Error(
-      "react-localize-redux: an invalid onMissingTranslation function was provided."
+      'react-localize-redux: an invalid onMissingTranslation function was provided.'
     );
   }
 
   if (
     options.renderToStaticMarkup !== false &&
-    typeof options.renderToStaticMarkup !== "function"
+    typeof options.renderToStaticMarkup !== 'function'
   ) {
     throw new Error(`
       react-localize-redux: initialize option renderToStaticMarkup is invalid. 
@@ -222,7 +222,7 @@ export const getSingleToMultilanguageTranslation = (
 // Thanks react-redux for utility function
 // https://github.com/reactjs/react-redux/blob/master/src/utils/warning.js
 export const warning = (message: string) => {
-  if (typeof console !== "undefined" && typeof console.error === "function") {
+  if (typeof console !== 'undefined' && typeof console.error === 'function') {
     console.error(message);
   }
 

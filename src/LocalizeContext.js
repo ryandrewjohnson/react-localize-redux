@@ -1,7 +1,7 @@
 // @flow
-import React from "react";
-import createReactContext, { type Context } from "create-react-context";
-import { createSelector, type Selector } from "reselect";
+import React from 'react';
+import createReactContext, { type Context } from 'create-react-context';
+import { createSelector, type Selector } from 'reselect';
 import {
   type TranslateFunction,
   type Language,
@@ -10,7 +10,7 @@ import {
   type InitializePayload,
   type LocalizeState,
   type renderToStaticMarkupFunction
-} from "./localize";
+} from './localize';
 import {
   localizeReducer,
   getTranslate,
@@ -21,7 +21,7 @@ import {
   getLanguages,
   getActiveLanguage,
   getOptions
-} from "./localize";
+} from './localize';
 
 export type LocalizeContextProps = {
   translate: TranslateFunction,
