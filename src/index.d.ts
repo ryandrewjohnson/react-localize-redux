@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, Component as ReactComponent } from 'react';
+import { ReactElement, ReactNode, Component as ReactComponent, ComponentType } from 'react';
 import { Store } from 'redux';
 import { ComponentClass, Component } from 'react-redux';
 
@@ -41,6 +41,7 @@ export interface InitializeOptions {
   renderInnerHtml?: boolean;
   onMissingTranslation?: onMissingTranslationFunction;
   defaultLanguage?: string;
+  ignoreTranslateChildren?: boolean;
 }
 
 export interface TranslateOptions {
@@ -203,8 +204,8 @@ export function getActiveLanguage(state: LocalizeState): Language;
 export function getTranslate(state: LocalizeState): TranslateFunction;
 
 export function withLocalize<Props extends {}>(
-  WrappedComponent: ReactComponent<Props>
-): ReactComponent<Props & LocalizeContextProps>;
+  WrappedComponent: ComponentType<Props>
+): ComponentType<Props & LocalizeContextProps>;
 
 export function TranslateChildFunction(
   context: LocalizeContextProps
