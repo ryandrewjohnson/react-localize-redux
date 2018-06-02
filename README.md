@@ -15,10 +15,10 @@ Localization library for handling translations in [React](https://facebook.githu
 
 * Does not require [Redux](https://redux.js.org/), but does provide out of the box support for it.
 * Built on React's native [Context](https://reactjs.org/docs/context.html).
-* [Include inline default translations](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#include-inline-default-translations)
-* [Dynamic translations](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#dynamic-translations)
-* [HTML translations](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#html-translations)
-* Plus more...
+* [Include inline default translations](https://ryandrewjohnson.github.io/react-localize-redux-docs/#include-inline-default-translations)
+* [Dynamic translations](https://ryandrewjohnson.github.io/react-localize-redux-docs/#dynamic-translations)
+* [HTML translations](https://ryandrewjohnson.github.io/react-localize-redux-docs/#html-translations)
+* [Plus more...](https://ryandrewjohnson.github.io/react-localize-redux-docs/#guides)
 
 ## Installation
 
@@ -28,20 +28,20 @@ npm install react-localize-redux --save
 
 ## Documentation
 
-The official documentation can be found [online](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/), and is divided into the following sections:
+The official documentation can be found [online](https://ryandrewjohnson.github.io/react-localize-redux-docs/), and is divided into the following sections:
 
-* [Getting Started](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#getting-started)
-* [Formatting Translations](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#formatting-translations)
-* [Guides](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#guides)
-* [FAQ](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#faq)
-* [API Reference](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#api-reference)
-* [Migrating from v2 to v3]()
+* [Getting Started](https://ryandrewjohnson.github.io/react-localize-redux-docs/#getting-started)
+* [Formatting Translations](https://ryandrewjohnson.github.io/react-localize-redux-docs//#formatting-translations)
+* [Guides](https://ryandrewjohnson.github.io/react-localize-redux-docs/#guides)
+* [FAQ](https://ryandrewjohnson.github.io/react-localize-redux-docs/#faq)
+* [API Reference](https://ryandrewjohnson.github.io/react-localize-redux-docs/#api-reference)
+* [Migrating from v2 to v3](MIGRATING.md)
 
 ## Not using React 16?
 
 If you are unable to upgrade to at least react `v16.0.0` in your app you do have the ability to use an
-older version of react, but should only be used as a last resort. The [Translate](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#translate-2) component
-requires the ability to render [fragments and strings](https://reactjs.org/blog/2017/09/26/react-v16.0.html#new-render-return-types-fragments-and-strings), which isn't available in older versions of react. See [Can I use older versions of React?](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#can-i-use-older-versions-of-react) for workarounds to this issue.
+older version of react, but should only be used as a last resort. The [Translate](https://ryandrewjohnson.github.io/react-localize-redux-docs/#translate-2) component
+requires the ability to render [fragments and strings](https://reactjs.org/blog/2017/09/26/react-v16.0.html#new-render-return-types-fragments-and-strings), which isn't available in older versions of react. See [Can I use older versions of React?](https://ryandrewjohnson.github.io/react-localize-redux-docs/#can-i-use-older-versions-of-react) for workarounds to this issue.
 
 ## Contributing
 
