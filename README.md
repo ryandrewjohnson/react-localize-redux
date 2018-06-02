@@ -1,15 +1,15 @@
-<p>
+<p align="center">
   <a href="https://github.com/ryandrewjohnson/react-localize-redux">
     <img alt="React Localize" src="https://ryandrewjohnson.github.io/react-localize-redux-docs/images/react-localize-redux-new.png">
   </a>
 </p>
 
-</hr>
-
-<p>
+<p align="center">
   <a href="https://www.npmjs.com/package/react-localize-redux"><img src="https://img.shields.io/npm/dm/react-localize-redux.svg?style=flat-square"></a>
   <a href="https://travis-ci.org/ryandrewjohnson/react-localize-redux"><img src="https://img.shields.io/travis/ryandrewjohnson/react-localize-redux/master.svg?style=flat-square"></a>
 </p>
+
+---
 
 Localization library for handling translations in [React](https://facebook.github.io/react).
 
@@ -35,6 +35,7 @@ The official documentation can be found [online](https://ryandrewjohnson.github.
 * [Guides](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#guides)
 * [FAQ](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#faq)
 * [API Reference](https://ryandrewjohnson.github.io/react-localize-redux-docs/#redux-helpers/#api-reference)
+* [Migrating from v2 to v3]()
 
 ## Not using React 16?
 
@@ -52,3 +53,8 @@ on the same page before any work is done.
 
 * See [Issue Template](.github/ISSUE_TEMPLATE.md).
 * See [Pull Request Templete](.github/PULL_REQUEST_TEMPLATE.md).
+
+## Change Log
+
+This project adheres to [Semantic Versioning](https://semver.org/).
+Every release will be [documented](CHANGELOG.md) along with any breaking changes when applicable.
