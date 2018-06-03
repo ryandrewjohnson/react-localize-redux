@@ -27,7 +27,8 @@ export type TranslateProps = {
 };
 
 type TranslateState = {
-  hasAddedDefaultTranslation: boolean
+  hasAddedDefaultTranslation: boolean,
+  lastKnownId: string
 };
 
 export type TranslateChildFunction = (context: LocalizeContextProps) => any;
@@ -39,6 +40,17 @@ export class Translate extends React.Component<TranslateProps, TranslateState> {
     super(props);
 
     this.state = {
+      hasAddedDefaultTranslation: false,
+      lastKnownId: ''
+    };
+  }
+
+  static getDerivedStateFromProps(props, prevState) {
+    if (prevState.lastKnownId === props.id) return {
+      hasAddedDefaultTranslation: true
+    };
+    return {
+      lastKnownId: props.id,
       hasAddedDefaultTranslation: false
     };
   }
