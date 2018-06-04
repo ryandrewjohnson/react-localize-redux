@@ -1,4 +1,6 @@
 language: node_js
+intall:
+  - npm install -g codecov
 node_js:
   - stable
   - "6"
