@@ -2,22 +2,22 @@
 
 * Now works without Redux by defualt.
 * Add [LoclaizeProvider](https://ryandrewjohnson.github.io/react-localize-redux-docs//#localizeprovider) a wrapper around React's [Context.Provider](https://reactjs.org/docs/context.html#provider)
-* Add [LocalizeContext](https://reactjs.org/docs/context.html#reactcreatecontext) built on [React.createContext](https://reactjs.org/docs/context.html#reactcreatecontext).
-* Add [withLocalize](https://ryandrewjohnson.github.io/react-localize-redux-docs//#withlocalize) higher-order component
-* Add [onMissingTranslation](https://ryandrewjohnson.github.io/react-localize-redux-docs//#initialize) initialize option that provides more control over handling missing translations.
+* Add [LocalizeContext](https://ryandrewjohnson.github.io/react-localize-redux-docs/#localizecontext) built on [React.createContext](https://reactjs.org/docs/context.html#reactcreatecontext).
+* Add [withLocalize](https://ryandrewjohnson.github.io/react-localize-redux-docs/#withlocalize) higher-order component
+* Add [onMissingTranslation](https://ryandrewjohnson.github.io/react-localize-redux-docs/#handle-missing-translations) initialize option that provides more control over handling missing translations.
 * Optionally supports Redux by passing redux store to `LocalizeProvider`.
 
 ### Breaking Changes
 
-* The Redux action creators `initialize`, `addTranslation`, `addTranslationForLanguage`, and `setActiveLanguage` have been removed. Instead they are now methods available on [LocalizeContext](https://ryandrewjohnson.github.io/react-localize-redux-docs//#localizecontext), and can be added to your component's as props using the [withLocalize](https://ryandrewjohnson.github.io/react-localize-redux-docs//#withlocalize) higher-order component.
+* The Redux action creators `initialize`, `addTranslation`, `addTranslationForLanguage`, and `setActiveLanguage` have been removed. Instead they are now methods available on [LocalizeContext](https://ryandrewjohnson.github.io/react-localize-redux-docs/#localizecontext), and can be added to your component's as props using the [withLocalize](https://ryandrewjohnson.github.io/react-localize-redux-docs/#withlocalize) higher-order component.
 
-* The `translationTransform` option is no longer available as an initialize option. Instead [addTranslation](https://ryandrewjohnson.github.io/react-localize-redux-docs//#addtranslation) now takes an options object, which accepts the `translationTransform` function.
+* The `translationTransform` option is no longer available as an initialize option. Instead [addTranslation](https://ryandrewjohnson.github.io/react-localize-redux-docs/#addtranslation) now takes an options object, which accepts the `translationTransform` function.
 
   * This made more sense as this allows for adding transformations specific to a single translation instead of globally setting a transformation that you'd be stuck using for all translations.
 
-* [initialize](https://ryandrewjohnson.github.io/react-localize-redux-docs//#initialize) now takes a single options argument instead of multiple arguments.
+* [initialize](https://ryandrewjohnson.github.io/react-localize-redux-docs/#initialize) now takes a single options argument instead of multiple arguments.
 
-* [Translate](https://ryandrewjohnson.github.io/react-localize-redux-docs//#render-props-api) render props API now takes a single options object as an argument instead of multiple arguments.
+* [Translate](https://ryandrewjohnson.github.io/react-localize-redux-docs/#render-props-api) render props API now takes a single options object as an argument instead of multiple arguments.
 
 * `renderInnerHtml` option now set to `false` by default instead of `true`.
 
