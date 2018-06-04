@@ -39,20 +39,16 @@ export class Translate extends React.Component<TranslateProps, TranslateState> {
   constructor(props: TranslateProps) {
     super(props);
 
-    this.state = {
-      hasAddedDefaultTranslation: false,
-      lastKnownId: ''
-    };
+    this.state = { hasAddedDefaultTranslation: false, lastKnownId: '' };
   }
 
-  static getDerivedStateFromProps(props, prevState) {
-    if (prevState.lastKnownId === props.id) return {
-      hasAddedDefaultTranslation: true
-    };
-    return {
-      lastKnownId: props.id,
-      hasAddedDefaultTranslation: false
-    };
+  static getDerivedStateFromProps(
+    props: TranslateProps,
+    prevState: TranslateState
+  ) {
+    if (prevState.lastKnownId === props.id)
+      return { hasAddedDefaultTranslation: true };
+    return { lastKnownId: props.id, hasAddedDefaultTranslation: false };
   }
 
   componentDidMount() {

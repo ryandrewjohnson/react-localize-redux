@@ -1,3 +1,7 @@
+## 3.0.1 (June 3, 2018)
+
+* Update package.json peerDependencies react version to 16.3.0 as the `Translate` component requires [getDerivedStateFromProps](https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops).
+
 ## 3.0.0 (June 3, 2018)
 
 * Now works without Redux by defualt.
