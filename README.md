@@ -5,8 +5,15 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/react-localize-redux"><img src="https://img.shields.io/npm/dm/react-localize-redux.svg?style=flat-square"></a>
-  <a href="https://travis-ci.org/ryandrewjohnson/react-localize-redux"><img src="https://img.shields.io/travis/ryandrewjohnson/react-localize-redux/master.svg?style=flat-square"></a>
+  <a href="https://www.npmjs.com/package/react-localize-redux">
+    <img src="https://img.shields.io/npm/dm/react-localize-redux.svg?style=flat-square">
+  </a>
+  <a href="https://travis-ci.org/ryandrewjohnson/react-localize-redux">
+    <img src="https://img.shields.io/travis/ryandrewjohnson/react-localize-redux/master.svg?style=flat-square">
+  </a>
+  <a href="https://codecov.io/gh/ryandrewjohnson/react-localize-redux">
+    <img src="https://codecov.io/gh/ryandrewjohnson/react-localize-redux/branch/master/graph/badge.svg" />
+  </a>
 </p>
 
 ---
@@ -36,6 +43,10 @@ The official documentation can be found [online](https://ryandrewjohnson.github.
 * [FAQ](https://ryandrewjohnson.github.io/react-localize-redux-docs/#faq)
 * [API Reference](https://ryandrewjohnson.github.io/react-localize-redux-docs/#api-reference)
 * [Migrating from v2 to v3](MIGRATING.md)
+
+## Demo
+
+[Code Sandbox Demo](https://codesandbox.io/s/14xp1xy9ql)
 
 ## Not using React 16?
 

@@ -7,20 +7,27 @@
   "jsnext:main": "./es/index.js",
   "typings": "lib/index.d.ts",
   "scripts": {
-    "build": "npm run build:commonjs && npm run build:es && npm run copy:flow && npm run build:umd && npm run build:umd:min && npm run copy:ts",
-    "build:commonjs": "rimraf lib && cross-env BABEL_ENV=commonjs babel ./src -d lib",
+    "build":
+      "npm run build:commonjs && npm run build:es && npm run copy:flow && npm run build:umd && npm run build:umd:min && npm run copy:ts",
+    "build:commonjs":
+      "rimraf lib && cross-env BABEL_ENV=commonjs babel ./src -d lib",
     "build:es": "rimraf es && cross-env BABEL_ENV=es babel ./src -d es",
-    "build:umd": "rimraf dist && webpack --env.dev --output-filename dist/ReactLocalizeRedux.js",
-    "build:umd:min": "webpack --env.prod --output-filename dist/ReactLocalizeRedux.min.js",
-    "copy:flow": "ncp ./src/index.js.flow ./lib/index.js.flow && ncp ./src/index.js.flow ./es/index.js.flow",
-    "copy:ts": "ncp ./src/index.d.ts ./lib/index.d.ts && ncp ./src/index.d.ts ./es/index.d.ts",
+    "build:umd":
+      "rimraf dist && webpack --env.dev --output-filename dist/ReactLocalizeRedux.js",
+    "build:umd:min":
+      "webpack --env.prod --output-filename dist/ReactLocalizeRedux.min.js",
+    "copy:flow":
+      "ncp ./src/index.js.flow ./lib/index.js.flow && ncp ./src/index.js.flow ./es/index.js.flow",
+    "copy:ts":
+      "ncp ./src/index.d.ts ./lib/index.d.ts && ncp ./src/index.d.ts ./es/index.d.ts",
     "coverage": "jest && codecov",
     "prepublish": "npm run build",
     "test": "cross-env BABEL_ENV=test jest",
     "test:dev": "jest --watch",
     "flow": "flow",
     "types": "flow-typed install -i dev",
-    "prettier": "prettier --write src/**/*"
+    "prettier": "prettier --write src/**/*",
+    "upload:demo": "codesandbox ./demo"
   },
   "repository": {
     "type": "git",
@@ -36,12 +43,7 @@
     "localization",
     "globalization"
   ],
-  "tags": [
-    "react",
-    "redux",
-    "i18n",
-    "localization"
-  ],
+  "tags": ["react", "redux", "i18n", "localization"],
   "author": "Ryan Johnson",
   "license": "MIT",
   "bugs": {
@@ -64,6 +66,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "codecov": "^3.0.2",
+    "codesandbox": "^1.2.10",
     "cross-env": "^3.1.4",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
@@ -88,16 +91,9 @@
   },
   "jest": {
     "verbose": true,
-    "roots": [
-      "tests/"
-    ],
-    "modulePaths": [
-      "src/",
-      "node_modules"
-    ],
-    "setupFiles": [
-      "raf/polyfill"
-    ],
+    "roots": ["tests/"],
+    "modulePaths": ["src/", "node_modules"],
+    "setupFiles": ["raf/polyfill"],
     "coverageDirectory": "./coverage/",
     "collectCoverage": true
   },
