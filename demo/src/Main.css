@@ -1,0 +1,66 @@
+body {
+  color: #20232a;
+  font-family: "Courier New", Courier, "Lucida Sans Typewriter", "Lucida Typewriter", monospace;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  border-bottom: 1px solid #eee;
+  padding: 1rem;
+}
+
+main {
+  display: flex;
+}
+
+nav {
+  background-color: #eee;
+  min-width: 15%;
+  padding: 1rem 0;
+}
+nav > a {
+  border-bottom: 1px solid #ccc;
+  color: #20232a;
+  display: block;
+  text-decoration: none;
+  padding: 0.75rem 2rem;
+}
+nav > a.active {
+  color: #61dafb;
+  background-color: #20232a; 
+}
+nav > a:first-child {
+  border-top: 1px solid #ccc;
+}
+
+.content {
+  padding: 2rem;
+}
+
+.selector {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.selector > li {
+  display: inline-block;
+  padding: 0 0.5rem;
+}
+.selector button {
+  background-color: #eee;
+  box-shadow: none;
+  border: 1px solid #ccc;
+  padding: 10px 10px;
+  border-radius: 4px;
+  min-width: 100px;
+  transition: all 0.3s ease-out;
+}
+.selector button.active {
+  color: #61dafb;
+  background-color: #20232a; 
+}
+
+.card {
+  border: 1px solid #ccc;
+}

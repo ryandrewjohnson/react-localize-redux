@@ -1,135 +1,108 @@
 // @flow
 import * as React from 'react';
-import ReactDOMServer from 'react-dom/server';
 import PropTypes from 'prop-types';
-import { getTranslate, addTranslationForLanguage, getLanguages, getOptions, getActiveLanguage, getTranslationsForActiveLanguage } from './locale';
+import {
+  getTranslate,
+  addTranslationForLanguage,
+  getLanguages,
+  getOptions,
+  getActiveLanguage,
+  getTranslationsForActiveLanguage
+} from './localize';
 import { storeDidChange } from './utils';
-import type { Options, TranslatePlaceholderData, TranslateFunction, Language} from './locale';
+import { LocalizeContext, type LocalizeContextProps } from './LocalizeContext';
+import { withLocalize } from './withLocalize';
+import type {
+  TranslateOptions,
+  TranslatePlaceholderData,
+  TranslateFunction,
+  Language
+} from './localize';
 
 export type TranslateProps = {
   id?: string,
-  options?: Options,
+  options?: TranslateOptions,
   data?: TranslatePlaceholderData,
-  children?: any|TranslateChildFunction
+  children?: any | TranslateChildFunction
 };
 
 type TranslateState = {
-  hasUpdated: boolean;
+  hasAddedDefaultTranslation: boolean,
+  lastKnownId: string
 };
 
-export type TranslateChildFunction = (
-  translate: TranslateFunction, 
-  activeLanguage: Language, 
-  languages: Language[]) => any;
-
-const DEFAULT_LOCALE_STATE_NAME = 'locale';
-const DEFAULT_REDUX_STORE_KEY = 'store';
+export type TranslateChildFunction = (context: LocalizeContextProps) => any;
 
 export class Translate extends React.Component<TranslateProps, TranslateState> {
-
   unsubscribeFromStore: any;
-  onStateDidChange: Function;
 
-  constructor(props: TranslateProps, context: any) {
-    super(props, context);
-
-    if (!this.getStore()) {
-      throw new Error(`react-localize-redux: Unable to locate redux store in context. Ensure your app is wrapped with <Provider />.`);
-    }
-
-    if (!this.getStateSlice().languages) {
-      throw new Error(`react-localize-redux: cannot find languages ensure you have correctly dispatched initialize action.`);
-    }
+  constructor(props: TranslateProps) {
+    super(props);
 
     this.state = {
-      hasUpdated: false
+      hasAddedDefaultTranslation: false,
+      lastKnownId: ''
     };
+  }
 
-    this.onStateDidChange = this.onStateDidChange.bind(this);
-    this.addDefaultTranslation();
+  static getDerivedStateFromProps(props, prevState) {
+    if (prevState.lastKnownId === props.id) return {
+      hasAddedDefaultTranslation: true
+    };
+    return {
+      lastKnownId: props.id,
+      hasAddedDefaultTranslation: false
+    };
   }
 
   componentDidMount() {
-    this.unsubscribeFromStore = storeDidChange(this.getStore(), this.onStateDidChange);
+    this.setState({ hasAddedDefaultTranslation: true });
   }
 
-  componentWillUnmount() {
-    this.unsubscribeFromStore();
-  }
-
-  onStateDidChange(prevState: any) {
-    const prevLocaleState = this.getStateSlice(prevState);
-    const curLocaleState = this.getStateSlice();
-
-    const prevActiveLanguage = getActiveLanguage(prevLocaleState);
-    const curActiveLanguage = getActiveLanguage(curLocaleState);
-
-    const prevOptions = getOptions(prevLocaleState);
-    const curOptions = getOptions(curLocaleState);
-
-    const prevTranslations = getTranslationsForActiveLanguage(prevLocaleState);
-    const curTranslations = getTranslationsForActiveLanguage(curLocaleState);
-
-    const hasActiveLangaugeChanged = (prevActiveLanguage.code !== curActiveLanguage.code);
-    const hasOptionsChanged = (prevOptions !== curOptions);
-    const hasTranslationsChanged = (prevTranslations !== curTranslations);
-
-    if (hasActiveLangaugeChanged || hasOptionsChanged || hasTranslationsChanged) {
-      this.setState({ hasUpdated: true });
+  addDefaultTranslation(context: LocalizeContextProps) {
+    if (this.state.hasAddedDefaultTranslation) {
+      return;
     }
-  }
 
-  addDefaultTranslation() {
-    const locale = this.getStateSlice();
-    const { id, children } = this.props;
+    const { id, children, options = {} } = this.props;
+    const defaultLanguage = options.language || context.defaultLanguage;
+    const fallbackRenderToStaticMarkup = value => value;
+    const renderToStaticMarkup =
+      context.renderToStaticMarkup || fallbackRenderToStaticMarkup;
 
     if (children === undefined || typeof children === 'function') {
       return;
     }
 
-    if (locale.options.ignoreTranslateChildren) {
+    if (options.ignoreTranslateChildren) {
       return;
     }
-    
-    if (id !== undefined) {
-      const store = this.getStore();
-      const translation = ReactDOMServer.renderToStaticMarkup(children);
-      const defaultLanguage = locale.options.defaultLanguage || locale.languages[0].code;
-      store.dispatch(addTranslationForLanguage({[id]: translation}, defaultLanguage));
+
+    if (id !== undefined && defaultLanguage !== undefined) {
+      const translation = renderToStaticMarkup(children);
+      context.addTranslationForLanguage &&
+        context.addTranslationForLanguage(
+          { [id]: translation },
+          defaultLanguage
+        );
     }
   }
 
-  getStore() {
-    const { storeKey } = this.context;
-    return this.context[storeKey || DEFAULT_REDUX_STORE_KEY];
-  }
+  renderChildren(context: LocalizeContextProps) {
+    const { id = '', options, data } = this.props;
 
-  getStateSlice(myState: any) {
-    const { getLocaleState, storeKey } = this.context;
-    const state = myState || this.getStore().getState();
-    return getLocaleState !== undefined
-      ? getLocaleState(state)
-      : state[DEFAULT_LOCALE_STATE_NAME] || state;
+    this.addDefaultTranslation(context);
+
+    return typeof this.props.children === 'function'
+      ? this.props.children(context)
+      : context.translate && (context.translate(id, data, options): any);
   }
 
   render() {
-    const translateFn = getTranslate(this.getStateSlice());
-    const activeLanguage = getActiveLanguage(this.getStateSlice());
-    const languages = getLanguages(this.getStateSlice());
-    const { id = '', data, options } = this.props;
-    return typeof this.props.children === 'function'
-      ? this.props.children(translateFn, activeLanguage, languages)
-      : (translateFn(id, data, options): any);
+    return (
+      <LocalizeContext.Consumer>
+        {context => this.renderChildren(context)}
+      </LocalizeContext.Consumer>
+    );
   }
 }
-
-Translate.contextTypes = {
-  store:  PropTypes.shape({
-    subscribe: PropTypes.func.isRequired,
-    dispatch: PropTypes.func.isRequired,
-    getState: PropTypes.func.isRequired
-  }),
-  getLocaleState: PropTypes.func,
-  storeKey: PropTypes.string
-};
-

@@ -8,55 +8,58 @@ describe('locale utils', () => {
   const defaultLanguage = { code: 'en' };
 
   describe('getLocalizedElement', () => {
+
     it('should return element with localized string', () => {
       const translations = { test: 'Here is my test' };
-      const result = utils.getLocalizedElement('test', translations, null, defaultLanguage);
+      const result = utils.getLocalizedElement({
+        translationId: 'test',
+        translations
+      });
       expect(result).toBe(translations.test);
     });
 
-    it('should return element with HTML from translation rendered', () => {
+    it('should render inner HTML when renderInnerHtml = true', () => {
       const translations = { test: '<h1>Here</h1> is my <strong>test</strong>' };
-      const wrapper = shallow(utils.getLocalizedElement('test', translations, null, defaultLanguage));
+      const wrapper = shallow(utils.getLocalizedElement({
+        translationId: 'test',
+        translations,
+        renderInnerHtml: true
+      }));
       
       expect(wrapper.find('span').exists()).toBe(true);
       expect(wrapper.html()).toEqual(`<span>${translations.test}</span>`);
     });
 
-    it('should not render inner HTML when this is disabled', () => {
+    it('should not render inner HTML when renderInnerHtml = false', () => {
       const translations = { test: '<h1>Here</h1> is my <strong>test</strong>' };
-      const options = { renderInnerHtml: false };
-      const result = utils.getLocalizedElement('test', translations, null, null, options);
+      const result = utils.getLocalizedElement({
+        translationId: 'test',
+        translations, 
+        renderInnerHtml: false
+      });
       expect(result).toBe(translations.test);
     });
 
-    it('should return empty string when showMissingTranslationMsg is false', () => {
-      const translations = { test: 'Here is my test' };
-      const key = 'test2';
-      const options = { showMissingTranslationMsg: false };
-      const result = utils.getLocalizedElement(key, translations, null, null, options);
-      expect(result).toEqual('');
-    });
-
-    it('should return missing translation msg when showMissingTranslationMsg is true', () => {
-      const translations = { test: 'Here is my test' };
-      const key = 'test2';
-      const language = { code: 'en' };
-      const options = { showMissingTranslationMsg: true, missingTranslationMsg: 'My missing message' };
-      const result = utils.getLocalizedElement(key, translations, null, { code: 'en' }, options);
+    it('should return result of onMissingTranslation when translation = undefined', () => {
+      const onMissingTranslation = () => 'My missing message';
+      const result = utils.getLocalizedElement({
+        translationId: 'nothing',
+        translations: {},
+        renderInnerHtml: true, 
+        onMissingTranslation
+      });
       expect(result).toEqual('My missing message');
     });
 
     it('should replace variables in translation string with data', () => {
       const translations = { test: 'Hello ${ name }' };
-      const result = utils.getLocalizedElement('test', translations, { name: 'Ted' }, defaultLanguage);
+      const result = utils.getLocalizedElement({
+        translationId: 'test',
+        translations,
+        renderInnerHtml: true,
+        data: { name: 'Ted' }
+      });
       expect(result).toEqual('Hello Ted');
-    });
-
-    it('should call missingTranslationCallback when set and translation is missing', () => {
-      const callback = jest.fn();
-      const options = { missingTranslationCallback: callback };
-      const result = utils.getLocalizedElement('nothinghere', {}, null, defaultLanguage, options);
-      expect(callback).toHaveBeenCalledWith('nothinghere', 'en');
     });
   });
 
@@ -130,17 +133,37 @@ describe('locale utils', () => {
       const options = {
         renderInnerHtml: false,
         defaultLanguage: 'en',
-        translationTransform: (data, codes) => ({})
+        translationTransform: (data, codes) => ({}),
+        renderToStaticMarkup: false
       };
       const result = utils.validateOptions(options);
       expect(result).toEqual(options);
     });
-
-    it('should throw error if translationTransform is not a function', () => {
+    
+    it('should throw error if onMissingTranslation is not a function', () => {
       const options = {
         renderInnerHtml: false,
         defaultLanguage: 'en',
-        translationTransform: false
+        onMissingTranslation: false,
+        renderToStaticMarkup: false
+      };
+      expect(() => utils.validateOptions(options)).toThrow();
+    });
+
+    it('should throw error if renderToStaticMarkup is not a function', () => {
+      const options = {
+        renderInnerHtml: false,
+        defaultLanguage: 'en',
+        renderToStaticMarkup: ''
+      };
+      expect(() => utils.validateOptions(options)).toThrow();
+    });
+
+    it('should throw error if renderToStaticMarkup is not false', () => {
+      const options = {
+        renderInnerHtml: false,
+        defaultLanguage: 'en',
+        renderToStaticMarkup: true
       };
       expect(() => utils.validateOptions(options)).toThrow();
     });

@@ -11,24 +11,7 @@ export default env => {
     commonjs: 'react',
     amd: 'react'
   };
-  const reduxExternal = {
-    root: 'Redux',
-    commonjs2: 'redux',
-    commonjs: 'redux',
-    amd: 'redux'
-  };
-  const reactReduxExternal = {
-    root: 'ReactRedux',
-    commonjs2: 'react-redux',
-    commonjs: 'react-redux',
-    amd: 'react-redux'
-  };
-  // const reselectExternal = {
-  //   root: 'Reselect',
-  //   commonjs2: 'reselect',
-  //   commonjs: 'reselect',
-  //   amd: 'reselect'
-  // };
+  
   return {
    entry: './src/index.js',
 
@@ -46,10 +29,7 @@ export default env => {
     },
 
     externals: {
-      'react': reactExternal,
-      'redux': reduxExternal,
-      'react-redux': reactReduxExternal,
-      // 'reselect': reselectExternal
+      'react': reactExternal
     },
 
     module: {

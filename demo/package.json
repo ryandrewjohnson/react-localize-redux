@@ -1,0 +1,40 @@
+{
+  "name": "new",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.js",
+  "dependencies": {
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-loadable": "^5.3.1",
+    "react-localize-redux": "^3.0.0-rc4",
+    "react-router": "4.2.0",
+    "react-router-dom": "^4.2.2",
+    "react-scripts": "1.1.4",
+    "react-scripts-ts": "2.13.0",
+    "react-syntax-highlighter": "^7.0.2",
+    "react-toggle-button": "^2.2.0",
+    "redux": "^4.0.0",
+    "redux-devtools-extension": "^2.13.2"
+  },
+  "devDependencies": {
+    "@types/jest": "^22.1.3",
+    "@types/node": "^9.4.6",
+    "@types/react": "16.0.38",
+    "@types/react-dom": "16.0.4",
+    "@types/react-router": "^4.0.24",
+    "html-webpack-plugin": "^3.2.0",
+    "typescript": "^2.7.2"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "start:ts": "react-scripts-ts start",
+    "build:ts": "react-scripts-ts build",
+    "test:ts": "react-scripts-ts test --env=jsdom",
+    "eject:ts": "react-scripts-ts eject"
+  }
+}

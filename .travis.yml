@@ -1,9 +1,8 @@
 language: node_js
 node_js:
   - stable
-  - "5"
   - "6"
 script:
-  - npm test
+  - yarn test
 after_success:
-  - npm run coverage
+  - yarn run coverage

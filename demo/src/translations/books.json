@@ -1,0 +1,47 @@
+{
+  "books": {
+    "heading": [
+      "This will be overidden with default language text in Translate component:",
+      "FR - Top ${count} Books:",
+      "ES - Top ${count} Books:"
+    ],
+    "list": {
+      "book1": {
+        "title": [
+          "1. The Daylight War: Book Three of The Demon Cycle",
+          "FR - The Daylight War: Book Three of The Demon Cycle",
+          "ES - The Daylight War: Book Three of The Demon Cycle"
+        ],
+        "description": [
+          "Continuing the impressive debut fantasy series from author Peter V. Brett, The DAYLIGHT WAR is book three of the Demon Cycle, pulling the reader into a world of demons, darkness and heroes.",
+          "FR - Continuing the impressive debut fantasy series from author Peter V. Brett, The DAYLIGHT WAR is book three of the Demon Cycle, pulling the reader into a world of demons, darkness and heroes.",
+          "ES - Continuing the impressive debut fantasy series from author Peter V. Brett, The DAYLIGHT WAR is book three of the Demon Cycle, pulling the reader into a world of demons, darkness and heroes."
+        ]
+      },
+      "book2": {
+        "title": [
+          "2. The Daylight War: Book Three of The Demon Cycle",
+          "FR - The Daylight War: Book Three of The Demon Cycle",
+          "ES - The Daylight War: Book Three of The Demon Cycle"
+        ],
+        "description": [
+          "Continuing the impressive debut fantasy series from author Peter V. Brett, The DAYLIGHT WAR is book three of the Demon Cycle, pulling the reader into a world of demons, darkness and heroes.",
+          "FR - Continuing the impressive debut fantasy series from author Peter V. Brett, The DAYLIGHT WAR is book three of the Demon Cycle, pulling the reader into a world of demons, darkness and heroes.",
+          "ES - Continuing the impressive debut fantasy series from author Peter V. Brett, The DAYLIGHT WAR is book three of the Demon Cycle, pulling the reader into a world of demons, darkness and heroes."
+        ]
+      },
+      "book3": {
+        "title": [
+          "3. The Daylight War: Book Three of The Demon Cycle",
+          "FR - The Daylight War: Book Three of The Demon Cycle",
+          "ES - The Daylight War: Book Three of The Demon Cycle"
+        ],
+        "description": [
+          "Continuing the impressive debut fantasy series from author Peter V. Brett, The DAYLIGHT WAR is book three of the Demon Cycle, pulling the reader into a world of demons, darkness and heroes.",
+          "FR - Continuing the impressive debut fantasy series from author Peter V. Brett, The DAYLIGHT WAR is book three of the Demon Cycle, pulling the reader into a world of demons, darkness and heroes.",
+          "ES - Continuing the impressive debut fantasy series from author Peter V. Brett, The DAYLIGHT WAR is book three of the Demon Cycle, pulling the reader into a world of demons, darkness and heroes."
+        ]
+      }
+    }
+  }
+}
