@@ -122,6 +122,27 @@ describe('<Translate />', () => {
     );
   });
 
+  it('should add <Translate>\'s children to translations when id changes', () => {
+    const Translate = getTranslateWithContext();
+    const Parent = ({ condition }) => (condition ? <Translate id="hello">
+          Hello
+        </Translate> : <Translate id="world">World</Translate>);
+
+    const wrapper = mount(<Parent condition />);
+
+    expect(defaultContext.addTranslationForLanguage).toHaveBeenLastCalledWith(
+      {"hello": "Hello"},
+      "en"
+    );
+
+    wrapper.setProps({ condition: false });
+
+    expect(defaultContext.addTranslationForLanguage).toHaveBeenLastCalledWith(
+      {"world": "World"},
+      "en"
+    );
+  });
+
   it('should add <Translate>\'s children to translations under options.defaultLanguage for id', () => {
     const Translate = getTranslateWithContext();
     const wrapper = mount(<Translate id="hello" options={{language: 'fr'}}>Hey</Translate>);
