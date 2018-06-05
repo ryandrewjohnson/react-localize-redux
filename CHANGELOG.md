@@ -1,4 +1,4 @@
-## 3.0.1 (June 3, 2018)
+## 3.0.1 (June 4, 2018)
 
 * Update package.json peerDependencies react version to 16.3.0 as the `Translate` component requires [getDerivedStateFromProps](https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops).
 
