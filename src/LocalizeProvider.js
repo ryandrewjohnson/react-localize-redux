@@ -99,8 +99,6 @@ export class LocalizeProvider extends Component<
   }
 
   dispatch(action: any) {
-    console.log('action', action);
-
     this.setState(prevState => {
       return {
         localize: localizeReducer(prevState.localize, action)
