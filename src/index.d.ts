@@ -1,4 +1,9 @@
-import { ReactElement, ReactNode, Component as ReactComponent, ComponentType } from 'react';
+import {
+  ReactElement,
+  ReactNode,
+  Component as ReactComponent,
+  ComponentType
+} from 'react';
 import { Store } from 'redux';
 import { ComponentClass, Component } from 'react-redux';
 
