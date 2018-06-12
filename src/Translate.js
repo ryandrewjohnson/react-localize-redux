@@ -31,7 +31,7 @@ type TranslateWithContextProps = TranslateProps & {
 
 export type TranslateChildFunction = (context: LocalizeContextProps) => any;
 
-export class WrappedTranslate extends React.Component<
+class WrappedTranslate extends React.Component<
   TranslateWithContextProps
 > {
   unsubscribeFromStore: any;
