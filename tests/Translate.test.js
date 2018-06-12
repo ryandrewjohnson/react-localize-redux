@@ -43,7 +43,8 @@ describe('<Translate />', () => {
       addTranslation: jest.fn(),
       addTranslationForLanguage: jest.fn(),
       setActiveLanguage: jest.fn(),
-      renderToStaticMarkup
+      renderToStaticMarkup,
+      ignoreTranslateChildren: localizeState.options.ignoreTranslateChildren
     };
 
     jest.doMock('../src/LocalizeContext', () => {
@@ -164,6 +165,30 @@ describe('<Translate />', () => {
     const wrapper = mount(<Translate id="hello" options={{ignoreTranslateChildren: true}}>Hey</Translate>);
     expect(defaultContext.addTranslationForLanguage).not.toHaveBeenCalled();
   });
+
+  it('should not add default language translation if ignoreTranslateChildren = true in context', () => {
+    const Translate = getTranslateWithContext({
+      ...initialState,
+      options: {
+        ...initialState.options,
+        ignoreTranslateChildren: true
+      }
+    });
+    const wrapper = mount(<Translate id="hello">Hey</Translate>);
+    expect(defaultContext.addTranslationForLanguage).not.toHaveBeenCalled();
+  });
+
+  it('should override context ignoreTranslateChildren from props', () => {
+    const Translate = getTranslateWithContext({
+      ...initialState,
+      options: {
+        ...initialState.options,
+        ignoreTranslateChildren: true
+      }
+    });
+    const wrapper = mount(<Translate id="hello" options={{ignoreTranslateChildren: false}}>Override</Translate>);
+    expect(defaultContext.addTranslationForLanguage).toHaveBeenLastCalledWith({hello: "Override"}, 'en');
+  })
   
   it('should insert data into translation placeholders when data attribute is provided', () => {
     const Translate = getTranslateWithContext();

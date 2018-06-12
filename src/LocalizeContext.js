@@ -9,7 +9,8 @@ import {
   type SingleLanguageTranslation,
   type InitializePayload,
   type LocalizeState,
-  type renderToStaticMarkupFunction
+  type renderToStaticMarkupFunction,
+  defaultTranslateOptions
 } from './localize';
 import {
   localizeReducer,
@@ -35,7 +36,8 @@ export type LocalizeContextProps = {
     language: string
   ) => void,
   setActiveLanguage: (languageCode: string) => void,
-  renderToStaticMarkup: renderToStaticMarkupFunction | false
+  renderToStaticMarkup: renderToStaticMarkupFunction | false,
+  ignoreTranslateChildren: boolean
 };
 
 const dispatchInitialize = (dispatch: Function) => (
@@ -75,6 +77,17 @@ export const getContextPropsFromState = (
       const defaultLanguage =
         options.defaultLanguage || (languages[0] && languages[0].code);
       const renderToStaticMarkup = options.renderToStaticMarkup;
+      
+      // @Note: Flow keeps complaining that the possibly-undefined
+      // options.ignoreTranslateChildren cannot be assigned to a boolean
+      // property, despite various attempts to narrow it to boolean.
+      let ignoreOption = {
+        ignoreTranslateChildren: defaultTranslateOptions.ignoreTranslateChildren
+      }
+      if (options.ignoreTranslateChildren != null) {
+        ignoreOption.ignoreTranslateChildren = options.ignoreTranslateChildren;
+      }
+
       return {
         translate,
         languages,
@@ -84,7 +97,8 @@ export const getContextPropsFromState = (
         addTranslation: dispatchAddTranslation(dispatch),
         addTranslationForLanguage: dispatchAddTranslationForLanguage(dispatch),
         setActiveLanguage: dispatchSetActiveLanguage(dispatch),
-        renderToStaticMarkup
+        renderToStaticMarkup,
+        ...ignoreOption
       };
     }
   );

@@ -70,7 +70,18 @@ export class Translate extends React.Component<TranslateProps, TranslateState> {
       return;
     }
 
-    if (options.ignoreTranslateChildren) {
+    const propIgnore = options.ignoreTranslateChildren;
+
+    // Exit only if:
+    // 1. ignoreTranslateChildren is true from Translate props OR;
+    // 2. ignoreTranslateChildren is undefined from Translate props AND is true from context.
+    // i.e. only look to context if ignoreTranslateChildren as a Translate props is undefined
+    // to ensure that the Translate prop setting always overrides the context setting (even if it's `false`).
+    const fallbackToContextIgnore =
+      options.ignoreTranslateChildren == null &&
+      context.ignoreTranslateChildren;
+    
+    if (propIgnore || fallbackToContextIgnore) {
       return;
     }
 

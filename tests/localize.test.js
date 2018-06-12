@@ -478,6 +478,20 @@ describe('localize', () => {
       const result = () => options({}, action);
       expect(result).toThrow();
     });
+
+    it('should set ignoreTranslateChildren', () => {
+      const action = {
+        type: INITIALIZE,
+        payload: {
+          options: {
+            renderToStaticMarkup: false,
+            ignoreTranslateChildren: true
+          }
+        }
+      };
+      const result = options({}, action);
+      expect(result.ignoreTranslateChildren).toBe(true);
+    });
   });
 
   describe('getActiveLanguage', () => {
