@@ -186,7 +186,11 @@ describe('<Translate />', () => {
         ignoreTranslateChildren: true
       }
     });
-    const wrapper = mount(<Translate id="hello" options={{ignoreTranslateChildren: false}}>Override</Translate>);
+    const wrapper = mount(
+      <Translate id="hello" options={{ ignoreTranslateChildren: false }}>
+        Override
+      </Translate>
+    );
     expect(defaultContext.addTranslationForLanguage).toHaveBeenLastCalledWith({hello: "Override"}, 'en');
   })
   

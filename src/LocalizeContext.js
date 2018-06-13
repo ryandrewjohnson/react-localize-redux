@@ -77,13 +77,14 @@ export const getContextPropsFromState = (
       const defaultLanguage =
         options.defaultLanguage || (languages[0] && languages[0].code);
       const renderToStaticMarkup = options.renderToStaticMarkup;
-      
-      // @Note: Flow keeps complaining that the possibly-undefined
-      // options.ignoreTranslateChildren cannot be assigned to a boolean
-      // property, despite various attempts to narrow it to boolean.
+
+      /* @Note: Flow keeps complaining that the possibly-undefined
+       * options.ignoreTranslateChildren cannot be assigned to a boolean
+       * property, despite various attempts to narrow it to boolean.
+       */
       let ignoreOption = {
         ignoreTranslateChildren: defaultTranslateOptions.ignoreTranslateChildren
-      }
+      };
       if (options.ignoreTranslateChildren != null) {
         ignoreOption.ignoreTranslateChildren = options.ignoreTranslateChildren;
       }
