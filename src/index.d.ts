@@ -1,4 +1,9 @@
-import { ReactElement, ReactNode, Component as ReactComponent, ComponentType } from 'react';
+import {
+  ReactElement,
+  ReactNode,
+  Component as ReactComponent,
+  ComponentType
+} from 'react';
 import { Store } from 'redux';
 import { ComponentClass, Component } from 'react-redux';
 
@@ -211,6 +216,6 @@ export function TranslateChildFunction(
   context: LocalizeContextProps
 ): ReactNode;
 
-export class Translate extends ReactComponent<TranslateProps> {}
+export const Translate: React.SFC<TranslateProps>;
 
 export class LocalizeProvider extends ReactComponent<LocalizeProviderProps> {}

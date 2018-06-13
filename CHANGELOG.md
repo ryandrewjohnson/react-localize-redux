@@ -1,3 +1,7 @@
+## 3.0.2 (June 11, 2018)
+
+* remove `console.log` in `LocalizeProvider`
+
 ## 3.0.1 (June 4, 2018)
 
 * Update package.json peerDependencies react version to 16.3.0 as the `Translate` component requires [getDerivedStateFromProps](https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops).
