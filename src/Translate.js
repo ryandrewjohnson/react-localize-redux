@@ -25,42 +25,29 @@ export type TranslateProps = {
   data?: TranslatePlaceholderData,
   children?: any | TranslateChildFunction
 };
-
-type TranslateState = {
-  hasAddedDefaultTranslation: boolean,
-  lastKnownId: string
+type TranslateWithContextProps = TranslateProps & {
+  context: LocalizeContextProps
 };
 
 export type TranslateChildFunction = (context: LocalizeContextProps) => any;
 
-export class Translate extends React.Component<TranslateProps, TranslateState> {
+class WrappedTranslate extends React.Component<
+  TranslateWithContextProps
+> {
   unsubscribeFromStore: any;
 
-  constructor(props: TranslateProps) {
-    super(props);
-
-    this.state = { hasAddedDefaultTranslation: false, lastKnownId: '' };
-  }
-
-  static getDerivedStateFromProps(
-    props: TranslateProps,
-    prevState: TranslateState
-  ) {
-    if (prevState.lastKnownId === props.id)
-      return { hasAddedDefaultTranslation: true };
-    return { lastKnownId: props.id, hasAddedDefaultTranslation: false };
-  }
-
   componentDidMount() {
-    this.setState({ hasAddedDefaultTranslation: true });
+    this.addDefaultTranslation();
   }
 
-  addDefaultTranslation(context: LocalizeContextProps) {
-    if (this.state.hasAddedDefaultTranslation) {
-      return;
+  componentDidUpdate(prevProps: TranslateWithContextProps) {
+    if (this.props.id && prevProps.id !== this.props.id) {
+      this.addDefaultTranslation();
     }
+  }
 
-    const { id, children, options = {} } = this.props;
+  addDefaultTranslation() {
+    const { context, id, children, options = {} } = this.props;
     const defaultLanguage = options.language || context.defaultLanguage;
     const fallbackRenderToStaticMarkup = value => value;
     const renderToStaticMarkup =
@@ -84,10 +71,8 @@ export class Translate extends React.Component<TranslateProps, TranslateState> {
     }
   }
 
-  renderChildren(context: LocalizeContextProps) {
-    const { id = '', options, data } = this.props;
-
-    this.addDefaultTranslation(context);
+  renderChildren() {
+    const { context, id = '', options, data } = this.props;
 
     return typeof this.props.children === 'function'
       ? this.props.children(context)
@@ -95,10 +80,12 @@ export class Translate extends React.Component<TranslateProps, TranslateState> {
   }
 
   render() {
-    return (
-      <LocalizeContext.Consumer>
-        {context => this.renderChildren(context)}
-      </LocalizeContext.Consumer>
-    );
+    return this.renderChildren();
   }
 }
+
+export const Translate = (props: TranslateProps) => (
+  <LocalizeContext.Consumer>
+    {context => <WrappedTranslate {...props} context={context} />}
+  </LocalizeContext.Consumer>
+);
