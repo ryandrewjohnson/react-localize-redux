@@ -50,28 +50,20 @@ class WrappedTranslate extends React.Component<TranslateWithContextProps> {
     const fallbackRenderToStaticMarkup = value => value;
     const renderToStaticMarkup =
       context.renderToStaticMarkup || fallbackRenderToStaticMarkup;
+    const hasId = id !== undefined;
+    const hasDefaultLanguage = defaultLanguage !== undefined;
+    const hasChildren = children === undefined;
+    const hasFunctionAsChild = typeof children === 'function';
+    const ignoreTranslateChildren =
+      options.ignoreTranslateChildren !== undefined
+        ? options.ignoreTranslateChildren
+        : context.ignoreTranslateChildren;
 
-    if (children === undefined || typeof children === 'function') {
+    if (hasChildren || hasFunctionAsChild || !hasId || !hasDefaultLanguage) {
       return;
     }
 
-    const propIgnore = options.ignoreTranslateChildren;
-
-    /* Exit only if:
-     * 1. ignoreTranslateChildren is true from Translate props OR;
-     * 2. ignoreTranslateChildren is undefined from Translate props AND is true from context.
-     * i.e. only look to context if ignoreTranslateChildren as a Translate props is undefined
-     * to ensure that the Translate prop setting always overrides the context setting (even if it's `false`).
-     */
-    const fallbackToContextIgnore =
-      options.ignoreTranslateChildren == null &&
-      context.ignoreTranslateChildren;
-
-    if (propIgnore || fallbackToContextIgnore) {
-      return;
-    }
-
-    if (id !== undefined && defaultLanguage !== undefined) {
+    if (!ignoreTranslateChildren) {
       const translation = renderToStaticMarkup(children);
       context.addTranslationForLanguage &&
         context.addTranslationForLanguage(
