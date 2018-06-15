@@ -1,3 +1,8 @@
+## 3.1.0 (June 11, 2018)
+
+* Add [ignoreTranslateChildren](https://ryandrewjohnson.github.io/react-localize-redux-docs/#initialize) to initialize options. [#91](https://github.com/ryandrewjohnson/react-localize-redux-docs/pull/1)
+* Fix issue where Warning: Cannot update during an existing state transition message was appearing [#88](https://github.com/ryandrewjohnson/react-localize-redux/pull/88)
+
 ## 3.0.2 (June 11, 2018)
 
 * remove `console.log` in `LocalizeProvider`
