@@ -52,18 +52,23 @@ class WrappedTranslate extends React.Component<TranslateWithContextProps> {
       context.renderToStaticMarkup || fallbackRenderToStaticMarkup;
     const hasId = id !== undefined;
     const hasDefaultLanguage = defaultLanguage !== undefined;
-    const hasChildren = children === undefined;
+    const hasChildren = children !== undefined;
     const hasFunctionAsChild = typeof children === 'function';
+
     const ignoreTranslateChildren =
       options.ignoreTranslateChildren !== undefined
         ? options.ignoreTranslateChildren
         : context.ignoreTranslateChildren;
 
-    if (hasChildren || hasFunctionAsChild || !hasId || !hasDefaultLanguage) {
-      return;
-    }
+    const isValidDefaultTranslation =
+      hasChildren && hasId && hasDefaultLanguage;
 
-    if (!ignoreTranslateChildren) {
+    const shouldAddDefaultTranslation =
+      isValidDefaultTranslation &&
+      !hasFunctionAsChild &&
+      !ignoreTranslateChildren;
+
+    if (shouldAddDefaultTranslation) {
       const translation = renderToStaticMarkup(children);
       context.addTranslationForLanguage &&
         context.addTranslationForLanguage(

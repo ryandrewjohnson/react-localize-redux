@@ -78,8 +78,9 @@ export const getContextPropsFromState = (
         options.defaultLanguage || (languages[0] && languages[0].code);
       const renderToStaticMarkup = options.renderToStaticMarkup;
       const ignoreTranslateChildren =
-        options.ignoreTranslateChildren ||
-        defaultTranslateOptions.ignoreTranslateChildren;
+        options.ignoreTranslateChildren !== undefined
+          ? options.ignoreTranslateChildren
+          : defaultTranslateOptions.ignoreTranslateChildren;
 
       return {
         translate,
@@ -97,8 +98,8 @@ export const getContextPropsFromState = (
   );
 
 const defaultLocalizeState = localizeReducer(undefined, ({}: any));
-const defaultContext = getContextPropsFromState(() => { })(defaultLocalizeState);
+const defaultContext = getContextPropsFromState(() => {})(defaultLocalizeState);
 
 export const LocalizeContext: Context<
   LocalizeContextProps
-  > = createReactContext(defaultContext);
+> = createReactContext(defaultContext);
