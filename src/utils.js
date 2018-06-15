@@ -124,12 +124,16 @@ export const getTranslationsForLanguage = (
 
   const { code: languageCode } = language;
   const languageIndex = getIndexForLanguageCode(languageCode, languages);
-  return Object.keys(translations).reduce((prev, key) => {
-    return {
-      ...prev,
-      [key]: translations[key][languageIndex]
-    };
-  }, {});
+  const keys = Object.keys(translations);
+  const totalKeys = keys.length;
+  const translationsForLanguage = {};
+
+  for (let i = 0; i < totalKeys; i++) {
+    const key = keys[i];
+    translationsForLanguage[key] = translations[key][languageIndex];
+  }
+
+  return translationsForLanguage;
 };
 
 export const storeDidChange = (
@@ -159,21 +163,26 @@ export const getSingleToMultilanguageTranslation = (
 ): Translations => {
   const languageIndex = languageCodes.indexOf(language);
   const translations = languageIndex >= 0 ? flattenedTranslations : {};
+  const keys = Object.keys(translations);
+  const totalKeys = keys.length;
+  const singleLanguageTranslations = {};
 
-  return Object.keys(translations).reduce((prev, cur: string) => {
+  for (let i = 0; i < totalKeys; i++) {
+    const key = keys[i];
     // loop through each language, and for languages that don't match languageIndex
     // keep existing translation data, and for languageIndex store new translation data
     const translationValues = languageCodes.map((code, index) => {
-      const existingValues = existingTranslations[cur] || [];
+      const existingValues = existingTranslations[key] || [];
+
       return index === languageIndex
-        ? flattenedTranslations[cur]
+        ? flattenedTranslations[key]
         : existingValues[index];
     });
-    return {
-      ...prev,
-      [cur]: translationValues
-    };
-  }, {});
+
+    singleLanguageTranslations[key] = translationValues;
+  }
+
+  return singleLanguageTranslations;
 };
 
 // Thanks react-redux for utility function

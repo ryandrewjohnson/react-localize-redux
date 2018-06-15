@@ -1,35 +1,50 @@
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import { languages, translations, getActiveLanguage, getTranslationsForActiveLanguage, getTranslationsForSpecificLanguage, translationsEqualSelector, setLanguages, getTranslate, getTranslateSelector, defaultTranslateOptions, options } from 'localize';
+import {
+  languages,
+  translations,
+  getActiveLanguage,
+  getTranslationsForActiveLanguage,
+  getTranslationsForSpecificLanguage,
+  translationsEqualSelector,
+  setLanguages,
+  getTranslate,
+  getTranslateSelector,
+  defaultTranslateOptions,
+  options
+} from 'localize';
 import { getLocalizedElement } from 'utils';
-import { INITIALIZE, SET_ACTIVE_LANGUAGE, ADD_TRANSLATION, ADD_TRANSLATION_FOR_LANGUAGE } from 'localize';
+import {
+  INITIALIZE,
+  SET_ACTIVE_LANGUAGE,
+  ADD_TRANSLATION,
+  ADD_TRANSLATION_FOR_LANGUAGE
+} from 'localize';
 import { initialize } from '../src/localize';
 
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('localize', () => {
-
-  const transformFunction = (data, codes) => {``
+  const transformFunction = (data, codes) => {
+    ``;
     return Object.keys(data).reduce((prev, cur, index) => {
       const languageData = data[cur];
-      
-      for(let prop in languageData) {
+
+      for (let prop in languageData) {
         const values = prev[prop] || [];
         prev[prop] = codes.map((code, languageIndex) => {
           return index === languageIndex
             ? languageData[prop]
             : values[languageIndex];
-        })
+        });
       }
-    
+
       return prev;
     }, {});
   };
 
   describe('reducer: languages', () => {
     let initialState = [];
-
-
 
     beforeEach(() => {
       initialState = [
@@ -42,7 +57,7 @@ describe('localize', () => {
     describe('INITIALIZE', () => {
       describe('set with string[]', () => {
         it('should set languages and set default language to first language', () => {
-           const action = {
+          const action = {
             type: INITIALIZE,
             payload: {
               languages: ['en', 'fr', 'ne']
@@ -70,11 +85,10 @@ describe('localize', () => {
             { code: 'fr', active: false },
             { code: 'ne', active: true }
           ]);
-        }); 
+        });
       });
     });
 
-    
     describe('SET_ACTIVE_LANGUAGE', () => {
       it('should set active language', () => {
         const action = {
@@ -109,7 +123,6 @@ describe('localize', () => {
         ]);
       });
     });
-    
   });
 
   describe('reducer: translations', () => {
@@ -117,13 +130,13 @@ describe('localize', () => {
 
     beforeEach(() => {
       initialState = {
-        'hi': ['hi'],
-        'bye': ['bye']
+        hi: ['hi'],
+        bye: ['bye']
       };
     });
 
     describe('INITIALIZE', () => {
-      it('should not modify translations if !payload.translation', ()=> {
+      it('should not modify translations if !payload.translation', () => {
         const action = initialize({
           languages: ['en', 'fr', 'ne']
         });
@@ -135,7 +148,7 @@ describe('localize', () => {
       it('should add multi-language translation data', () => {
         const action = initialize({
           languages: ['en', 'fr', 'ne'],
-           translation: initialState
+          translation: initialState
         });
 
         const result = translations({}, action);
@@ -185,21 +198,21 @@ describe('localize', () => {
     });
 
     describe('ADD_TRANSLATION', () => {
-      it('should add new translations',  () => {
+      it('should add new translations', () => {
         const action = {
           type: ADD_TRANSLATION,
           payload: {
             translation: {
-              'test': ['test'],
-              'test2': ['test2']
+              test: ['test'],
+              test2: ['test2']
             }
           }
         };
 
         const result = translations({}, action);
         expect(result).toEqual({
-          'test': ['test'],
-          'test2': ['test2']
+          test: ['test'],
+          test2: ['test2']
         });
       });
 
@@ -207,14 +220,14 @@ describe('localize', () => {
         const action = {
           type: ADD_TRANSLATION,
           payload: {
-            translation: { 'new': ['new'] }
+            translation: { new: ['new'] }
           }
         };
 
         const result = translations(initialState, action);
         expect(result).toEqual({
           ...initialState,
-          'new': ['new']
+          new: ['new']
         });
       });
 
@@ -222,14 +235,14 @@ describe('localize', () => {
         const action = {
           type: ADD_TRANSLATION,
           payload: {
-            translation: { 'hi': ['new'] }
+            translation: { hi: ['new'] }
           }
         };
 
         const result = translations(initialState, action);
         expect(result).toEqual({
           ...initialState,
-          'hi': ['new']
+          hi: ['new']
         });
       });
 
@@ -238,8 +251,8 @@ describe('localize', () => {
           type: ADD_TRANSLATION,
           payload: {
             translation: {
-              'first': { second: { third: ['nested'] }},
-              'more': { nested: ['one'] }
+              first: { second: { third: ['nested'] } },
+              more: { nested: ['one'] }
             }
           }
         };
@@ -278,16 +291,16 @@ describe('localize', () => {
         expect(result).toEqual({
           title: ['Title', 'FR - Title'],
           subtitle: ['Subtitle', 'FR - Subtitle']
-        })
+        });
       });
     });
-    
+
     describe('ADD_TRANSLATION_FOR_LANGUAGE', () => {
       it('should add translation for specific language', () => {
         const action = {
           type: ADD_TRANSLATION_FOR_LANGUAGE,
-          payload: { 
-            language: 'en', 
+          payload: {
+            language: 'en',
             translation: { title: 'title', description: 'description' }
           },
           languageCodes: ['en', 'fr']
@@ -303,10 +316,10 @@ describe('localize', () => {
       it('should add nested translation for specific language', () => {
         const action = {
           type: ADD_TRANSLATION_FOR_LANGUAGE,
-          payload: { 
-            language: 'en', 
-            translation: { 
-              movie: { title: 'title', description: 'description' } 
+          payload: {
+            language: 'en',
+            translation: {
+              movie: { title: 'title', description: 'description' }
             }
           },
           languageCodes: ['en', 'fr']
@@ -322,17 +335,20 @@ describe('localize', () => {
       it('should add translation for specific language to existing translation', () => {
         const action = {
           type: ADD_TRANSLATION_FOR_LANGUAGE,
-          payload: { 
-            language: 'en', 
+          payload: {
+            language: 'en',
             translation: { title: 'title', description: 'description' }
           },
           languageCodes: ['en', 'fr']
         };
 
-        const result = translations({
-          title: [undefined, 'titlefr'],
-          description: [undefined, 'descriptionfr']
-        }, action);
+        const result = translations(
+          {
+            title: [undefined, 'titlefr'],
+            description: [undefined, 'descriptionfr']
+          },
+          action
+        );
 
         expect(result).toEqual({
           title: ['title', 'titlefr'],
@@ -343,17 +359,20 @@ describe('localize', () => {
       it('should add translation for specific language and override existing translation', () => {
         const action = {
           type: ADD_TRANSLATION_FOR_LANGUAGE,
-          payload: { 
-            language: 'fr', 
+          payload: {
+            language: 'fr',
             translation: { title: 'title', description: 'description' }
           },
           languageCodes: ['en', 'fr']
         };
 
-        const result = translations({
-          title: [undefined, 'titlefr'],
-          description: [undefined, 'descriptionfr']
-        }, action);
+        const result = translations(
+          {
+            title: [undefined, 'titlefr'],
+            description: [undefined, 'descriptionfr']
+          },
+          action
+        );
 
         expect(result).toEqual({
           title: [undefined, 'title'],
@@ -361,17 +380,15 @@ describe('localize', () => {
         });
       });
     });
-    
   });
 
   describe('reducer: options', () => {
-
     describe('INITIALIZE', () => {
       it('should set defaultLanguage option', () => {
         const action = {
           type: INITIALIZE,
-          payload: { 
-            options: { 
+          payload: {
+            options: {
               defaultLanguage: 'fr',
               renderToStaticMarkup: false
             }
@@ -388,8 +405,8 @@ describe('localize', () => {
       it('should set renderInnerHtml option', () => {
         const action = {
           type: INITIALIZE,
-          payload: { 
-            options: { 
+          payload: {
+            options: {
               renderInnerHtml: false,
               renderToStaticMarkup: false
             }
@@ -403,7 +420,7 @@ describe('localize', () => {
         });
       });
     });
-    
+
     it('should set translationTransform option', () => {
       const action = {
         type: INITIALIZE,
@@ -452,7 +469,9 @@ describe('localize', () => {
         }
       };
       const result = options({}, action);
-      expect(result.renderToStaticMarkup).toEqual(action.payload.options.renderToStaticMarkup);
+      expect(result.renderToStaticMarkup).toEqual(
+        action.payload.options.renderToStaticMarkup
+      );
     });
 
     it('should set renderToStaticMarkup to false when provided', () => {
@@ -497,7 +516,11 @@ describe('localize', () => {
   describe('getActiveLanguage', () => {
     it('should return the active language object', () => {
       const state = {
-        languages: [{ code: 'en', active: false }, { code: 'fr', active: true }, { code: 'ne', active: false }]
+        languages: [
+          { code: 'en', active: false },
+          { code: 'fr', active: true },
+          { code: 'ne', active: false }
+        ]
       };
       const result = getActiveLanguage(state);
       expect(result.code).toBe('fr');
@@ -505,7 +528,10 @@ describe('localize', () => {
 
     it('should return undefined if no active language found', () => {
       const state = {
-        languages: [{ code: 'en', active: false }, { code: 'fr', active: false }]
+        languages: [
+          { code: 'en', active: false },
+          { code: 'fr', active: false }
+        ]
       };
       const result = getActiveLanguage(state);
       expect(result).toBe(undefined);
@@ -521,7 +547,10 @@ describe('localize', () => {
 
     it('should return activeLanguage with name', () => {
       const state = {
-        languages: [{ code: 'en', name: 'English', active: false }, { code: 'fr', name: 'French', active: true }]
+        languages: [
+          { code: 'en', name: 'English', active: false },
+          { code: 'fr', name: 'French', active: true }
+        ]
       };
       const result = getActiveLanguage(state);
       expect(result).toEqual({
@@ -535,7 +564,10 @@ describe('localize', () => {
   describe('getTranslationsForActiveLanguage', () => {
     it('should return translations only for the active language', () => {
       const state = {
-        languages: [{ code: 'en', active: false }, { code: 'fr', active: true }],
+        languages: [
+          { code: 'en', active: false },
+          { code: 'fr', active: true }
+        ],
         translations: {
           hi: ['hi-en', 'hi-fr'],
           bye: ['bye-en', 'bye-fr']
@@ -564,7 +596,10 @@ describe('localize', () => {
   describe('getTranslationsForSpecificLanguage', () => {
     it('should return translations only for specific language', () => {
       const state = {
-        languages: [{ code: 'en', active: false }, { code: 'fr', active: true }],
+        languages: [
+          { code: 'en', active: false },
+          { code: 'fr', active: true }
+        ],
         translations: {
           hi: ['hi-en', 'hi-fr'],
           bye: ['bye-en', 'bye-fr']
@@ -585,7 +620,7 @@ describe('localize', () => {
           bye: ['bye-en', 'bye-fr']
         }
       };
-      const result = getTranslationsForSpecificLanguage(state)({code: 'ze'});
+      const result = getTranslationsForSpecificLanguage(state)({ code: 'ze' });
       expect(result).toEqual({});
     });
   });
@@ -595,7 +630,10 @@ describe('localize', () => {
 
     beforeEach(() => {
       state = {
-        languages: [{ code: 'en', active: false }, { code: 'fr', active: true }],
+        languages: [
+          { code: 'en', active: false },
+          { code: 'fr', active: true }
+        ],
         translations: {
           hi: ['hi-en', 'hi-fr'],
           bye: ['bye-en', 'bye-fr'],
@@ -619,7 +657,7 @@ describe('localize', () => {
     });
 
     it('should not render inner html if renderInnerHtml option is false', () => {
-      const stateWithOpts = {...state, options: { renderInnerHtml: false }};
+      const stateWithOpts = { ...state, options: { renderInnerHtml: false } };
       const translate = getTranslate(stateWithOpts);
 
       const value = translate('html');
@@ -627,7 +665,7 @@ describe('localize', () => {
     });
 
     it('should render inner html if renderInnerHtml option is true', () => {
-      const stateWithOpts = {...state, options: { renderInnerHtml: true }};
+      const stateWithOpts = { ...state, options: { renderInnerHtml: true } };
       const translate = getTranslate(stateWithOpts);
       const wrapper = shallow(translate('html'));
 
@@ -638,7 +676,9 @@ describe('localize', () => {
     it('should override renderInnerHtml to true when passed to translate', () => {
       const newState = { ...state, options: { renderInnerHtml: false } };
       const translate = getTranslate(newState);
-      const wrapper = shallow(translate('html', null, { renderInnerHtml: true }));
+      const wrapper = shallow(
+        translate('html', null, { renderInnerHtml: true })
+      );
 
       expect(wrapper.find('span').exists()).toBe(true);
       expect(wrapper.html()).toEqual(`<span><b>hi-fr</b></span>`);
@@ -655,7 +695,7 @@ describe('localize', () => {
     it('should return an object of translation keys matched with translated element', () => {
       const translate = getTranslate(state);
       const result = translate(['hi', 'bye']);
-      
+
       Object.keys(result).map((key, index) => {
         const value = result[key];
         expect(value).toBe(state.translations[key][1]);
@@ -672,11 +712,8 @@ describe('localize', () => {
     it('should insert dynamic data for multiple translations', () => {
       const translate = getTranslate(state);
       const result = translate(['yo', 'foo'], { name: 'ted', bar: 'bar' });
-      const results = [
-        'yo-fr ted',
-        'foo-fr bar'
-      ];
-      
+      const results = ['yo-fr ted', 'foo-fr bar'];
+
       Object.keys(result).map((key, index) => {
         const value = result[key];
         expect(value).toBe(results[index]);
@@ -684,14 +721,18 @@ describe('localize', () => {
     });
 
     it('should return value from default onMissingTranslation option', () => {
-      state.options.onMissingTranslation = defaultTranslateOptions.onMissingTranslation;
+      state.options.onMissingTranslation =
+        defaultTranslateOptions.onMissingTranslation;
       const translate = getTranslate(state);
       const result = translate('nothinghere');
-      expect(result).toEqual('Missing translationId: nothinghere for language: fr');
+      expect(result).toEqual(
+        'Missing translationId: nothinghere for language: fr'
+      );
     });
 
     it('should return value from onMissingTranslation option override', () => {
-      state.options.onMissingTranslation = ({translationId, languageCode}) => '${translationId} - ${languageCode}';
+      state.options.onMissingTranslation = ({ translationId, languageCode }) =>
+        '${translationId} - ${languageCode}';
       const translate = getTranslate(state);
       const result = translate('nothinghere');
       expect(result).toEqual('nothinghere - fr');
@@ -699,7 +740,7 @@ describe('localize', () => {
 
     it('should use language option instead of activeLanguage for translations', () => {
       const translate = getTranslate(state);
-      const result = translate('hi', null, {language: 'en'});
+      const result = translate('hi', null, { language: 'en' });
       expect(result).toEqual('hi-en');
     });
   });
@@ -728,7 +769,7 @@ describe('localize', () => {
       expect(result).toHaveBeenCalledTimes(2);
     });
 
-    it('should not call result function when languages haven\'t changed', () => {
+    it("should not call result function when languages haven't changed", () => {
       const result = jest.fn();
       const selector = translationsEqualSelector(() => languages, result);
       selector({});
@@ -745,7 +786,7 @@ describe('localize', () => {
       expect(result).toHaveBeenCalledTimes(2);
     });
 
-    it('should not call result function when active language hasn\'t changed', () => {
+    it("should not call result function when active language hasn't changed", () => {
       const result = jest.fn();
       const selector = translationsEqualSelector(() => activeLanguage, result);
       selector({});
@@ -762,7 +803,7 @@ describe('localize', () => {
       expect(result).toHaveBeenCalledTimes(2);
     });
 
-    it('should not call result function when translations haven\'t changed', () => {
+    it("should not call result function when translations haven't changed", () => {
       const result = jest.fn();
       const selector = translationsEqualSelector(() => translations, result);
       selector({});
@@ -776,7 +817,10 @@ describe('localize', () => {
         title: ['title', undefined, undefined]
       };
 
-      const selector = translationsEqualSelector(() => initialTranslations, result);
+      const selector = translationsEqualSelector(
+        () => initialTranslations,
+        result
+      );
       selector({});
       initialTranslations = { title: ['title', 'title FR', undefined] };
       selector({});
@@ -789,7 +833,10 @@ describe('localize', () => {
         title: ['title', 'title2', undefined]
       };
 
-      const selector = translationsEqualSelector(() => initialTranslations, result);
+      const selector = translationsEqualSelector(
+        () => initialTranslations,
+        result
+      );
       selector({});
       selector({});
       expect(result).toHaveBeenCalledTimes(1);
