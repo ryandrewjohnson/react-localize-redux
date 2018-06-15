@@ -31,9 +31,7 @@ type TranslateWithContextProps = TranslateProps & {
 
 export type TranslateChildFunction = (context: LocalizeContextProps) => any;
 
-class WrappedTranslate extends React.Component<
-  TranslateWithContextProps
-> {
+class WrappedTranslate extends React.Component<TranslateWithContextProps> {
   unsubscribeFromStore: any;
 
   componentDidMount() {
@@ -52,16 +50,25 @@ class WrappedTranslate extends React.Component<
     const fallbackRenderToStaticMarkup = value => value;
     const renderToStaticMarkup =
       context.renderToStaticMarkup || fallbackRenderToStaticMarkup;
+    const hasId = id !== undefined;
+    const hasDefaultLanguage = defaultLanguage !== undefined;
+    const hasChildren = children !== undefined;
+    const hasFunctionAsChild = typeof children === 'function';
 
-    if (children === undefined || typeof children === 'function') {
-      return;
-    }
+    const ignoreTranslateChildren =
+      options.ignoreTranslateChildren !== undefined
+        ? options.ignoreTranslateChildren
+        : context.ignoreTranslateChildren;
 
-    if (options.ignoreTranslateChildren) {
-      return;
-    }
+    const isValidDefaultTranslation =
+      hasChildren && hasId && hasDefaultLanguage;
 
-    if (id !== undefined && defaultLanguage !== undefined) {
+    const shouldAddDefaultTranslation =
+      isValidDefaultTranslation &&
+      !hasFunctionAsChild &&
+      !ignoreTranslateChildren;
+
+    if (shouldAddDefaultTranslation) {
       const translation = renderToStaticMarkup(children);
       context.addTranslationForLanguage &&
         context.addTranslationForLanguage(
