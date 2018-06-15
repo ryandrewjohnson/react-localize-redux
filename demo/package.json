@@ -8,7 +8,6 @@
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-loadable": "^5.3.1",
-    "react-localize-redux": "^3.0.1",
     "react-router": "4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.4",
@@ -25,7 +24,9 @@
     "@types/react-dom": "16.0.4",
     "@types/react-router": "^4.0.24",
     "html-webpack-plugin": "^3.2.0",
-    "typescript": "^2.7.2"
+    "lorem-ipsum": "^1.0.4",
+    "typescript": "^2.7.2",
+    "write-json-file": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -35,6 +36,7 @@
     "start:ts": "react-scripts-ts start",
     "build:ts": "react-scripts-ts build",
     "test:ts": "react-scripts-ts test --env=jsdom",
-    "eject:ts": "react-scripts-ts eject"
+    "eject:ts": "react-scripts-ts eject",
+    "seed:translations": "node seed-translations.js"
   }
 }
