@@ -1,3 +1,7 @@
+## 3.1.1 (June 17, 2018)
+
+* Make performance imporvements to `getTranslationsForLanguage` and `getSingleToMultilanguageTranslation` method. [#92](https://github.com/ryandrewjohnson/react-localize-redux/pull/92)
+
 ## 3.1.0 (June 14, 2018)
 
 * Add [ignoreTranslateChildren](https://ryandrewjohnson.github.io/react-localize-redux-docs/#initialize) to initialize options. [#91](https://github.com/ryandrewjohnson/react-localize-redux-docs/pull/1)
