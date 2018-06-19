@@ -1,13 +1,9 @@
-<<<<<<< HEAD
-import { ReactElement, ReactNode, Component as ReactComponent } from 'react';
-=======
 import {
   ReactElement,
   ReactNode,
   Component as ReactComponent,
   ComponentType
 } from 'react';
->>>>>>> master
 import { Store } from 'redux';
 import { ComponentClass, Component } from 'react-redux';
 
@@ -50,17 +46,6 @@ export interface InitializeOptions {
   renderInnerHtml?: boolean;
   onMissingTranslation?: onMissingTranslationFunction;
   defaultLanguage?: string;
-<<<<<<< HEAD
-}
-
-export interface TranslateOptions {
-  language?: string;
-  renderInnerHtml?: boolean;
-  onMissingTranslation?: onMissingTranslationFunction;
-  ignoreTranslateChildren?: boolean;
-}
-
-=======
   ignoreTranslateChildren?: boolean;
 }
 
@@ -71,7 +56,6 @@ export interface TranslateOptions {
   ignoreTranslateChildren?: boolean;
 }
 
->>>>>>> master
 export interface AddTranslationOptions {
   translationTransform?: TransFormFunction;
 }
