@@ -46,8 +46,6 @@ describe('localize', () => {
   describe('reducer: languages', () => {
     let initialState = [];
 
-
-
     beforeEach(() => {
       initialState = [
         { code: 'en', active: false },
@@ -59,7 +57,7 @@ describe('localize', () => {
     describe('INITIALIZE', () => {
       describe('set with string[]', () => {
         it('should set languages and set default language to first language', () => {
-           const action = {
+          const action = {
             type: INITIALIZE,
             payload: {
               languages: ['en', 'fr', 'ne']
@@ -296,6 +294,7 @@ describe('localize', () => {
         });
       });
     });
+    
     describe('ADD_TRANSLATION_FOR_LANGUAGE', () => {
       it('should add translation for specific language', () => {
         const action = {

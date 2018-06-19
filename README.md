@@ -27,17 +27,6 @@ Localization library for handling translations in [React](https://facebook.githu
 * [HTML translations](https://ryandrewjohnson.github.io/react-localize-redux-docs/#html-translations)
 * [Plus more...](https://ryandrewjohnson.github.io/react-localize-redux-docs/#guides)
 
----
-
-Localization library for handling translations in [React](https://facebook.github.io/react).
-
-* Does not require [Redux](https://redux.js.org/), but does provide out of the box support for it.
-* Built on React's native [Context](https://reactjs.org/docs/context.html).
-* [Include inline default translations](https://ryandrewjohnson.github.io/react-localize-redux-docs/#include-inline-default-translations)
-* [Dynamic translations](https://ryandrewjohnson.github.io/react-localize-redux-docs/#dynamic-translations)
-* [HTML translations](https://ryandrewjohnson.github.io/react-localize-redux-docs/#html-translations)
-* [Plus more...](https://ryandrewjohnson.github.io/react-localize-redux-docs/#guides)
-
 ## Installation
 
 ```
