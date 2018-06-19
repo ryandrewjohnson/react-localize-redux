@@ -48,7 +48,8 @@ export type InitializeOptions = {
   renderToStaticMarkup: renderToStaticMarkupFunction | false,
   renderInnerHtml?: boolean,
   onMissingTranslation?: onMissingTranslationFunction,
-  defaultLanguage?: string
+  defaultLanguage?: string,
+  ignoreTranslateChildren?: boolean
 };
 
 export type TranslateOptions = {

@@ -1,4 +1,13 @@
+<<<<<<< HEAD
 import { ReactElement, ReactNode, Component as ReactComponent } from 'react';
+=======
+import {
+  ReactElement,
+  ReactNode,
+  Component as ReactComponent,
+  ComponentType
+} from 'react';
+>>>>>>> master
 import { Store } from 'redux';
 import { ComponentClass, Component } from 'react-redux';
 
@@ -41,6 +50,7 @@ export interface InitializeOptions {
   renderInnerHtml?: boolean;
   onMissingTranslation?: onMissingTranslationFunction;
   defaultLanguage?: string;
+<<<<<<< HEAD
 }
 
 export interface TranslateOptions {
@@ -50,6 +60,18 @@ export interface TranslateOptions {
   ignoreTranslateChildren?: boolean;
 }
 
+=======
+  ignoreTranslateChildren?: boolean;
+}
+
+export interface TranslateOptions {
+  language?: string;
+  renderInnerHtml?: boolean;
+  onMissingTranslation?: onMissingTranslationFunction;
+  ignoreTranslateChildren?: boolean;
+}
+
+>>>>>>> master
 export interface AddTranslationOptions {
   translationTransform?: TransFormFunction;
 }
@@ -203,13 +225,13 @@ export function getActiveLanguage(state: LocalizeState): Language;
 export function getTranslate(state: LocalizeState): TranslateFunction;
 
 export function withLocalize<Props extends {}>(
-  WrappedComponent: ReactComponent<Props>
-): ReactComponent<Props & LocalizeContextProps>;
+  WrappedComponent: ComponentType<Props>
+): ComponentType<Props & LocalizeContextProps>;
 
 export function TranslateChildFunction(
   context: LocalizeContextProps
 ): ReactNode;
 
-export class Translate extends ReactComponent<TranslateProps> {}
+export const Translate: React.SFC<TranslateProps>;
 
 export class LocalizeProvider extends ReactComponent<LocalizeProviderProps> {}
