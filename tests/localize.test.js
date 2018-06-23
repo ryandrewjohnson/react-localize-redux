@@ -294,7 +294,7 @@ describe('localize', () => {
         });
       });
     });
-
+    
     describe('ADD_TRANSLATION_FOR_LANGUAGE', () => {
       it('should add translation for specific language', () => {
         const action = {
