@@ -208,9 +208,9 @@ export function getActiveLanguage(state: LocalizeState): Language;
 
 export function getTranslate(state: LocalizeState): TranslateFunction;
 
-export function withLocalize<Props extends {}>(
+export function withLocalize<Props extends LocalizeContextProps>(
   WrappedComponent: ComponentType<Props>
-): ComponentType<Props & LocalizeContextProps>;
+): ComponentType<Pick<Props, Exclude<keyof Props, keyof LocalizeContextProps>>>;
 
 export function TranslateChildFunction(
   context: LocalizeContextProps
