@@ -9,7 +9,7 @@ import {
   getActiveLanguage,
   getTranslationsForActiveLanguage
 } from './localize';
-import { storeDidChange } from './utils';
+import { get, storeDidChange } from './utils';
 import { LocalizeContext, type LocalizeContextProps } from './LocalizeContext';
 import { withLocalize } from './withLocalize';
 import type {
@@ -39,7 +39,18 @@ class WrappedTranslate extends React.Component<TranslateWithContextProps> {
   }
 
   componentDidUpdate(prevProps: TranslateWithContextProps) {
-    if (this.props.id && prevProps.id !== this.props.id) {
+    const idChanged = this.props.id && prevProps.id !== this.props.id;
+
+    const noDefaultLanguage =
+      !get(prevProps, 'context.defaultLanguage') &&
+      !get(prevProps, 'options.language');
+    const incomingLanguage =
+      get(this.props, 'context.defaultLanguage') ||
+      get(this.props, 'options.language');
+
+    const defaultLanguageSet = noDefaultLanguage && incomingLanguage;
+
+    if (idChanged || defaultLanguageSet) {
       this.addDefaultTranslation();
     }
   }
