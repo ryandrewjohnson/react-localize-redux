@@ -97,7 +97,7 @@ export interface LocalizedElementMap {
 }
 
 export interface TranslatePlaceholderData {
-  [key: string]: string | number;
+  [key: string]: string | number | React.ReactNode;
 }
 
 export type TranslateChildFunction = (context: LocalizeContextProps) => any;

@@ -80,7 +80,7 @@ export type LocalizedElementMap = {
 };
 
 export type TranslatePlaceholderData = {
-  [string]: string | number
+  [string]: string | number | React.Node
 };
 
 export type TranslateValue = string | string[];

@@ -80,7 +80,7 @@ export const hasHtmlTags = (value: string): boolean => {
  * @param {object} data The data that should be inserted in template
  * @return {string} The template string with the data merged in
  */
-export const templater = (strings: string, data: Object = {}): string => {
+export const templater = (strings: string, data: Object = {}): string | string[] => {
   if (!strings) return '';
 
   // ${**}
