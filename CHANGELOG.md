@@ -1,3 +1,7 @@
+## 3.1.2 (June 22, 2018)
+
+* Update the TypeScript definition for withLocalize [#98](https://github.com/ryandrewjohnson/react-localize-redux/pull/98)
+
 ## 3.1.1 (June 17, 2018)
 
 * Make performance imporvements to `getTranslationsForLanguage` and `getSingleToMultilanguageTranslation` method. [#92](https://github.com/ryandrewjohnson/react-localize-redux/pull/92)
