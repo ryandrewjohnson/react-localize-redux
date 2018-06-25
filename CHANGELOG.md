@@ -1,3 +1,8 @@
+## 3.2.0 (June 24, 2018)
+
+* Allow React components as dynamic data arguments [#100](https://github.com/ryandrewjohnson/react-localize-redux/pull/100)
+* Ensure that addDefaultTranslation gets called [#99](https://github.com/ryandrewjohnson/react-localize-redux/pull/99)
+
 ## 3.1.2 (June 22, 2018)
 
 * Update the TypeScript definition for withLocalize [#98](https://github.com/ryandrewjohnson/react-localize-redux/pull/98)
