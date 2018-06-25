@@ -1,4 +1,5 @@
-import Enzyme, { shallow } from 'enzyme';
+import React from 'react'
+import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import * as utils from 'utils';
 
@@ -61,6 +62,17 @@ describe('locale utils', () => {
       });
       expect(result).toEqual('Hello Ted');
     });
+
+    it('should handle React in data', () => {
+      const Comp = () => <div>ReactJS</div>
+      const translations = { test: 'Hello ${ comp } data' }
+      const result = utils.getLocalizedElement({
+        translationId: 'test',
+        translations,
+        data: { comp: <Comp /> }
+      });
+      expect(mount(result).text()).toContain('ReactJS');
+    })
   });
 
   describe('hasHtmlTags', () => {
@@ -86,6 +98,15 @@ describe('locale utils', () => {
       const result = utils.templater(before);
       expect(result).toEqual(before);
     });
+
+    it('should return an array if React components are passed in data', () => {
+      const Comp = () => <div>Test</div>;
+      const data = { comp:  <Comp />};
+      const before = 'Hello this is a ${ comp } translation';
+      const after = ['Hello this is a ', <Comp /> , ' translation'];
+      const result = utils.templater(before, data);
+      expect(result).toEqual(after);
+    })
   });
   
   describe('getIndexForLanguageCode', () => {

@@ -46,6 +46,13 @@ class Main extends React.Component<any, any> {
             trackStyle={{borderRadius: 2}}
             onToggle={() => this.props.onToggleClick()} 
             />
+
+          <Translate
+            id="homeLink"
+            data={{link: <NavLink to="/"><Translate id="here">here</Translate></NavLink>}}
+          >
+            {'Click ${ here } to go home'}
+          </Translate>
         </header>
         
         <main>
@@ -57,10 +64,6 @@ class Main extends React.Component<any, any> {
           <Route exact path="/movies" component={Movies} />
           <Route exact path="/books" component={Books} />
         </main>
-
-        {/* <h1>
-          <Translate id="title">Title</Translate>
-        </h1> */}
       </div>
     );
   }

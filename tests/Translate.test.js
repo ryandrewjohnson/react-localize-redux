@@ -25,6 +25,7 @@ describe('<Translate />', () => {
       bye: ['Goodbye', 'Goodbye FR'],
       missing: ['Missing'],
       html: ['Hey <a href="http://google.com">google</a>', ''],
+      htmlPlaceholder: ['Translation with <strong>html</strong> and placeholder: ${ comp }.'],
       multiline: [null, ''],
       placeholder: ['Hey ${name}!', '']
     },
@@ -104,6 +105,27 @@ describe('<Translate />', () => {
       'en'
     );
   });
+
+  it('should render React', () => {
+    const Comp = ({name}) => <strong>{name}</strong>;
+    const Translate = getTranslateWithContext();
+    const wrapper = mount(
+      <Translate id='placeholder' data={{ name: <Comp name='ReactJS' /> }} />
+    );
+
+    expect(wrapper.find(Comp).length).toBe(1);
+    expect(wrapper.text()).toContain('ReactJS');
+  })
+
+  it('should render empty string if passing React placeholder data to translation with html', () => {
+    const Comp = ({name}) => <strong>{name}</strong>;
+    const Translate = getTranslateWithContext();
+    const wrapper = mount(
+      <Translate id='htmlPlaceholder' data={{comp: <Comp name='ReactJS' />}} />
+    );
+
+    expect(wrapper.text()).toBe('');
+  })
 
   it('should just pass through string when renderToStaticMarkup not set', () => {
     const Translate = getTranslateWithContext({

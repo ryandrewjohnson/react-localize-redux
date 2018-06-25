@@ -42,13 +42,30 @@ export const getLocalizedElement = (
         translationId: options.translationId,
         languageCode: options.languageCode
       };
-  const translatedValue = templater(localizedString, placeholderData);
+  const translatedValueOrArray = templater(localizedString, placeholderData);
 
-  return renderInnerHtml === true && hasHtmlTags(translatedValue)
-    ? React.createElement('span', {
-        dangerouslySetInnerHTML: { __html: translatedValue }
-      })
-    : translatedValue;
+  // if result of templater is string, do the usual stuff
+  if (typeof translatedValueOrArray === 'string') {
+    return renderInnerHtml === true && hasHtmlTags(translatedValueOrArray)
+      ? React.createElement('span', {
+          dangerouslySetInnerHTML: { __html: translatedValueOrArray }
+        })
+      : translatedValueOrArray;
+  }
+
+  // at this point we know we have react components;
+  // check if there are HTMLTags in the translation (not allowed)
+  for (let portion of translatedValueOrArray) {
+    if (typeof portion === 'string' && hasHtmlTags(portion)) {
+      warning(
+        'HTML tags in the translation string are not supported when passing React components as arguments to the translation.'
+      );
+      return '';
+    }
+  }
+
+  // return as Element
+  return React.createElement('span', null, ...translatedValueOrArray);
 };
 
 export const hasHtmlTags = (value: string): boolean => {
@@ -63,13 +80,39 @@ export const hasHtmlTags = (value: string): boolean => {
  * @param {object} data The data that should be inserted in template
  * @return {string} The template string with the data merged in
  */
-export const templater = (strings: string, data: Object = {}): string => {
-  for (let prop in data) {
-    const pattern = '\\${\\s*' + prop + '\\s*}';
-    const regex = new RegExp(pattern, 'gmi');
-    strings = strings.replace(regex, data[prop]);
+export const templater = (strings: string, data: Object = {}): string | string[] => {
+  if (!strings) return '';
+
+  // ${**}
+  // brackets to include it in the result of .split()
+  const genericPlaceholderPattern = '(\\${\\s*[^\\s]+\\s*})';
+
+  // split: from 'Hey ${name}' -> ['Hey', '${name}']
+  // filter: clean empty strings
+  // map: replace ${prop} with data[prop]
+  let splitStrings = strings
+    .split(new RegExp(genericPlaceholderPattern, 'gmi'))
+    .filter(str => !!str)
+    .map(templatePortion => {
+      let matched;
+      for (let prop in data) {
+        if (matched) break;
+        const pattern = '\\${\\s*' + prop + '\\s*}';
+        const regex = new RegExp(pattern, 'gmi');
+        if (regex.test(templatePortion)) matched = data[prop];
+      }
+      return matched || templatePortion;
+    });
+
+  // if there is a React element, return as array
+  if (splitStrings.some(portion => React.isValidElement(portion))) {
+    return splitStrings;
   }
-  return strings;
+
+  // otherwise concatenate all portions into the translated value
+  return splitStrings.reduce((translated, portion) => {
+    return translated + `${portion}`;
+  }, '');
 };
 
 export const getIndexForLanguageCode = (
