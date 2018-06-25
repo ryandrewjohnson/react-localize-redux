@@ -189,4 +189,24 @@ describe('locale utils', () => {
       expect(() => utils.validateOptions(options)).toThrow();
     });
   });
+
+  describe('get', () => {
+    
+    const obj = { a: { b: { c: 'd' } } };
+    
+    it('gets value at path', () => {
+      const path = 'a.b.c';
+      expect(utils.get(obj, path)).toBe('d');
+    });
+
+    it('returns passed default value', () => {
+      const path = 'foo';
+      expect(utils.get(obj, path, 'default')).toBe('default');
+    });
+
+    it('falls back to undefined', () => {
+      const path = 'foo';
+      expect(utils.get(obj, path)).toBeUndefined();
+    })
+  });
 });

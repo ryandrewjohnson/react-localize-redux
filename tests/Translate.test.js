@@ -41,7 +41,7 @@ describe('<Translate />', () => {
       translate: getTranslate(localizeState),
       languages: getLanguages(localizeState),
       defaultLanguage:
-        state.options.defaultLanguage || getLanguages(localizeState)[0].code,
+        state.options.defaultLanguage || (getLanguages(localizeState)[0] && getLanguages(localizeState)[0].code),
       activeLanguage: getActiveLanguage(localizeState),
       initialize: jest.fn(),
       addTranslation: jest.fn(),
@@ -174,6 +174,22 @@ describe('<Translate />', () => {
 
     expect(defaultContext.addTranslationForLanguage).toHaveBeenLastCalledWith(
       { world: 'World' },
+      'en'
+    );
+  });
+
+  it("should add <Translate>'s children to translations when default language is set", () => {
+    const Translate = getTranslateWithContext({...initialState, languages: [] });
+    const wrapper = mount(
+      <Translate id='no_translation'>
+        Default Translation
+      </Translate>
+    );
+
+    wrapper.setProps({options: {language: 'en'}});
+
+    expect(defaultContext.addTranslationForLanguage).toHaveBeenLastCalledWith(
+      { 'no_translation': 'Default Translation' },
       'en'
     );
   });

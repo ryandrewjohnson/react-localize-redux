@@ -228,6 +228,13 @@ export const getSingleToMultilanguageTranslation = (
   return singleLanguageTranslations;
 };
 
+export const get = (obj: Object, path: string, defaultValue: any = undefined) => {
+  const pathArr = path.split('.').filter(Boolean);
+  return pathArr.reduce((ret, key) => {
+    return ret && ret[key] ? ret[key] : defaultValue;
+  }, obj);
+};
+
 // Thanks react-redux for utility function
 // https://github.com/reactjs/react-redux/blob/master/src/utils/warning.js
 export const warning = (message: string) => {
