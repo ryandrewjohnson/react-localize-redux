@@ -205,7 +205,15 @@ export const getSingleToMultilanguageTranslation = (
   existingTranslations: Object
 ): Translations => {
   const languageIndex = languageCodes.indexOf(language);
-  const translations = languageIndex >= 0 ? flattenedTranslations : {};
+  
+  let translations;
+  if (languageIndex >= 0) {
+    translations = flattenedTranslations
+  } else {
+    translations = {};
+    warning(`Language ${language} is not listed; skipping`);
+  }
+
   const keys = Object.keys(translations);
   const totalKeys = keys.length;
   const singleLanguageTranslations = {};
