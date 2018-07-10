@@ -103,7 +103,7 @@ export type MultipleLanguageTranslation = {
 type MissingTranslationOptions = {
   translationId: string,
   languageCode: string,
-  defaultTranslation: string
+  defaultTranslation: onMissingTranslationFunction
 };
 
 export type onMissingTranslationFunction = (
@@ -293,7 +293,7 @@ export const defaultTranslateOptions: InitializeOptions = {
   renderToStaticMarkup: false,
   renderInnerHtml: false,
   ignoreTranslateChildren: false,
-  defaultLanguage: null,
+  defaultLanguage: '',
   onMissingTranslation: ({ translationId, languageCode }) =>
     'Missing translationId: ${ translationId } for language: ${ languageCode }'
 };
@@ -370,13 +370,13 @@ export const getOptions = (state: LocalizeState): InitializeOptions => {
   // If there isn't a default language, grab the first languages from the
   // available languages as default
 
-  if ( !options.defaultLanguage ) {
+  if (!options.defaultLanguage) {
     languages = getLanguages(state) || [];
-    options.defaultLanguage = languages[0] ? languages[0].code : null;
+    options.defaultLanguage = languages[0] ? languages[0].code : '';
   }
 
   return options;
-}
+};
 
 export const getActiveLanguage = (state: LocalizeState): Language => {
   const languages = getLanguages(state);
@@ -466,8 +466,7 @@ export const getTranslate: Selector<
           : translationsForActiveLanguage;
 
       const defaultTranslations =
-        activeLanguage &&
-        activeLanguage.code === defaultLanguage
+        activeLanguage && activeLanguage.code === defaultLanguage
           ? translationsForActiveLanguage
           : defaultLanguage !== undefined
             ? getTranslationsForLanguage(defaultLanguage)
@@ -479,7 +478,6 @@ export const getTranslate: Selector<
           : activeLanguage && activeLanguage.code;
 
       const onMissingTranslation = (translationId: string) => {
-
         // Overwrite the param translations with the defaultTranslations to use as a
         // fallback when a translation is missing. Additionally, if we're already in
         // our onMissingTranslation function, we want to avoid trying to retriggering
@@ -494,9 +492,11 @@ export const getTranslate: Selector<
         return mergedOptions.onMissingTranslation({
           translationId,
           languageCode,
-          defaultTranslation: getLocalizedElement({ translationId: translationId, ...missingSharedParams })
+          defaultTranslation: getLocalizedElement({
+            translationId: translationId,
+            ...missingSharedParams
+          })
         });
-
       };
 
       const mergedOptions = { ...defaultOptions, ...translateOptions };
