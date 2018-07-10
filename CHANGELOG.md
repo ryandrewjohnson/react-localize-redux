@@ -1,3 +1,7 @@
+## 3.2.1 (July 9, 2018)
+
+* Fix issue where onMissingTranslation would through error when defaultLanguage is not set [#101](https://github.com/ryandrewjohnson/react-localize-redux/issues/101)
+
 ## 3.2.0 (June 24, 2018)
 
 * Allow React components as dynamic data arguments [#100](https://github.com/ryandrewjohnson/react-localize-redux/pull/100)
