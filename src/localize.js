@@ -473,19 +473,30 @@ export const getTranslate: Selector<
             ? getTranslationsForLanguage(defaultLanguage)
             : {};
 
-
-
       const languageCode =
         overrideLanguage !== undefined
           ? overrideLanguage
           : activeLanguage && activeLanguage.code;
 
       const onMissingTranslation = (translationId: string) => {
+
+        // Overwrite the param translations with the defaultTranslations to use as a
+        // fallback when a translation is missing. Additionally, if we're already in
+        // our onMissingTranslation function, we want to avoid trying to retriggering
+        // onMissingTranslation when passing it in or we'll throw ourselves into a loop.
+        // Revert to default at this point to throw a missing key error
+
+        const missingSharedParams = Object.assign(sharedParams, {
+          translations: defaultTranslations,
+          onMissingTranslation: defaultTranslateOptions.onMissingTranslation
+        });
+
         return mergedOptions.onMissingTranslation({
           translationId,
           languageCode,
-          defaultTranslation: defaultTranslations[translationId]
+          defaultTranslation: getLocalizedElement({ translationId: translationId, ...missingSharedParams })
         });
+
       };
 
       const mergedOptions = { ...defaultOptions, ...translateOptions };
