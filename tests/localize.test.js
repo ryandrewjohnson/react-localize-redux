@@ -658,7 +658,8 @@ describe('localize', () => {
           bye: ['bye-en', 'bye-fr'],
           yo: ['yo ${ name }', 'yo-fr ${ name }'],
           foo: ['foo ${ bar }', 'foo-fr ${ bar }'],
-          html: ['<b>hi-en</b>', '<b>hi-fr</b>']
+          html: ['<b>hi-en</b>', '<b>hi-fr</b>'],
+          money_no_translation: ['save $${ amount }']
         },
         options: defaultTranslateOptions
       };
@@ -747,6 +748,19 @@ describe('localize', () => {
       expect(result).toEqual(
         'Missing translationId: nothinghere for language: fr'
       );
+    });
+
+    it('should insert default when missing translation with USD hard coded into translation', () => {
+      state.options.onMissingTranslation = ({ defaultTranslation }) => defaultTranslation;
+      // state.options.defaultLanguage = "en";
+      const translate = getTranslate(state);
+      const result = translate(['money_no_translation'], { amount: 100 });
+      const results = ['save-fr $100'];
+
+      Object.keys(result).map((key, index) => {
+        const value = result[key];
+        expect(value).toBe(results[index]);
+      });
     });
 
     it('should return value from onMissingTranslation option override', () => {

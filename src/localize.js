@@ -56,6 +56,7 @@ export type TranslateOptions = {
   language?: string,
   renderInnerHtml?: boolean,
   onMissingTranslation?: onMissingTranslationFunction,
+  defaultLanguage?: string,
   ignoreTranslateChildren?: boolean
 };
 
@@ -292,6 +293,7 @@ export const defaultTranslateOptions: InitializeOptions = {
   renderToStaticMarkup: false,
   renderInnerHtml: false,
   ignoreTranslateChildren: false,
+  defaultLanguage: null,
   onMissingTranslation: ({ translationId, languageCode }) =>
     'Missing translationId: ${ translationId } for language: ${ languageCode }'
 };
@@ -361,8 +363,20 @@ export const getTranslations = (state: LocalizeState): Translations => {
 export const getLanguages = (state: LocalizeState): Language[] =>
   state.languages;
 
-export const getOptions = (state: LocalizeState): InitializeOptions =>
-  state.options;
+export const getOptions = (state: LocalizeState): InitializeOptions => {
+  const options = Object.assign({}, state.options);
+  let languages;
+
+  // If there isn't a default language, grab the first languages from the
+  // available languages as default
+
+  if ( !options.defaultLanguage ) {
+    languages = getLanguages(state) || [];
+    options.defaultLanguage = languages[0] ? languages[0].code : null;
+  }
+
+  return options;
+}
 
 export const getActiveLanguage = (state: LocalizeState): Language => {
   const languages = getLanguages(state);
@@ -453,11 +467,13 @@ export const getTranslate: Selector<
 
       const defaultTranslations =
         activeLanguage &&
-        activeLanguage.code === initializeOptions.defaultLanguage
+        activeLanguage.code === defaultLanguage
           ? translationsForActiveLanguage
-          : initializeOptions.defaultLanguage !== undefined
-            ? getTranslationsForLanguage(initializeOptions.defaultLanguage)
+          : defaultLanguage !== undefined
+            ? getTranslationsForLanguage(defaultLanguage)
             : {};
+
+
 
       const languageCode =
         overrideLanguage !== undefined
