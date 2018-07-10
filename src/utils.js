@@ -80,7 +80,10 @@ export const hasHtmlTags = (value: string): boolean => {
  * @param {object} data The data that should be inserted in template
  * @return {string} The template string with the data merged in
  */
-export const templater = (strings: string, data: Object = {}): string | string[] => {
+export const templater = (
+  strings: string,
+  data: Object = {}
+): string | string[] => {
   if (!strings) return '';
 
   // ${**}
@@ -228,7 +231,11 @@ export const getSingleToMultilanguageTranslation = (
   return singleLanguageTranslations;
 };
 
-export const get = (obj: Object, path: string, defaultValue: any = undefined) => {
+export const get = (
+  obj: Object,
+  path: string,
+  defaultValue: any = undefined
+) => {
   const pathArr = path.split('.').filter(Boolean);
   return pathArr.reduce((ret, key) => {
     return ret && ret[key] ? ret[key] : defaultValue;

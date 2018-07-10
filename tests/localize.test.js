@@ -387,6 +387,7 @@ describe('localize', () => {
       it('should set defaultLanguage option', () => {
         const action = {
           type: INITIALIZE,
+          languageCodes: ['en', 'fr', 'ne'],
           payload: {
             options: {
               defaultLanguage: 'fr',
@@ -405,6 +406,7 @@ describe('localize', () => {
       it('should set renderInnerHtml option', () => {
         const action = {
           type: INITIALIZE,
+          languageCodes: ['en', 'fr', 'ne'],
           payload: {
             options: {
               renderInnerHtml: false,
@@ -415,6 +417,7 @@ describe('localize', () => {
         const result = options(defaultTranslateOptions, action);
         expect(result).toEqual({
           ...defaultTranslateOptions,
+          defaultLanguage: 'en',
           renderInnerHtml: false,
           renderToStaticMarkup: false
         });
@@ -424,6 +427,7 @@ describe('localize', () => {
     it('should set translationTransform option', () => {
       const action = {
         type: INITIALIZE,
+        languageCodes: ['en', 'fr', 'ne'],
         payload: {
           options: {
             translationTransform: () => ({}),
@@ -443,6 +447,7 @@ describe('localize', () => {
 
       const action = {
         type: INITIALIZE,
+        languageCodes: ['en', 'fr', 'ne'],
         payload: {
           options: {
             onMissingTranslation: callback,
@@ -462,6 +467,7 @@ describe('localize', () => {
     it('should set renderToStaticMarkup when function provided', () => {
       const action = {
         type: INITIALIZE,
+        languageCodes: ['en', 'fr', 'ne'],
         payload: {
           options: {
             renderToStaticMarkup: () => {}
@@ -477,6 +483,7 @@ describe('localize', () => {
     it('should set renderToStaticMarkup to false when provided', () => {
       const action = {
         type: INITIALIZE,
+        languageCodes: ['en', 'fr', 'ne'],
         payload: {
           options: {
             renderToStaticMarkup: false
@@ -490,6 +497,7 @@ describe('localize', () => {
     it('should throw an error when invalid renderToStaticMarkup not provided', () => {
       const action = {
         type: INITIALIZE,
+        languageCodes: ['en', 'fr', 'ne'],
         payload: {
           options: {}
         }
@@ -501,6 +509,7 @@ describe('localize', () => {
     it('should set ignoreTranslateChildren', () => {
       const action = {
         type: INITIALIZE,
+        languageCodes: ['en', 'fr', 'ne'],
         payload: {
           options: {
             renderToStaticMarkup: false,
@@ -510,6 +519,16 @@ describe('localize', () => {
       };
       const result = options({}, action);
       expect(result.ignoreTranslateChildren).toBe(true);
+    });
+
+    it('should use first language as default language if not set', () => {
+      const action = {
+        type: INITIALIZE,
+        languageCodes: ['en', 'fr', 'ne'],
+        payload: { options: { renderToStaticMarkup: false } }
+      };
+      const result = options({}, action);
+      expect(result.defaultLanguage).toBe('en');
     });
   });
 

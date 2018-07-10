@@ -275,15 +275,14 @@ export function translations(
 
 export function options(
   state: InitializeOptions = defaultTranslateOptions,
-  action: Action
+  action: ActionDetailed
 ): InitializeOptions {
   switch (action.type) {
     case INITIALIZE:
       const options: any = action.payload.options || {};
-      return {
-        ...state,
-        ...validateOptions(options)
-      };
+      const defaultLanguage =
+        options.defaultLanguage || action.languageCodes[0];
+      return { ...state, ...validateOptions(options), defaultLanguage };
     default:
       return state;
   }
@@ -314,7 +313,7 @@ export const localizeReducer = (
       ...action,
       languageCodes
     }),
-    options: options(state.options, action)
+    options: options(state.options, { ...action, languageCodes })
   };
 };
 
