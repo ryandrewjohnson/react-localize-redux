@@ -3,6 +3,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import {
   languages,
   translations,
+  getOptions,
   getActiveLanguage,
   getTranslationsForActiveLanguage,
   getTranslationsForSpecificLanguage,
@@ -658,7 +659,8 @@ describe('localize', () => {
           bye: ['bye-en', 'bye-fr'],
           yo: ['yo ${ name }', 'yo-fr ${ name }'],
           foo: ['foo ${ bar }', 'foo-fr ${ bar }'],
-          html: ['<b>hi-en</b>', '<b>hi-fr</b>']
+          html: ['<b>hi-en</b>', '<b>hi-fr</b>'],
+          money_no_translation: ['save $${ amount }']
         },
         options: defaultTranslateOptions
       };
@@ -747,6 +749,19 @@ describe('localize', () => {
       expect(result).toEqual(
         'Missing translationId: nothinghere for language: fr'
       );
+    });
+
+    it('should set first language available as default when no default is set', () => {
+      const options = getOptions(state);
+      expect(options.defaultLanguage).toBe(state.languages[0].code);
+    });
+
+    it('should return value using default language when missing a translation with USD hard coded into translation', () => {
+      state.options.onMissingTranslation = ({ defaultTranslation }) => defaultTranslation;
+      const key = 'money_no_translation';
+      const translate = getTranslate(state);
+      const result = translate([key], { amount: 100 });
+      expect(result[key]).toBe('save $100')
     });
 
     it('should return value from onMissingTranslation option override', () => {
