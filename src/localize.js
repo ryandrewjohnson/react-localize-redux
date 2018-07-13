@@ -52,6 +52,17 @@ export type InitializeOptions = {
   ignoreTranslateChildren?: boolean
 };
 
+// This is to get around the whole default options issue with Flow
+// I tried using the $Diff approach, but with no luck so for now stuck with this terd. 
+// Because sometimes you just want flow to shut up!
+type InitializeOptionsRequired = {
+  renderToStaticMarkup: renderToStaticMarkupFunction | false,
+  renderInnerHtml: boolean,
+  onMissingTranslation: onMissingTranslationFunction,
+  defaultLanguage: string,
+  ignoreTranslateChildren: boolean
+};
+
 export type TranslateOptions = {
   language?: string,
   renderInnerHtml?: boolean,
@@ -67,7 +78,7 @@ export type AddTranslationOptions = {
 export type LocalizeState = {
   +languages: Language[],
   +translations: Translations,
-  +options: InitializeOptions
+  +options: InitializeOptionsRequired
 };
 
 export type TranslatedLanguage = {
@@ -103,7 +114,7 @@ export type MultipleLanguageTranslation = {
 type MissingTranslationOptions = {
   translationId: string,
   languageCode: string,
-  defaultTranslation: onMissingTranslationFunction
+  defaultTranslation: LocalizedElement
 };
 
 export type onMissingTranslationFunction = (
@@ -275,9 +286,9 @@ export function translations(
 }
 
 export function options(
-  state: InitializeOptions = defaultTranslateOptions,
+  state: InitializeOptionsRequired = defaultTranslateOptions,
   action: ActionDetailed
-): InitializeOptions {
+): InitializeOptionsRequired {
   switch (action.type) {
     case INITIALIZE:
       const options: any = action.payload.options || {};
@@ -289,7 +300,7 @@ export function options(
   }
 }
 
-export const defaultTranslateOptions: InitializeOptions = {
+export const defaultTranslateOptions: InitializeOptionsRequired = {
   renderToStaticMarkup: false,
   renderInnerHtml: false,
   ignoreTranslateChildren: false,
@@ -363,7 +374,7 @@ export const getTranslations = (state: LocalizeState): Translations => {
 export const getLanguages = (state: LocalizeState): Language[] =>
   state.languages;
 
-export const getOptions = (state: LocalizeState): InitializeOptions => {
+export const getOptions = (state: LocalizeState): InitializeOptionsRequired => {
   const options = Object.assign({}, state.options);
   let languages;
 
