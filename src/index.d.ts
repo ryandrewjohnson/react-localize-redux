@@ -5,7 +5,6 @@ import {
   ComponentType
 } from 'react';
 import { Store } from 'redux';
-import { ComponentClass, Component } from 'react';
 
 export as namespace ReactLocalizeRedux;
 
