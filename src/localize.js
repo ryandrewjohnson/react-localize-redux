@@ -468,54 +468,53 @@ export const getTranslate: Selector<
       const defaultTranslations =
         activeLanguage && activeLanguage.code === defaultLanguage
           ? translationsForActiveLanguage
-          : defaultLanguage !== undefined
-            ? getTranslationsForLanguage(defaultLanguage)
-            : {};
+          : getTranslationsForLanguage(defaultLanguage);
 
       const languageCode =
         overrideLanguage !== undefined
           ? overrideLanguage
           : activeLanguage && activeLanguage.code;
-
-      const onMissingTranslation = (translationId: string) => {
-        // Overwrite the param translations with the defaultTranslations to use as a
-        // fallback when a translation is missing. Additionally, if we're already in
-        // our onMissingTranslation function, we want to avoid trying to retriggering
-        // onMissingTranslation when passing it in or we'll throw ourselves into a loop.
-        // Revert to default at this point to throw a missing key error
-
-        const missingSharedParams = Object.assign(sharedParams, {
-          translations: defaultTranslations,
-          onMissingTranslation: defaultTranslateOptions.onMissingTranslation
-        });
-
-        return mergedOptions.onMissingTranslation({
-          translationId,
-          languageCode,
-          defaultTranslation: getLocalizedElement({
-            translationId: translationId,
-            ...missingSharedParams
-          })
-        });
-      };
-
+      
       const mergedOptions = { ...defaultOptions, ...translateOptions };
-      const { renderInnerHtml } = mergedOptions;
-      const sharedParams = {
-        translations,
-        data,
-        languageCode,
-        renderInnerHtml,
-        onMissingTranslation
+
+      const getTranslation = (translationId: string) => {
+        const hasValidTranslation = (translations[translationId] !== undefined);
+        const hasValidDefaultTranslation = (defaultTranslations[translationId] !== undefined);
+
+        const defaultTranslation = hasValidDefaultTranslation
+        ? getLocalizedElement({
+          translation: defaultTranslations[translationId],
+          data,
+          renderInnerHtml: mergedOptions.renderInnerHtml
+        })
+        : 'ERRROR!!!';
+
+        // if translation is not valid then generate the on missing translation message in it's place
+        const translation = hasValidTranslation
+          ? translations[translationId] 
+          : mergedOptions.onMissingTranslation({ translationId, languageCode, defaultTranslation });
+
+        // if translations are missing than ovrride data to include translationId, languageCode
+        // as these will be needed to render missing translations message
+        const translationData = hasValidTranslation 
+          ? data : 
+          { translationId, languageCode };
+
+        return getLocalizedElement({ 
+          translation,
+          data: translationData,
+          languageCode,
+          renderInnerHtml: mergedOptions.renderInnerHtml
+        });
       };
 
       if (typeof value === 'string') {
-        return getLocalizedElement({ translationId: value, ...sharedParams });
+        return getTranslation(value);
       } else if (Array.isArray(value)) {
         return value.reduce((prev, cur) => {
           return {
             ...prev,
-            [cur]: getLocalizedElement({ translationId: cur, ...sharedParams })
+            [cur]: getTranslation(cur)
           };
         }, {});
       } else {

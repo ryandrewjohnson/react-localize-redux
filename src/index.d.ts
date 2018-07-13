@@ -32,7 +32,7 @@ type TransFormFunction = (
 type MissingTranslationOptions = {
   translationId: string;
   languageCode: string;
-  defaultTranslation: string;
+  defaultTranslation: LocalizedElement;
 };
 
 export type onMissingTranslationFunction = (

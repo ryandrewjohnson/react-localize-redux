@@ -16,33 +16,21 @@ import type {
 } from './localize';
 
 type LocalizedElementOptions = {
-  translationId: string,
-  translations: TranslatedLanguage,
+  translation: string,
   data: TranslatePlaceholderData,
-  languageCode: string,
-  renderInnerHtml: boolean,
-  onMissingTranslation: (translationId: string) => string
+  renderInnerHtml: boolean
 };
 
 export const getLocalizedElement = (
   options: LocalizedElementOptions
 ): LocalizedElement => {
   const {
-    translationId,
-    translations,
+    translation,
     data,
     renderInnerHtml,
-    onMissingTranslation
   } = options;
-  const localizedString =
-    translations[translationId] || onMissingTranslation(translationId);
-  const placeholderData = translations[translationId]
-    ? data
-    : {
-        translationId: options.translationId,
-        languageCode: options.languageCode
-      };
-  const translatedValueOrArray = templater(localizedString, placeholderData);
+
+  const translatedValueOrArray = templater(translation, data);
 
   // if result of templater is string, do the usual stuff
   if (typeof translatedValueOrArray === 'string') {
