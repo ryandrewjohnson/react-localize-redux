@@ -53,7 +53,7 @@ export type InitializeOptions = {
 };
 
 // This is to get around the whole default options issue with Flow
-// I tried using the $Diff approach, but with no luck so for now stuck with this terd. 
+// I tried using the $Diff approach, but with no luck so for now stuck with this terd.
 // Because sometimes you just want flow to shut up!
 type InitializeOptionsRequired = {
   renderToStaticMarkup: renderToStaticMarkupFunction | false,
@@ -485,33 +485,38 @@ export const getTranslate: Selector<
         overrideLanguage !== undefined
           ? overrideLanguage
           : activeLanguage && activeLanguage.code;
-      
+
       const mergedOptions = { ...defaultOptions, ...translateOptions };
 
       const getTranslation = (translationId: string) => {
-        const hasValidTranslation = (translations[translationId] !== undefined);
-        const hasValidDefaultTranslation = (defaultTranslations[translationId] !== undefined);
+        const hasValidTranslation = translations[translationId] !== undefined;
+        const hasValidDefaultTranslation =
+          defaultTranslations[translationId] !== undefined;
 
         const defaultTranslation = hasValidDefaultTranslation
-        ? getLocalizedElement({
-          translation: defaultTranslations[translationId],
-          data,
-          renderInnerHtml: mergedOptions.renderInnerHtml
-        })
-        : 'ERRROR!!!';
+          ? getLocalizedElement({
+              translation: defaultTranslations[translationId],
+              data,
+              renderInnerHtml: mergedOptions.renderInnerHtml
+            })
+          : "No default translation found! Ensure you've added translations for your default langauge.";
 
         // if translation is not valid then generate the on missing translation message in it's place
         const translation = hasValidTranslation
-          ? translations[translationId] 
-          : mergedOptions.onMissingTranslation({ translationId, languageCode, defaultTranslation });
+          ? translations[translationId]
+          : mergedOptions.onMissingTranslation({
+              translationId,
+              languageCode,
+              defaultTranslation
+            });
 
         // if translations are missing than ovrride data to include translationId, languageCode
         // as these will be needed to render missing translations message
-        const translationData = hasValidTranslation 
-          ? data : 
-          { translationId, languageCode };
+        const translationData = hasValidTranslation
+          ? data
+          : { translationId, languageCode };
 
-        return getLocalizedElement({ 
+        return getLocalizedElement({
           translation,
           data: translationData,
           languageCode,

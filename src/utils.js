@@ -24,11 +24,7 @@ type LocalizedElementOptions = {
 export const getLocalizedElement = (
   options: LocalizedElementOptions
 ): LocalizedElement => {
-  const {
-    translation,
-    data,
-    renderInnerHtml,
-  } = options;
+  const { translation, data, renderInnerHtml } = options;
 
   const translatedValueOrArray = templater(translation, data);
 

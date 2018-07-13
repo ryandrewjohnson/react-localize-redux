@@ -85,7 +85,7 @@ class WrappedTranslate extends React.Component<TranslateWithContextProps> {
         context.addTranslationForLanguage(
           {
             // $FlowFixMe: flow complains that type of id can't be undefined, but we already guard against this in the checks above
-            [id]: translation 
+            [id]: translation
           },
           defaultLanguage
         );
