@@ -1,3 +1,7 @@
+## 3.2.3 (July 13, 2018)
+
+* Fix issue with onMissingTranslation not handling defaultTranslation properly [#110](https://github.com/ryandrewjohnson/react-localize-redux/pull/110)
+
 ## 3.2.2 (July 11, 2018)
 
 * Fix bad import in TypeScript definition [#106](https://github.com/ryandrewjohnson/react-localize-redux/pull/106)
