@@ -16,33 +16,17 @@ import type {
 } from './localize';
 
 type LocalizedElementOptions = {
-  translationId: string,
-  translations: TranslatedLanguage,
+  translation: string,
   data: TranslatePlaceholderData,
-  languageCode: string,
-  renderInnerHtml: boolean,
-  onMissingTranslation: (translationId: string) => string
+  renderInnerHtml: boolean
 };
 
 export const getLocalizedElement = (
   options: LocalizedElementOptions
 ): LocalizedElement => {
-  const {
-    translationId,
-    translations,
-    data,
-    renderInnerHtml,
-    onMissingTranslation
-  } = options;
-  const localizedString =
-    translations[translationId] || onMissingTranslation(translationId);
-  const placeholderData = translations[translationId]
-    ? data
-    : {
-        translationId: options.translationId,
-        languageCode: options.languageCode
-      };
-  const translatedValueOrArray = templater(localizedString, placeholderData);
+  const { translation, data, renderInnerHtml } = options;
+
+  const translatedValueOrArray = templater(translation, data);
 
   // if result of templater is string, do the usual stuff
   if (typeof translatedValueOrArray === 'string') {
@@ -150,7 +134,7 @@ export const validateOptions = (
     typeof options.renderToStaticMarkup !== 'function'
   ) {
     throw new Error(`
-      react-localize-redux: initialize option renderToStaticMarkup is invalid. 
+      react-localize-redux: initialize option renderToStaticMarkup is invalid.
       Please see https://ryandrewjohnson.github.io/react-localize-docs/#initialize.
     `);
   }

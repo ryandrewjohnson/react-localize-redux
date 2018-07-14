@@ -52,10 +52,22 @@ export type InitializeOptions = {
   ignoreTranslateChildren?: boolean
 };
 
+// This is to get around the whole default options issue with Flow
+// I tried using the $Diff approach, but with no luck so for now stuck with this terd.
+// Because sometimes you just want flow to shut up!
+type InitializeOptionsRequired = {
+  renderToStaticMarkup: renderToStaticMarkupFunction | false,
+  renderInnerHtml: boolean,
+  onMissingTranslation: onMissingTranslationFunction,
+  defaultLanguage: string,
+  ignoreTranslateChildren: boolean
+};
+
 export type TranslateOptions = {
   language?: string,
   renderInnerHtml?: boolean,
   onMissingTranslation?: onMissingTranslationFunction,
+  defaultLanguage?: string,
   ignoreTranslateChildren?: boolean
 };
 
@@ -66,7 +78,7 @@ export type AddTranslationOptions = {
 export type LocalizeState = {
   +languages: Language[],
   +translations: Translations,
-  +options: InitializeOptions
+  +options: InitializeOptionsRequired
 };
 
 export type TranslatedLanguage = {
@@ -102,7 +114,7 @@ export type MultipleLanguageTranslation = {
 type MissingTranslationOptions = {
   translationId: string,
   languageCode: string,
-  defaultTranslation: string
+  defaultTranslation: LocalizedElement
 };
 
 export type onMissingTranslationFunction = (
@@ -274,9 +286,9 @@ export function translations(
 }
 
 export function options(
-  state: InitializeOptions = defaultTranslateOptions,
+  state: InitializeOptionsRequired = defaultTranslateOptions,
   action: ActionDetailed
-): InitializeOptions {
+): InitializeOptionsRequired {
   switch (action.type) {
     case INITIALIZE:
       const options: any = action.payload.options || {};
@@ -288,10 +300,11 @@ export function options(
   }
 }
 
-export const defaultTranslateOptions: InitializeOptions = {
+export const defaultTranslateOptions: InitializeOptionsRequired = {
   renderToStaticMarkup: false,
   renderInnerHtml: false,
   ignoreTranslateChildren: false,
+  defaultLanguage: '',
   onMissingTranslation: ({ translationId, languageCode }) =>
     'Missing translationId: ${ translationId } for language: ${ languageCode }'
 };
@@ -361,8 +374,20 @@ export const getTranslations = (state: LocalizeState): Translations => {
 export const getLanguages = (state: LocalizeState): Language[] =>
   state.languages;
 
-export const getOptions = (state: LocalizeState): InitializeOptions =>
-  state.options;
+export const getOptions = (state: LocalizeState): InitializeOptionsRequired => {
+  const options = Object.assign({}, state.options);
+  let languages;
+
+  // If there isn't a default language, grab the first languages from the
+  // available languages as default
+
+  if (!options.defaultLanguage) {
+    languages = getLanguages(state) || [];
+    options.defaultLanguage = languages[0] ? languages[0].code : '';
+  }
+
+  return options;
+};
 
 export const getActiveLanguage = (state: LocalizeState): Language => {
   const languages = getLanguages(state);
@@ -452,43 +477,60 @@ export const getTranslate: Selector<
           : translationsForActiveLanguage;
 
       const defaultTranslations =
-        activeLanguage &&
-        activeLanguage.code === initializeOptions.defaultLanguage
+        activeLanguage && activeLanguage.code === defaultLanguage
           ? translationsForActiveLanguage
-          : initializeOptions.defaultLanguage !== undefined
-            ? getTranslationsForLanguage(initializeOptions.defaultLanguage)
-            : {};
+          : getTranslationsForLanguage(defaultLanguage);
 
       const languageCode =
         overrideLanguage !== undefined
           ? overrideLanguage
           : activeLanguage && activeLanguage.code;
 
-      const onMissingTranslation = (translationId: string) => {
-        return mergedOptions.onMissingTranslation({
-          translationId,
+      const mergedOptions = { ...defaultOptions, ...translateOptions };
+
+      const getTranslation = (translationId: string) => {
+        const hasValidTranslation = translations[translationId] !== undefined;
+        const hasValidDefaultTranslation =
+          defaultTranslations[translationId] !== undefined;
+
+        const defaultTranslation = hasValidDefaultTranslation
+          ? getLocalizedElement({
+              translation: defaultTranslations[translationId],
+              data,
+              renderInnerHtml: mergedOptions.renderInnerHtml
+            })
+          : "No default translation found! Ensure you've added translations for your default langauge.";
+
+        // if translation is not valid then generate the on missing translation message in it's place
+        const translation = hasValidTranslation
+          ? translations[translationId]
+          : mergedOptions.onMissingTranslation({
+              translationId,
+              languageCode,
+              defaultTranslation
+            });
+
+        // if translations are missing than ovrride data to include translationId, languageCode
+        // as these will be needed to render missing translations message
+        const translationData = hasValidTranslation
+          ? data
+          : { translationId, languageCode };
+
+        return getLocalizedElement({
+          translation,
+          data: translationData,
           languageCode,
-          defaultTranslation: defaultTranslations[translationId]
+          renderInnerHtml: mergedOptions.renderInnerHtml
         });
       };
 
-      const mergedOptions = { ...defaultOptions, ...translateOptions };
-      const { renderInnerHtml } = mergedOptions;
-      const sharedParams = {
-        translations,
-        data,
-        languageCode,
-        renderInnerHtml,
-        onMissingTranslation
-      };
-
       if (typeof value === 'string') {
-        return getLocalizedElement({ translationId: value, ...sharedParams });
+        return getTranslation(value);
       } else if (Array.isArray(value)) {
         return value.reduce((prev, cur) => {
           return {
             ...prev,
-            [cur]: getLocalizedElement({ translationId: cur, ...sharedParams })
+            [cur]: getTranslation(cur)
           };
         }, {});
       } else {

@@ -13,50 +13,35 @@ describe('locale utils', () => {
     it('should return element with localized string', () => {
       const translations = { test: 'Here is my test' };
       const result = utils.getLocalizedElement({
-        translationId: 'test',
-        translations
+        translation: 'Here is my test'
       });
       expect(result).toBe(translations.test);
     });
 
     it('should render inner HTML when renderInnerHtml = true', () => {
-      const translations = { test: '<h1>Here</h1> is my <strong>test</strong>' };
+      const translation = '<h1>Here</h1> is my <strong>test</strong>';
       const wrapper = shallow(utils.getLocalizedElement({
-        translationId: 'test',
-        translations,
+        translation,
         renderInnerHtml: true
       }));
       
       expect(wrapper.find('span').exists()).toBe(true);
-      expect(wrapper.html()).toEqual(`<span>${translations.test}</span>`);
+      expect(wrapper.html()).toEqual(`<span>${translation}</span>`);
     });
 
     it('should not render inner HTML when renderInnerHtml = false', () => {
-      const translations = { test: '<h1>Here</h1> is my <strong>test</strong>' };
+      const translation = '<h1>Here</h1> is my <strong>test</strong>';
       const result = utils.getLocalizedElement({
-        translationId: 'test',
-        translations, 
+        translation,
         renderInnerHtml: false
       });
-      expect(result).toBe(translations.test);
-    });
-
-    it('should return result of onMissingTranslation when translation = undefined', () => {
-      const onMissingTranslation = () => 'My missing message';
-      const result = utils.getLocalizedElement({
-        translationId: 'nothing',
-        translations: {},
-        renderInnerHtml: true, 
-        onMissingTranslation
-      });
-      expect(result).toEqual('My missing message');
+      expect(result).toBe(translation);
     });
 
     it('should replace variables in translation string with data', () => {
-      const translations = { test: 'Hello ${ name }' };
+      const translation = 'Hello ${ name }';
       const result = utils.getLocalizedElement({
-        translationId: 'test',
-        translations,
+        translation,
         renderInnerHtml: true,
         data: { name: 'Ted' }
       });
@@ -65,10 +50,9 @@ describe('locale utils', () => {
 
     it('should handle React in data', () => {
       const Comp = () => <div>ReactJS</div>
-      const translations = { test: 'Hello ${ comp } data' }
+      const translation = 'Hello ${ comp } data';
       const result = utils.getLocalizedElement({
-        translationId: 'test',
-        translations,
+        translation,
         data: { comp: <Comp /> }
       });
       expect(mount(result).text()).toContain('ReactJS');
