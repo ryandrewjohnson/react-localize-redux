@@ -12,7 +12,8 @@ import {
   getTranslate,
   getTranslateSelector,
   defaultTranslateOptions,
-  options
+  options,
+  localizeReducer
 } from 'localize';
 import { getLocalizedElement } from 'utils';
 import {
@@ -752,11 +753,26 @@ describe('localize', () => {
     });
 
     it('should set first language available as default when no default is set', () => {
+      state = localizeReducer({ languages: [] }, {
+        type: INITIALIZE,
+        payload: { 
+          languages: ['en', 'fr', 'es'],
+          options: { renderToStaticMarkup: false }
+        }
+      });
+
       const options = getOptions(state);
       expect(options.defaultLanguage).toBe(state.languages[0].code);
     });
 
     it('should return value using default language when missing a translation with USD hard coded into translation', () => {
+      state = localizeReducer({ languages: [], translations: state.translations }, {
+        type: INITIALIZE,
+        payload: { 
+          languages: ['en', 'fr', 'es'],
+          options: { renderToStaticMarkup: false },
+        }
+      });
       state.options.onMissingTranslation = ({ defaultTranslation }) => defaultTranslation;
       const key = 'money_no_translation';
       const translate = getTranslate(state);

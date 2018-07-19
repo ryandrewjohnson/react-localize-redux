@@ -319,9 +319,12 @@ export const localizeReducer = (
   state: LocalizeState = initialState,
   action: Action
 ): LocalizeState => {
-  const languageCodes = state.languages.map(language => language.code);
+  // execute the languages reducer first as we need access to those values for other reducers
+  const languagesState = languages(state.languages, action);
+  const languageCodes = languagesState.map(language => language.code);
+
   return {
-    languages: languages(state.languages, action),
+    languages: languagesState,
     translations: translations(state.translations, {
       ...action,
       languageCodes
@@ -375,18 +378,7 @@ export const getLanguages = (state: LocalizeState): Language[] =>
   state.languages;
 
 export const getOptions = (state: LocalizeState): InitializeOptionsRequired => {
-  const options = Object.assign({}, state.options);
-  let languages;
-
-  // If there isn't a default language, grab the first languages from the
-  // available languages as default
-
-  if (!options.defaultLanguage) {
-    languages = getLanguages(state) || [];
-    options.defaultLanguage = languages[0] ? languages[0].code : '';
-  }
-
-  return options;
+  return state.options;
 };
 
 export const getActiveLanguage = (state: LocalizeState): Language => {
