@@ -1,3 +1,7 @@
+## 3.2.4 (July 19, 2018)
+
+* Fix issue where bad `getOptions` selector was causing unnecessary re-renders [#111](https://github.com/ryandrewjohnson/react-localize-redux/issues/111)
+
 ## 3.2.3 (July 13, 2018)
 
 * Fix issue with onMissingTranslation not handling defaultTranslation properly [#110](https://github.com/ryandrewjohnson/react-localize-redux/pull/110)
