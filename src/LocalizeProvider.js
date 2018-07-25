@@ -22,6 +22,7 @@ type LocalizeProviderState = {
 
 export type LocalizeProviderProps = {
   store?: Store<any, any>,
+  getState?: Function,
   children: any
 };
 
@@ -68,9 +69,10 @@ export class LocalizeProvider extends Component<
     if (!this.props.store) {
       return;
     }
+    const getState = this.props.getState || (state => state.localize);
 
-    const prevLocalizeState = prevState && prevState.localize;
-    const curLocalizeState = this.props.store.getState().localize;
+    const prevLocalizeState = prevState && getState(prevState);
+    const curLocalizeState = getState(this.props.store.getState());
 
     const prevActiveLanguage =
       prevState && getActiveLanguage(prevLocalizeState);
