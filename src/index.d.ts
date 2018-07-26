@@ -82,6 +82,7 @@ export interface LocalizeContextProps {
 
 export interface LocalizeProviderProps {
   store?: Store<any>;
+  getState?: (state: any) => LocalizeState;
   children: any;
 }
 
