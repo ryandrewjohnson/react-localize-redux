@@ -1,3 +1,7 @@
+## 3.3.0 (July 25, 2018)
+
+* Add `getState` prop to `LocalizeProvider` to allow for ImmutableJS support [#112](https://github.com/ryandrewjohnson/react-localize-redux/pull/112)
+
 ## 3.2.4 (July 19, 2018)
 
 * Fix issue where bad `getOptions` selector was causing unnecessary re-renders [#111](https://github.com/ryandrewjohnson/react-localize-redux/issues/111)
