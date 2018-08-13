@@ -88,7 +88,8 @@ export const templater = (
         const regex = new RegExp(pattern, 'gmi');
         if (regex.test(templatePortion)) matched = data[prop];
       }
-      return matched || templatePortion;
+      if (typeof matched === 'undefined') return templatePortion;
+      return matched;
     });
 
   // if there is a React element, return as array
