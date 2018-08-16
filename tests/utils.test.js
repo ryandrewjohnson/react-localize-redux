@@ -90,7 +90,15 @@ describe('locale utils', () => {
       const after = ['Hello this is a ', <Comp /> , ' translation'];
       const result = utils.templater(before, data);
       expect(result).toEqual(after);
-    })
+    });
+
+    it('should handle falsy data values (except undefined)', () => {
+      const data = { zero: 0, empty: '' };
+      const before = 'Number ${zero}, empty ${empty}';
+      const after = 'Number 0, empty ';
+      const result = utils.templater(before, data);
+      expect(result).toEqual(after);
+    });
   });
   
   describe('getIndexForLanguageCode', () => {
