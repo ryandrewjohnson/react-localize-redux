@@ -1,3 +1,7 @@
+## 3.3.1 (August 16, 2018)
+
+* Handle falsy values in data. [#117](https://github.com/ryandrewjohnson/react-localize-redux/pull/117)
+
 ## 3.3.0 (July 25, 2018)
 
 * Add `getState` prop to `LocalizeProvider` to allow for ImmutableJS support [#112](https://github.com/ryandrewjohnson/react-localize-redux/pull/112)
