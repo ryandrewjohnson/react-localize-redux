@@ -72,7 +72,7 @@ export const templater = (
 
   // ${**}
   // brackets to include it in the result of .split()
-  const genericPlaceholderPattern = '(\\${\\s*[^\\s]+\\s*})';
+  const genericPlaceholderPattern = '(\\${\\s*[^\\s}]+\\s*})';
 
   // split: from 'Hey ${name}' -> ['Hey', '${name}']
   // filter: clean empty strings
