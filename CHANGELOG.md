@@ -1,3 +1,7 @@
+## 3.3.2 (August 22, 2018)
+
+* Fix too eager templater reg exp [#118](https://github.com/ryandrewjohnson/react-localize-redux/pull/118)
+
 ## 3.3.1 (August 16, 2018)
 
 * Handle falsy values in data. [#117](https://github.com/ryandrewjohnson/react-localize-redux/pull/117)
