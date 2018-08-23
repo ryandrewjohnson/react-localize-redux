@@ -77,6 +77,14 @@ describe('locale utils', () => {
       expect(result).toEqual(after);
     });
 
+    it('should replace all variables in the string even when variable are stucked together', () => {
+      const data = { name: 'Ryan', type: 'Air' };
+      const before = 'Hi my airline company is ${name}${type}';
+      const after = 'Hi my airline company is RyanAir';
+      const result = utils.templater(before, data);
+      expect(result).toEqual(after);
+    });
+
     it('should not modify string if no data param is provided', () => {
       const before = 'Hi my name is ${ name } and I live in ${ country }';
       const result = utils.templater(before);
