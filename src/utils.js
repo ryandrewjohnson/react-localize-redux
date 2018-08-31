@@ -136,7 +136,7 @@ export const validateOptions = (
   ) {
     throw new Error(`
       react-localize-redux: initialize option renderToStaticMarkup is invalid.
-      Please see https://ryandrewjohnson.github.io/react-localize-docs/#initialize.
+      Please see https://ryandrewjohnson.github.io/react-localize-redux-docs/#initialize.
     `);
   }
 
