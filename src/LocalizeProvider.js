@@ -24,6 +24,7 @@ type LocalizeProviderState = {
 export type LocalizeProviderProps = {
   store?: Store<any, any>,
   getState?: Function,
+  initialize?: LocalizeState,
   children: any
 };
 
@@ -44,17 +45,19 @@ export class LocalizeProvider extends Component<
 
     const {
       initialize,
-      initialize: { translation, languages, options } = {}
+      initialize: { translations, languages, options } = {}
     } = props;
 
     const initialLocalize = localizeReducer(
-      initialize || {},
+      undefined,
       initialize
-        ? initializeActionCreator({
-            languages,
-            options,
-            translation
-          })
+        ? (initializeActionCreator(
+            ({
+              languages,
+              options,
+              translation: translations
+            }: any)
+          ): any)
         : ({}: any)
     );
     this.state = {
