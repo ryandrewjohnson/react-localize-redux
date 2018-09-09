@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { type Store } from 'redux';
 import {
+  initialize as initializeActionCreator,
   localizeReducer,
   getActiveLanguage,
   getOptions,
@@ -41,11 +42,26 @@ export class LocalizeProvider extends Component<
       ? this.props.store.dispatch
       : this.dispatch.bind(this);
 
-    this.getContextPropsSelector = getContextPropsFromState(dispatch);
+    const {
+      initialize,
+      initialize: { translation, languages, options } = {}
+    } = props;
 
+    const initialLocalize = localizeReducer(
+      initialize || {},
+      initialize
+        ? initializeActionCreator({
+            languages,
+            options,
+            translation
+          })
+        : ({}: any)
+    );
     this.state = {
-      localize: localizeReducer(undefined, ({}: any))
+      localize: initialLocalize
     };
+
+    this.getContextPropsSelector = getContextPropsFromState(dispatch);
   }
 
   static getDerivedStateFromProps(nextProps: any, nextState: any) {
