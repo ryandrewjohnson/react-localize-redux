@@ -1,11 +1,12 @@
 import React from 'react';
+import ReactDOMServer from "react-dom/server";
 import Enzyme, { shallow, mount } from 'enzyme';
 import { createStore, combineReducers } from 'redux';
 import Adapter from 'enzyme-adapter-react-16';
 import { Map } from 'immutable'
 import { LocalizeProvider } from '../src/LocalizeProvider';
 import { localizeReducer } from '../src/localize';
-import { getTranslate, getLanguages, initialize } from '../src';
+import { getTranslate, getLanguages, initialize, withLocalize, Translate } from '../src';
 import { defaultTranslateOptions } from '../src/localize';
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -85,5 +86,57 @@ describe('<LocalizeProvider />', () => {
         </LocalizeProvider>
       )
     }).not.toThrow();
+  });
+
+  it('should work with SSR', () => {
+    class App extends React.Component {
+      constructor(props) {
+        super(props);
+
+        this.props.initialize({
+          languages: [
+            { name: "English", code: "en" },
+            { name: "French", code: "fr" }
+          ],
+          translation: {
+            hello: ['hello', 'alo']
+          },
+          options: {
+            defaultLanguage: "en",
+            renderToStaticMarkup: ReactDOMServer.renderToStaticMarkup
+          }
+        });
+      }
+
+      render() {
+        return (
+          <div>
+            <Translate id="hello" />
+          </div>
+        );
+      }
+    }
+
+    const LocalizedApp = withLocalize(App);
+
+    const result = ReactDOMServer.renderToString(
+      <LocalizeProvider initialize={{
+        languages: [
+          { name: "English", code: "en" },
+          { name: "French", code: "fr" }
+        ],
+        translation: {
+          hello: ['hello', 'alo']
+        },
+        options: {
+          defaultLanguage: "en",
+          renderToStaticMarkup: ReactDOMServer.renderToStaticMarkup
+        }
+      }}>
+        <LocalizedApp />
+      </LocalizeProvider>
+    );
+
+    expect(result).toEqual('<div>hello</div>');
   });
 });

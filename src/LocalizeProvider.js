@@ -7,7 +7,9 @@ import {
   getOptions,
   getTranslationsForActiveLanguage,
   type LocalizeState,
-  type Action
+  type Action,
+  INITIALIZE,
+  InitializePayload
 } from './localize';
 import {
   LocalizeContext,
@@ -23,6 +25,7 @@ type LocalizeProviderState = {
 export type LocalizeProviderProps = {
   store?: Store<any, any>,
   getState?: Function,
+  initialize?: InitializePayload,
   children: any
 };
 
@@ -43,8 +46,16 @@ export class LocalizeProvider extends Component<
 
     this.getContextPropsSelector = getContextPropsFromState(dispatch);
 
+    const initialState =
+      this.props.initialize !== undefined
+        ? localizeReducer(undefined, {
+            type: INITIALIZE,
+            payload: this.props.initialize
+          })
+        : localizeReducer(undefined, ({}: any));
+
     this.state = {
-      localize: localizeReducer(undefined, ({}: any))
+      localize: initialState
     };
   }
 

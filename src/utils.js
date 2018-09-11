@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 import { type Store } from 'redux';
-import { flatten } from 'flat';
 import {
   defaultTranslateOptions,
   type MultipleLanguageTranslation

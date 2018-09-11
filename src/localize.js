@@ -1,6 +1,5 @@
 // @flow
 import * as React from 'react';
-import { combineReducers } from 'redux';
 import { flatten } from 'flat';
 import {
   createSelector,
