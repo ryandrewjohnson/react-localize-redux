@@ -4,7 +4,6 @@ import {
   Component as ReactComponent,
   ComponentType
 } from 'react';
-import { Store } from 'redux';
 
 export as namespace ReactLocalizeRedux;
 
@@ -81,8 +80,9 @@ export interface LocalizeContextProps {
 }
 
 export interface LocalizeProviderProps {
-  store?: Store<any>;
+  store?: any;
   getState?: (state: any) => LocalizeState;
+  initialize?: InitializePayload;
   children: any;
 }
 
