@@ -8,14 +8,11 @@ import {
   getTranslationsForActiveLanguage,
   getTranslationsForSpecificLanguage,
   translationsEqualSelector,
-  setLanguages,
   getTranslate,
-  getTranslateSelector,
   defaultTranslateOptions,
   options,
   localizeReducer
 } from 'localize';
-import { getLocalizedElement } from 'utils';
 import {
   INITIALIZE,
   SET_ACTIVE_LANGUAGE,

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOMServer from "react-dom/server";
-import Enzyme, { shallow, mount } from 'enzyme';
+import Enzyme, { shallow } from 'enzyme';
 import { createStore, combineReducers } from 'redux';
 import Adapter from 'enzyme-adapter-react-16';
 import { Map } from 'immutable'
