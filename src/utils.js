@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import { type Store } from 'redux';
 import {
   defaultTranslateOptions,
   type MultipleLanguageTranslation
@@ -167,7 +166,7 @@ export const getTranslationsForLanguage = (
 };
 
 export const storeDidChange = (
-  store: Store<any, any>,
+  store: any,
   onChange: (prevState: any) => void
 ) => {
   let currentState;

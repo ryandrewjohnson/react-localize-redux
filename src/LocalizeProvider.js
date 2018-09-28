@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import { type Store } from 'redux';
 import {
   localizeReducer,
   getActiveLanguage,
@@ -23,7 +22,7 @@ type LocalizeProviderState = {
 };
 
 export type LocalizeProviderProps = {
-  store?: Store<any, any>,
+  store?: any,
   getState?: Function,
   initialize?: InitializePayload,
   children: any
