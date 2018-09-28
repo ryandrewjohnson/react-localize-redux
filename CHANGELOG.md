@@ -1,6 +1,10 @@
+## 3.4.1 (September 28, 2018)
+
+* Remove remaining references to redux in source [#129](https://github.com/ryandrewjohnson/react-localize-redux/pull/129)
+
 ## 3.4.0 (September 12, 2018)
 
-* Add initialize prop to LocaizeProvider to support SSR [#118](https://github.com/ryandrewjohnson/react-localize-redux/pull/127)
+* Add initialize prop to LocaizeProvider to support SSR [#127](https://github.com/ryandrewjohnson/react-localize-redux/pull/127)
 
 ## 3.3.2 (August 22, 2018)
 
