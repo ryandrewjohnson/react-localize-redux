@@ -106,6 +106,7 @@
   "dependencies": {
     "create-react-context": "^0.2.2",
     "flat": "^2.0.1",
+    "hoist-non-react-statics": "^3.0.1",
     "prop-types": "^15.6.1",
     "reselect": "^3.0.1"
   }
