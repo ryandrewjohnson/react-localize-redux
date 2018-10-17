@@ -1,3 +1,7 @@
+## 3.5.0 (October 17, 2018)
+
+* adds to withLocalize HOC automatic hoisting to non react statics using hoist-non-react-statics [#130](https://github.com/ryandrewjohnson/react-localize-redux/pull/130)
+
 ## 3.4.1 (September 28, 2018)
 
 * Remove remaining references to redux in source [#129](https://github.com/ryandrewjohnson/react-localize-redux/pull/129)
