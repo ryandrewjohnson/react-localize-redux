@@ -23,7 +23,7 @@ const getWithLocalizeWithContext = () => {
       }
     }
   });
-  
+
   return require('withLocalize').withLocalize;
 };
 
@@ -49,5 +49,21 @@ describe('withLocalize', () => {
     const result = shallow(<Wrapped name="Testy McTest" />);
     const wrapper = result.dive();
     expect(wrapper.props().name).toEqual('Testy McTest');
+  });
+
+  it('should hoist any existing static functions on WrappedComponent', () => {
+    const withLocalize = getWithLocalizeWithContext();
+    class WrapperComponent extends React.Component {
+      static sayHello() {
+        return 'hello';
+      }
+      render() {
+        return (
+          <h1>Hello You!</h1>
+        );
+      }
+    };
+    const Wrapped = withLocalize(WrapperComponent);
+    expect(Wrapped.sayHello()).toEqual('hello')
   });
 });
