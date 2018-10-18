@@ -47,7 +47,7 @@ export const getLocalizedElement = (
   }
 
   // return as Element
-  return React.createElement('span', null, ...translatedValueOrArray);
+  return React.createElement(React.Fragment, null, ...translatedValueOrArray);
 };
 
 export const hasHtmlTags = (value: string): boolean => {

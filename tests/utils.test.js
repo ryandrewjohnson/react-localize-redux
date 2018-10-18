@@ -51,10 +51,13 @@ describe('locale utils', () => {
     it('should handle React in data', () => {
       const Comp = () => <div>ReactJS</div>
       const translation = 'Hello ${ comp } data';
-      const result = utils.getLocalizedElement({
-        translation,
-        data: { comp: <Comp /> }
-      });
+      const result = (
+          <div>
+            {utils.getLocalizedElement({
+              translation,
+              data: { comp: <Comp /> }
+            })}
+          </div>);
       expect(mount(result).text()).toContain('ReactJS');
     })
   });

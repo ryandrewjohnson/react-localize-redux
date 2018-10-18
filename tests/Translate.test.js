@@ -110,7 +110,9 @@ describe('<Translate />', () => {
     const Comp = ({name}) => <strong>{name}</strong>;
     const Translate = getTranslateWithContext();
     const wrapper = mount(
-      <Translate id='placeholder' data={{ name: <Comp name='ReactJS' /> }} />
+      <div>
+        <Translate id='placeholder' data={{ name: <Comp name='ReactJS' /> }} />
+      </div>
     );
 
     expect(wrapper.find(Comp).length).toBe(1);
