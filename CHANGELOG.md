@@ -1,3 +1,7 @@
+## 3.5.1 (November 9, 2018)
+
+* ensure that store from props is initialized with initialize from props. [#130](https://github.com/ryandrewjohnson/react-localize-redux/pull/136)
+
 ## 3.5.0 (October 17, 2018)
 
 * adds to withLocalize HOC automatic hoisting to non react statics using hoist-non-react-statics [#130](https://github.com/ryandrewjohnson/react-localize-redux/pull/130)
