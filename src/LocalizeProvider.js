@@ -70,7 +70,7 @@ export class LocalizeProvider extends Component<
 
   initExternalStore() {
     const { store, initialize } = this.props;
-    if (store && initialize !== undefined) {
+    if (store && initialize) {
       store.dispatch(initializeAC(initialize));
     }
   }
