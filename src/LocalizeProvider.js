@@ -7,6 +7,7 @@ import {
   getTranslationsForActiveLanguage,
   type LocalizeState,
   type Action,
+  initialize as initializeAC,
   INITIALIZE,
   InitializePayload
 } from './localize';
@@ -58,21 +59,30 @@ export class LocalizeProvider extends Component<
     };
   }
 
-  static getDerivedStateFromProps(nextProps: any, nextState: any) {
-    return null;
-  }
-
   componentDidMount() {
-    if (this.props.store) {
-      this.unsubscribeFromStore = storeDidChange(
-        this.props.store,
-        this.onStateDidChange.bind(this)
-      );
-    }
+    this.initExternalStore();
+    this.subscribeToExternalStore();
   }
 
   componentWillUnmount() {
     this.unsubscribeFromStore && this.unsubscribeFromStore();
+  }
+
+  initExternalStore() {
+    const { store, initialize } = this.props;
+    if (store && initialize) {
+      store.dispatch(initializeAC(initialize));
+    }
+  }
+
+  subscribeToExternalStore() {
+    const { store } = this.props;
+    if (store) {
+      this.unsubscribeFromStore = storeDidChange(
+        store,
+        this.onStateDidChange.bind(this)
+      );
+    }
   }
 
   onStateDidChange(prevState: LocalizeProviderState) {
