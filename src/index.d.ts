@@ -178,7 +178,7 @@ export type Action = BaseAction<
 export type ActionLanguageCodes = Action & { languageCodes: string[] };
 
 export function localizeReducer(
-  state: LocalizeState,
+  state: LocalizeState | undefined,
   action: Action
 ): LocalizeState;
 
