@@ -1,3 +1,7 @@
+## 3.5.2 (January 24, 2019)
+
+* Update typescript definition for localizeReducer function
+
 ## 3.5.1 (November 9, 2018)
 
 * ensure that store from props is initialized with initialize from props. [#136](https://github.com/ryandrewjohnson/react-localize-redux/pull/136)
