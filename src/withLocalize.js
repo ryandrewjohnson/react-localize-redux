@@ -1,10 +1,8 @@
-import React, { Component, type ComponentType } from 'react';
+import React, { Component } from 'react';
 import hoistNonReactStatic from 'hoist-non-react-statics';
-import { LocalizeContext, type LocalizeContextProps } from './LocalizeContext';
+import { LocalizeContext } from './LocalizeContext';
 
-export function withLocalize<Props: {}>(
-  WrappedComponent: ComponentType<Props>
-): ComponentType<$Diff<Props, { ...LocalizeContextProps }>> {
+export function withLocalize(WrappedComponent) {
   class LocalizedComponent extends Component {
     render() {
       return (

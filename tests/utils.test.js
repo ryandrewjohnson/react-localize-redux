@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Enzyme, { mount, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import * as utils from 'utils';
@@ -9,7 +9,6 @@ describe('locale utils', () => {
   const defaultLanguage = { code: 'en' };
 
   describe('getLocalizedElement', () => {
-
     it('should return element with localized string', () => {
       const translations = { test: 'Here is my test' };
       const result = utils.getLocalizedElement({
@@ -20,11 +19,13 @@ describe('locale utils', () => {
 
     it('should render inner HTML when renderInnerHtml = true', () => {
       const translation = '<h1>Here</h1> is my <strong>test</strong>';
-      const wrapper = shallow(utils.getLocalizedElement({
-        translation,
-        renderInnerHtml: true
-      }));
-      
+      const wrapper = shallow(
+        utils.getLocalizedElement({
+          translation,
+          renderInnerHtml: true
+        })
+      );
+
       expect(wrapper.find('span').exists()).toBe(true);
       expect(wrapper.html()).toEqual(`<span>${translation}</span>`);
     });
@@ -49,14 +50,14 @@ describe('locale utils', () => {
     });
 
     it('should handle React in data', () => {
-      const Comp = () => <div>ReactJS</div>
+      const Comp = () => <div>ReactJS</div>;
       const translation = 'Hello ${ comp } data';
       const result = utils.getLocalizedElement({
         translation,
         data: { comp: <Comp /> }
       });
       expect(mount(result).text()).toContain('ReactJS');
-    })
+    });
   });
 
   describe('hasHtmlTags', () => {
@@ -93,9 +94,9 @@ describe('locale utils', () => {
 
     it('should return an array if React components are passed in data', () => {
       const Comp = () => <div>Test</div>;
-      const data = { comp:  <Comp />};
+      const data = { comp: <Comp /> };
       const before = 'Hello this is a ${ comp } translation';
-      const after = ['Hello this is a ', <Comp /> , ' translation'];
+      const after = ['Hello this is a ', <Comp />, ' translation'];
       const result = utils.templater(before, data);
       expect(result).toEqual(after);
     });
@@ -108,7 +109,7 @@ describe('locale utils', () => {
       expect(result).toEqual(after);
     });
   });
-  
+
   describe('getIndexForLanguageCode', () => {
     it('should return the index for matching language code', () => {
       const languages = [{ code: 'en' }, { code: 'fr' }, { code: 'ne' }];
@@ -125,7 +126,7 @@ describe('locale utils', () => {
 
   describe('objectValuesToString', () => {
     let translationData = {};
-    
+
     beforeEach(() => {
       translationData = {
         one: ['1', '2', '3'],
@@ -160,7 +161,7 @@ describe('locale utils', () => {
       const result = utils.validateOptions(options);
       expect(result).toEqual(options);
     });
-    
+
     it('should throw error if onMissingTranslation is not a function', () => {
       const options = {
         renderInnerHtml: false,
@@ -191,9 +192,8 @@ describe('locale utils', () => {
   });
 
   describe('get', () => {
-    
     const obj = { a: { b: { c: 'd' } } };
-    
+
     it('gets value at path', () => {
       const path = 'a.b.c';
       expect(utils.get(obj, path)).toBe('d');
@@ -207,6 +207,28 @@ describe('locale utils', () => {
     it('falls back to undefined', () => {
       const path = 'foo';
       expect(utils.get(obj, path)).toBeUndefined();
-    })
+    });
+  });
+
+  describe('isEmpty()', () => {
+    it('should return true if undefined', () => {
+      const result = utils.isEmpty(undefined);
+      expect(result).toBe(true);
+    });
+
+    it('should return true if null', () => {
+      const result = utils.isEmpty(null);
+      expect(result).toBe(true);
+    });
+
+    it('should return true if empty string', () => {
+      const result = utils.isEmpty('');
+      expect(result).toBe(true);
+    });
+
+    it('should return true when not empty', () => {
+      const result = utils.isEmpty('test');
+      expect(result).toBe(false);
+    });
   });
 });

@@ -1,5 +1,3 @@
-// @flow
-import * as React from 'react';
 import { flatten } from 'flat';
 import {
   createSelector,
@@ -8,171 +6,11 @@ import {
 } from 'reselect';
 import {
   getLocalizedElement,
-  getIndexForLanguageCode,
   objectValuesToString,
   validateOptions,
   getTranslationsForLanguage,
-  warning,
   getSingleToMultilanguageTranslation
 } from './utils';
-import type { Selector, SelectorCreator } from 'reselect';
-import type { Element } from 'react';
-
-/**
- * TYPES
- */
-export type Language = {
-  name?: string,
-  code: string,
-  active: boolean
-};
-
-export type NamedLanguage = {
-  name: string,
-  code: string
-};
-
-export type Translations = {
-  [key: string]: string[]
-};
-
-export type TransFormFunction = (
-  data: Object,
-  languageCodes: string[]
-) => Translations;
-
-export type renderToStaticMarkupFunction = (element: any) => string;
-
-export type InitializeOptions = {
-  renderToStaticMarkup: renderToStaticMarkupFunction | false,
-  renderInnerHtml?: boolean,
-  onMissingTranslation?: onMissingTranslationFunction,
-  defaultLanguage?: string,
-  ignoreTranslateChildren?: boolean
-};
-
-// This is to get around the whole default options issue with Flow
-// I tried using the $Diff approach, but with no luck so for now stuck with this terd.
-// Because sometimes you just want flow to shut up!
-type InitializeOptionsRequired = {
-  renderToStaticMarkup: renderToStaticMarkupFunction | false,
-  renderInnerHtml: boolean,
-  onMissingTranslation: onMissingTranslationFunction,
-  defaultLanguage: string,
-  ignoreTranslateChildren: boolean
-};
-
-export type TranslateOptions = {
-  language?: string,
-  renderInnerHtml?: boolean,
-  onMissingTranslation?: onMissingTranslationFunction,
-  defaultLanguage?: string,
-  ignoreTranslateChildren?: boolean
-};
-
-export type AddTranslationOptions = {
-  translationTransform?: TransFormFunction
-};
-
-export type LocalizeState = {
-  +languages: Language[],
-  +translations: Translations,
-  +options: InitializeOptionsRequired
-};
-
-export type TranslatedLanguage = {
-  [string]: string
-};
-
-export type LocalizedElement = Element<'span'> | string;
-
-export type LocalizedElementMap = {
-  [string]: LocalizedElement
-};
-
-export type TranslatePlaceholderData = {
-  [string]: string | number | React.Node
-};
-
-export type TranslateValue = string | string[];
-
-export type TranslateFunction = (
-  value: TranslateValue,
-  data?: TranslatePlaceholderData,
-  options?: TranslateOptions
-) => LocalizedElement | LocalizedElementMap;
-
-export type SingleLanguageTranslation = {
-  [key: string]: Object | string
-};
-
-export type MultipleLanguageTranslation = {
-  [key: string]: Object | string[]
-};
-
-type MissingTranslationOptions = {
-  translationId: string,
-  languageCode: string,
-  defaultTranslation: LocalizedElement
-};
-
-export type onMissingTranslationFunction = (
-  options: MissingTranslationOptions
-) => string;
-
-export type InitializePayload = {
-  languages: Array<string | NamedLanguage>,
-  translation?: Object,
-  options?: InitializeOptions
-};
-
-type AddTranslationPayload = {
-  translation: Object,
-  translationOptions?: AddTranslationOptions
-};
-
-type AddTranslationForLanguagePayload = {
-  translation: Object,
-  language: string
-};
-
-type SetActiveLanguagePayload = {
-  languageCode: string
-};
-
-type BaseAction<T, P> = {
-  type: T,
-  payload: P
-};
-
-export type InitializeAction = BaseAction<
-  '@@localize/INITIALIZE',
-  InitializePayload
->;
-export type AddTranslationAction = BaseAction<
-  '@@localize/ADD_TRANSLATION',
-  AddTranslationPayload
->;
-export type AddTranslationForLanguageAction = BaseAction<
-  '@@localize/ADD_TRANSLATION_FOR_LANGUAGE',
-  AddTranslationForLanguagePayload
->;
-export type SetActiveLanguageAction = BaseAction<
-  '@@localize/SET_ACTIVE_LANGUAGE',
-  SetActiveLanguagePayload
->;
-
-export type Action = BaseAction<
-  string,
-  InitializePayload &
-    AddTranslationPayload &
-    AddTranslationForLanguagePayload &
-    SetActiveLanguagePayload
->;
-
-export type ActionDetailed = Action & {
-  languageCodes: string[]
-};
 
 /**
  * ACTIONS
@@ -187,7 +25,7 @@ export const TRANSLATE = '@@localize/TRANSLATE';
 /**
  * REDUCERS
  */
-export function languages(state: Language[] = [], action: Action): Language[] {
+export function languages(state = [], action) {
   switch (action.type) {
     case INITIALIZE:
       const options = action.payload.options || {};
@@ -213,10 +51,7 @@ export function languages(state: Language[] = [], action: Action): Language[] {
   }
 }
 
-export function translations(
-  state: Translations = {},
-  action: ActionDetailed
-): Translations {
+export function translations(state = {}, action) {
   let flattenedTranslations;
   let translationWithTransform;
 
@@ -284,13 +119,10 @@ export function translations(
   }
 }
 
-export function options(
-  state: InitializeOptionsRequired = defaultTranslateOptions,
-  action: ActionDetailed
-): InitializeOptionsRequired {
+export function options(state = defaultTranslateOptions, action) {
   switch (action.type) {
     case INITIALIZE:
-      const options: any = action.payload.options || {};
+      const options = action.payload.options || {};
       const defaultLanguage =
         options.defaultLanguage || action.languageCodes[0];
       return { ...state, ...validateOptions(options), defaultLanguage };
@@ -299,7 +131,7 @@ export function options(
   }
 }
 
-export const defaultTranslateOptions: InitializeOptionsRequired = {
+export const defaultTranslateOptions = {
   renderToStaticMarkup: false,
   renderInnerHtml: false,
   ignoreTranslateChildren: false,
@@ -308,16 +140,13 @@ export const defaultTranslateOptions: InitializeOptionsRequired = {
     'Missing translationId: ${ translationId } for language: ${ languageCode }'
 };
 
-const initialState: LocalizeState = {
+const initialState = {
   languages: [],
   translations: {},
   options: defaultTranslateOptions
 };
 
-export const localizeReducer = (
-  state: LocalizeState = initialState,
-  action: Action
-): LocalizeState => {
+export const localizeReducer = (state = initialState, action) => {
   // execute the languages reducer first as we need access to those values for other reducers
   const languagesState = languages(state.languages, action);
   const languageCodes = languagesState.map(language => language.code);
@@ -335,15 +164,12 @@ export const localizeReducer = (
 /**
  * ACTION CREATORS
  */
-export const initialize = (payload: InitializePayload): InitializeAction => ({
+export const initialize = payload => ({
   type: INITIALIZE,
   payload
 });
 
-export const addTranslation = (
-  translation: MultipleLanguageTranslation,
-  options?: AddTranslationOptions
-): AddTranslationAction => ({
+export const addTranslation = (translation, options) => ({
   type: ADD_TRANSLATION,
   payload: {
     translation,
@@ -351,17 +177,12 @@ export const addTranslation = (
   }
 });
 
-export const addTranslationForLanguage = (
-  translation: SingleLanguageTranslation,
-  language: string
-): AddTranslationForLanguageAction => ({
+export const addTranslationForLanguage = (translation, language) => ({
   type: ADD_TRANSLATION_FOR_LANGUAGE,
   payload: { translation, language }
 });
 
-export const setActiveLanguage = (
-  languageCode: string
-): SetActiveLanguageAction => ({
+export const setActiveLanguage = languageCode => ({
   type: SET_ACTIVE_LANGUAGE,
   payload: { languageCode }
 });
@@ -369,18 +190,17 @@ export const setActiveLanguage = (
 /**
  * SELECTORS
  */
-export const getTranslations = (state: LocalizeState): Translations => {
+export const getTranslations = state => {
   return state.translations;
 };
 
-export const getLanguages = (state: LocalizeState): Language[] =>
-  state.languages;
+export const getLanguages = state => state.languages;
 
-export const getOptions = (state: LocalizeState): InitializeOptionsRequired => {
+export const getOptions = state => {
   return state.options;
 };
 
-export const getActiveLanguage = (state: LocalizeState): Language => {
+export const getActiveLanguage = state => {
   const languages = getLanguages(state);
   return languages.filter(language => language.active === true)[0];
 };
@@ -395,14 +215,14 @@ export const getActiveLanguage = (state: LocalizeState): Language => {
 export const translationsEqualSelector = createSelectorCreator(
   defaultMemoize,
   (prev, cur) => {
-    const prevKeys: any =
+    const prevKeys =
       typeof prev === 'object' ? Object.keys(prev).toString() : undefined;
-    const curKeys: any =
+    const curKeys =
       typeof cur === 'object' ? Object.keys(cur).toString() : undefined;
 
-    const prevValues: any =
+    const prevValues =
       typeof prev === 'object' ? objectValuesToString(prev) : undefined;
-    const curValues: any =
+    const curValues =
       typeof cur === 'object' ? objectValuesToString(cur) : undefined;
 
     const prevCacheValue =
@@ -419,11 +239,7 @@ export const translationsEqualSelector = createSelectorCreator(
   }
 );
 
-export const getTranslationsForActiveLanguage: Selector<
-  LocalizeState,
-  void,
-  TranslatedLanguage
-> = translationsEqualSelector(
+export const getTranslationsForActiveLanguage = translationsEqualSelector(
   getActiveLanguage,
   getLanguages,
   getTranslations,
@@ -434,7 +250,7 @@ export const getTranslationsForSpecificLanguage = translationsEqualSelector(
   getLanguages,
   getTranslations,
   (languages, translations) =>
-    defaultMemoize((languageCode: string) =>
+    defaultMemoize(languageCode =>
       getTranslationsForLanguage(
         { code: languageCode, active: false },
         languages,
@@ -443,11 +259,7 @@ export const getTranslationsForSpecificLanguage = translationsEqualSelector(
     )
 );
 
-export const getTranslate: Selector<
-  LocalizeState,
-  void,
-  TranslateFunction
-> = createSelector(
+export const getTranslate = createSelector(
   getTranslationsForActiveLanguage,
   getTranslationsForSpecificLanguage,
   getActiveLanguage,
@@ -479,7 +291,7 @@ export const getTranslate: Selector<
 
       const mergedOptions = { ...defaultOptions, ...translateOptions };
 
-      const getTranslation = (translationId: string) => {
+      const getTranslation = translationId => {
         const hasValidTranslation = translations[translationId] !== undefined;
         const hasValidDefaultTranslation =
           defaultTranslations[translationId] !== undefined;

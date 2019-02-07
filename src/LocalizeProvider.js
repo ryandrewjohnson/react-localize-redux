@@ -5,39 +5,19 @@ import {
   getActiveLanguage,
   getOptions,
   getTranslationsForActiveLanguage,
-  type LocalizeState,
-  type Action,
   initialize as initializeAC,
   INITIALIZE,
   InitializePayload
 } from './localize';
-import {
-  LocalizeContext,
-  type LocalizeContextProps,
-  getContextPropsFromState
-} from './LocalizeContext';
+import { LocalizeContext, getContextPropsFromState } from './LocalizeContext';
 import { storeDidChange } from './utils';
 
-type LocalizeProviderState = {
-  localize: LocalizeState
-};
+export class LocalizeProvider extends Component {
+  // unsubscribeFromStore;
+  // getContextPropsSelector;
+  // contextProps;
 
-export type LocalizeProviderProps = {
-  store?: any,
-  getState?: Function,
-  initialize?: InitializePayload,
-  children: any
-};
-
-export class LocalizeProvider extends Component<
-  LocalizeProviderProps,
-  LocalizeProviderState
-> {
-  unsubscribeFromStore: Function;
-  getContextPropsSelector: any;
-  contextProps: LocalizeContextProps;
-
-  constructor(props: LocalizeProviderProps) {
+  constructor(props) {
     super(props);
 
     const dispatch = this.props.store
@@ -52,7 +32,7 @@ export class LocalizeProvider extends Component<
             type: INITIALIZE,
             payload: this.props.initialize
           })
-        : localizeReducer(undefined, ({}: any));
+        : localizeReducer(undefined, {});
 
     this.state = {
       localize: initialState
@@ -85,7 +65,7 @@ export class LocalizeProvider extends Component<
     }
   }
 
-  onStateDidChange(prevState: LocalizeProviderState) {
+  onStateDidChange(prevState) {
     if (!this.props.store) {
       return;
     }
@@ -120,7 +100,7 @@ export class LocalizeProvider extends Component<
     }
   }
 
-  dispatch(action: any) {
+  dispatch(action) {
     this.setState(prevState => {
       return {
         localize: localizeReducer(prevState.localize, action)

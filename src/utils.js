@@ -1,27 +1,7 @@
 // @flow
 import React from 'react';
-import {
-  defaultTranslateOptions,
-  type MultipleLanguageTranslation
-} from './localize';
-import type {
-  TranslatePlaceholderData,
-  TranslatedLanguage,
-  Translations,
-  InitializeOptions,
-  LocalizedElement,
-  Language
-} from './localize';
 
-type LocalizedElementOptions = {
-  translation: string,
-  data: TranslatePlaceholderData,
-  renderInnerHtml: boolean
-};
-
-export const getLocalizedElement = (
-  options: LocalizedElementOptions
-): LocalizedElement => {
+export const getLocalizedElement = options => {
   const { translation, data, renderInnerHtml } = options;
 
   const translatedValueOrArray = templater(translation, data);
@@ -50,7 +30,7 @@ export const getLocalizedElement = (
   return React.createElement('span', null, ...translatedValueOrArray);
 };
 
-export const hasHtmlTags = (value: string): boolean => {
+export const hasHtmlTags = value => {
   const pattern = /(&[^\s]*;|<\/?\w+((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[\^'">\s]+))?)+\s*|\s*)\/?>)/;
   return value.search(pattern) >= 0;
 };
@@ -62,10 +42,7 @@ export const hasHtmlTags = (value: string): boolean => {
  * @param {object} data The data that should be inserted in template
  * @return {string} The template string with the data merged in
  */
-export const templater = (
-  strings: string,
-  data: Object = {}
-): string | string[] => {
+export const templater = (strings, data = {}) => {
   if (!strings) return '';
 
   // ${**}
@@ -101,14 +78,11 @@ export const templater = (
   }, '');
 };
 
-export const getIndexForLanguageCode = (
-  code: string,
-  languages: Language[]
-): number => {
+export const getIndexForLanguageCode = (code, languages) => {
   return languages.map(language => language.code).indexOf(code);
 };
 
-export const objectValuesToString = (data: Object): string => {
+export const objectValuesToString = data => {
   return !Object.values
     ? Object.keys(data)
         .map(key => data[key].toString())
@@ -116,9 +90,7 @@ export const objectValuesToString = (data: Object): string => {
     : Object.values(data).toString();
 };
 
-export const validateOptions = (
-  options: InitializeOptions
-): InitializeOptions => {
+export const validateOptions = options => {
   if (
     options.onMissingTranslation !== undefined &&
     typeof options.onMissingTranslation !== 'function'
@@ -142,10 +114,10 @@ export const validateOptions = (
 };
 
 export const getTranslationsForLanguage = (
-  language: Language,
-  languages: Language[],
-  translations: Translations
-): TranslatedLanguage => {
+  language,
+  languages,
+  translations
+) => {
   // no language! return no translations
   if (!language) {
     return {};
@@ -165,10 +137,7 @@ export const getTranslationsForLanguage = (
   return translationsForLanguage;
 };
 
-export const storeDidChange = (
-  store: any,
-  onChange: (prevState: any) => void
-) => {
+export const storeDidChange = (store, onChange) => {
   let currentState;
 
   function handleChange() {
@@ -185,11 +154,11 @@ export const storeDidChange = (
 };
 
 export const getSingleToMultilanguageTranslation = (
-  language: string,
-  languageCodes: string[],
-  flattenedTranslations: Object,
-  existingTranslations: Object
-): Translations => {
+  language,
+  languageCodes,
+  flattenedTranslations,
+  existingTranslations
+) => {
   const languageIndex = languageCodes.indexOf(language);
   const translations = languageIndex >= 0 ? flattenedTranslations : {};
   const keys = Object.keys(translations);
@@ -214,11 +183,7 @@ export const getSingleToMultilanguageTranslation = (
   return singleLanguageTranslations;
 };
 
-export const get = (
-  obj: Object,
-  path: string,
-  defaultValue: any = undefined
-) => {
+export const get = (obj, path, defaultValue = undefined) => {
   const pathArr = path.split('.').filter(Boolean);
   return pathArr.reduce((ret, key) => {
     return ret && ret[key] ? ret[key] : defaultValue;
@@ -227,7 +192,7 @@ export const get = (
 
 // Thanks react-redux for utility function
 // https://github.com/reactjs/react-redux/blob/master/src/utils/warning.js
-export const warning = (message: string) => {
+export const warning = message => {
   if (typeof console !== 'undefined' && typeof console.error === 'function') {
     console.error(message);
   }
@@ -238,4 +203,8 @@ export const warning = (message: string) => {
     // it would pause the execution at this line.
     throw new Error(message);
   } catch (e) {}
+};
+
+export const isEmpty = value => {
+  return value === undefined || value === null || value === '';
 };

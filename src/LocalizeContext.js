@@ -1,17 +1,6 @@
 // @flow
-import React from 'react';
-import createReactContext, { type Context } from 'create-react-context';
-import { createSelector, type Selector } from 'reselect';
-import {
-  type TranslateFunction,
-  type Language,
-  type MultipleLanguageTranslation,
-  type SingleLanguageTranslation,
-  type InitializePayload,
-  type LocalizeState,
-  type renderToStaticMarkupFunction,
-  defaultTranslateOptions
-} from './localize';
+import React, { createContext } from 'react';
+import { createSelector } from 'reselect';
 import {
   localizeReducer,
   getTranslate,
@@ -24,50 +13,42 @@ import {
   getOptions
 } from './localize';
 
-export type LocalizeContextProps = {
-  translate: TranslateFunction,
-  languages: Language[],
-  activeLanguage: Language,
-  defaultLanguage: string,
-  initialize: (payload: InitializePayload) => void,
-  addTranslation: (translation: MultipleLanguageTranslation) => void,
-  addTranslationForLanguage: (
-    translation: SingleLanguageTranslation,
-    language: string
-  ) => void,
-  setActiveLanguage: (languageCode: string) => void,
-  renderToStaticMarkup: renderToStaticMarkupFunction | false,
-  ignoreTranslateChildren: boolean
-};
+// export type LocalizeContextProps = {
+//   translate: TranslateFunction,
+//   languages: Language[],
+//   activeLanguage: Language,
+//   defaultLanguage: string,
+//   initialize: (payload: InitializePayload) => void,
+//   addTranslation: (translation: MultipleLanguageTranslation) => void,
+//   addTranslationForLanguage: (
+//     translation: SingleLanguageTranslation,
+//     language: string
+//   ) => void,
+//   setActiveLanguage: (languageCode: string) => void,
+//   renderToStaticMarkup: renderToStaticMarkupFunction | false,
+//   ignoreTranslateChildren: boolean
+// };
 
-const dispatchInitialize = (dispatch: Function) => (
-  payload: InitializePayload
-) => {
+const dispatchInitialize = dispatch => payload => {
   return dispatch(initialize(payload));
 };
 
-const dispatchAddTranslation = (dispatch: Function) => (
-  translation: MultipleLanguageTranslation
-) => {
+const dispatchAddTranslation = dispatch => translation => {
   return dispatch(addTranslation(translation));
 };
 
-const dispatchAddTranslationForLanguage = (dispatch: Function) => (
-  translation: SingleLanguageTranslation,
-  language: string
+const dispatchAddTranslationForLanguage = dispatch => (
+  translation,
+  language
 ) => {
   return dispatch(addTranslationForLanguage(translation, language));
 };
 
-const dispatchSetActiveLanguage = (dispatch: Function) => (
-  languageCode: string
-) => {
+const dispatchSetActiveLanguage = dispatch => languageCode => {
   return dispatch(setActiveLanguage(languageCode));
 };
 
-export const getContextPropsFromState = (
-  dispatch: Function
-): Selector<LocalizeState, void, LocalizeContextProps> =>
+export const getContextPropsFromState = dispatch =>
   createSelector(
     getTranslate,
     getLanguages,
@@ -97,9 +78,7 @@ export const getContextPropsFromState = (
     }
   );
 
-const defaultLocalizeState = localizeReducer(undefined, ({}: any));
+const defaultLocalizeState = localizeReducer(undefined, {});
 const defaultContext = getContextPropsFromState(() => {})(defaultLocalizeState);
 
-export const LocalizeContext: Context<
-  LocalizeContextProps
-> = createReactContext(defaultContext);
+export const LocalizeContext = createContext(defaultContext);

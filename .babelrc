@@ -1,15 +1,3 @@
 {
-  "presets": ["es2015-no-commonjs", "react", "stage-0"],
-  "plugins": ["transform-flow-strip-types", "transform-react-remove-prop-types"],
-  "env": {
-    "development": {
-      "plugins": ["transform-es2015-modules-commonjs"]
-    },
-    "commonjs": {
-      "plugins": ["transform-es2015-modules-commonjs"]
-    },
-    "test": {
-      "plugins": ["transform-es2015-modules-commonjs"]
-    }
-  }
+  "presets": ["@babel/preset-env", "@babel/preset-react"]
 }
