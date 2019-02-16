@@ -750,31 +750,38 @@ describe('localize', () => {
     });
 
     it('should set first language available as default when no default is set', () => {
-      state = localizeReducer({ languages: [] }, {
-        type: INITIALIZE,
-        payload: { 
-          languages: ['en', 'fr', 'es'],
-          options: { renderToStaticMarkup: false }
+      state = localizeReducer(
+        { languages: [] },
+        {
+          type: INITIALIZE,
+          payload: {
+            languages: ['en', 'fr', 'es'],
+            options: { renderToStaticMarkup: false }
+          }
         }
-      });
+      );
 
       const options = getOptions(state);
       expect(options.defaultLanguage).toBe(state.languages[0].code);
     });
 
     it('should return value using default language when missing a translation with USD hard coded into translation', () => {
-      state = localizeReducer({ languages: [], translations: state.translations }, {
-        type: INITIALIZE,
-        payload: { 
-          languages: ['en', 'fr', 'es'],
-          options: { renderToStaticMarkup: false },
+      state = localizeReducer(
+        { languages: [], translations: state.translations },
+        {
+          type: INITIALIZE,
+          payload: {
+            languages: ['en', 'fr', 'es'],
+            options: { renderToStaticMarkup: false }
+          }
         }
-      });
-      state.options.onMissingTranslation = ({ defaultTranslation }) => defaultTranslation;
+      );
+      state.options.onMissingTranslation = ({ defaultTranslation }) =>
+        defaultTranslation;
       const key = 'money_no_translation';
       const translate = getTranslate(state);
       const result = translate([key], { amount: 100 });
-      expect(result[key]).toBe('save $100')
+      expect(result[key]).toBe('save $100');
     });
 
     it('should return value from onMissingTranslation option override', () => {
@@ -811,7 +818,7 @@ describe('localize', () => {
       const result = jest.fn();
       const selector = translationsEqualSelector(() => languages, result);
       selector({});
-      languages = [...languages, [...{ code: 'ca', active: false }]];
+      languages = [...languages, ...[{ code: 'ca', active: false }]];
       selector({});
       expect(result).toHaveBeenCalledTimes(2);
     });

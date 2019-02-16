@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { LocalizeContext } from './LocalizeContext';
 import { isEmpty } from './utils';
 
-const Translate = props => {
+export const Translate = props => {
   const context = useContext(LocalizeContext);
   const { id = '', options = {}, data } = props;
   const defaultLanguage = options.language || context.defaultLanguage;
@@ -42,5 +42,3 @@ const Translate = props => {
     ? props.children(context)
     : context.translate && context.translate(id, data, options);
 };
-
-export default Translate;

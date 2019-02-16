@@ -8,7 +8,7 @@ import {
   getLanguages,
   getActiveLanguage
 } from '../src';
-import Translate from '../src/Translate';
+import { Translate } from '../src/Translate';
 import { defaultTranslateOptions } from '../src/localize';
 
 jest.mock('react', () => ({

@@ -1,5 +1,6 @@
 import React from 'react';
 import Enzyme, { mount, shallow } from 'enzyme';
+import { render } from 'react-testing-library';
 import Adapter from 'enzyme-adapter-react-16';
 import * as utils from 'utils';
 
@@ -56,7 +57,8 @@ describe('locale utils', () => {
         translation,
         data: { comp: <Comp /> }
       });
-      expect(mount(result).text()).toContain('ReactJS');
+      const { container } = render(result);
+      expect(container.textContent).toContain('ReactJS');
     });
   });
 
