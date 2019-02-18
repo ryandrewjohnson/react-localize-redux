@@ -1,78 +1,41 @@
-// @flow
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   localizeReducer,
   getActiveLanguage,
   getOptions,
   getTranslationsForActiveLanguage,
   initialize as initializeAC,
-  INITIALIZE,
-  InitializePayload
+  INITIALIZE
 } from './localize';
 import { LocalizeContext, getContextPropsFromState } from './LocalizeContext';
 import { storeDidChange } from './utils';
 
-export class LocalizeProvider extends Component {
-  // unsubscribeFromStore;
-  // getContextPropsSelector;
-  // contextProps;
-
-  constructor(props) {
-    super(props);
-
-    const dispatch = this.props.store
-      ? this.props.store.dispatch
-      : this.dispatch.bind(this);
-
-    this.getContextPropsSelector = getContextPropsFromState(dispatch);
-
-    const initialState =
-      this.props.initialize !== undefined
-        ? localizeReducer(undefined, {
-            type: INITIALIZE,
-            payload: this.props.initialize
-          })
-        : localizeReducer(undefined, {});
-
-    this.state = {
-      localize: initialState
-    };
-  }
-
-  componentDidMount() {
-    this.initExternalStore();
-    this.subscribeToExternalStore();
-  }
-
-  componentWillUnmount() {
-    this.unsubscribeFromStore && this.unsubscribeFromStore();
-  }
-
-  initExternalStore() {
-    const { store, initialize } = this.props;
+export const LocalizeProvider = props => {
+  const initExternalStore = () => {
+    const { store, initialize } = props;
     if (store && initialize) {
       store.dispatch(initializeAC(initialize));
     }
-  }
+  };
 
-  subscribeToExternalStore() {
-    const { store } = this.props;
-    if (store) {
-      this.unsubscribeFromStore = storeDidChange(
-        store,
-        this.onStateDidChange.bind(this)
-      );
-    }
-  }
+  const initialState =
+    props.initialize !== undefined
+      ? localizeReducer(undefined, {
+          type: INITIALIZE,
+          payload: props.initialize
+        })
+      : localizeReducer(undefined, {});
 
-  onStateDidChange(prevState) {
-    if (!this.props.store) {
+  const [localize, setLocalize] = useState(localizeReducer(initialState, {}));
+
+  const onStateDidChange = prevState => {
+    if (!props.store) {
       return;
     }
-    const getState = this.props.getState || (state => state.localize);
+    const getState = props.getState || (state => state.localize);
 
     const prevLocalizeState = prevState && getState(prevState);
-    const curLocalizeState = getState(this.props.store.getState());
+    const curLocalizeState = getState(props.store.getState());
 
     const prevActiveLanguage =
       prevState && getActiveLanguage(prevLocalizeState);
@@ -96,25 +59,32 @@ export class LocalizeProvider extends Component {
       hasOptionsChanged ||
       hasTranslationsChanged
     ) {
-      this.setState({ localize: curLocalizeState });
+      setLocalize(curLocalizeState);
     }
-  }
+  };
 
-  dispatch(action) {
-    this.setState(prevState => {
-      return {
-        localize: localizeReducer(prevState.localize, action)
-      };
-    });
-  }
+  useEffect(() => {
+    initExternalStore();
+    const unsubscribeFromStore = subscribeToExternalStore();
+    return () => unsubscribeFromStore && unsubscribeFromStore();
+  }, []);
 
-  render() {
-    this.contextProps = this.getContextPropsSelector(this.state.localize);
+  const subscribeToExternalStore = () => {
+    if (props.store) {
+      return storeDidChange(props.store, onStateDidChange);
+    }
+  };
 
-    return (
-      <LocalizeContext.Provider value={this.contextProps}>
-        {this.props.children}
-      </LocalizeContext.Provider>
-    );
-  }
-}
+  const dispatch = props.store
+    ? props.store.dispatch
+    : action => setLocalize(prevState => localizeReducer(prevState, action));
+
+  const getContextPropsSelector = getContextPropsFromState(dispatch);
+  const contextProps = getContextPropsSelector(localize);
+
+  return (
+    <LocalizeContext.Provider value={contextProps}>
+      {props.children}
+    </LocalizeContext.Provider>
+  );
+};

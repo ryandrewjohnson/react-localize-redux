@@ -1,5 +1,4 @@
-// @flow
-import React, { createContext } from 'react';
+import { createContext } from 'react';
 import { createSelector } from 'reselect';
 import {
   localizeReducer,
@@ -12,22 +11,6 @@ import {
   getActiveLanguage,
   getOptions
 } from './localize';
-
-// export type LocalizeContextProps = {
-//   translate: TranslateFunction,
-//   languages: Language[],
-//   activeLanguage: Language,
-//   defaultLanguage: string,
-//   initialize: (payload: InitializePayload) => void,
-//   addTranslation: (translation: MultipleLanguageTranslation) => void,
-//   addTranslationForLanguage: (
-//     translation: SingleLanguageTranslation,
-//     language: string
-//   ) => void,
-//   setActiveLanguage: (languageCode: string) => void,
-//   renderToStaticMarkup: renderToStaticMarkupFunction | false,
-//   ignoreTranslateChildren: boolean
-// };
 
 const dispatchInitialize = dispatch => payload => {
   return dispatch(initialize(payload));

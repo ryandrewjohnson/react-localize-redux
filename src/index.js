@@ -1,4 +1,3 @@
-// @flow
 export { Translate } from './Translate';
 export { withLocalize } from './withLocalize';
 export { LocalizeProvider } from './LocalizeProvider';
