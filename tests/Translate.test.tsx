@@ -42,7 +42,7 @@ describe('<Translate />', () => {
   };
 
   const getTranslateWithContext = (state = INITIAL_STATE) => {
-    const localizeState = localizeReducer(state, {});
+    const localizeState = localizeReducer(state as any, {});
 
     const defaultContext = {
       translate: getTranslate(localizeState),
@@ -59,7 +59,7 @@ describe('<Translate />', () => {
       ignoreTranslateChildren: localizeState.options.ignoreTranslateChildren
     };
 
-    useContext.mockImplementationOnce(() => defaultContext);
+    (useContext as any).mockImplementationOnce(() => defaultContext);
 
     return defaultContext;
   };

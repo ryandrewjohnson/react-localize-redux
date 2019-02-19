@@ -3,32 +3,31 @@ import commonjs from 'rollup-plugin-commonjs';
 import typescript from 'rollup-plugin-typescript';
 import pkg from './package.json';
 
-export default [
-  {
-    input: 'src/index.ts',
-    external: ['react', 'redux'],
-    output: {
+export default {
+  input: 'src/index.ts',
+  external: ['react', 'redux'],
+  output: [
+    { 
+      file: pkg.main, 
       name: 'ReactLocalizeRedux',
-      file: pkg.browser,
-      format: 'umd'
+      format: 'umd', 
+      sourcemap: true 
     },
-    plugins: [
-      resolve(), 
-      commonjs(), 
-      typescript()
-    ]
-  },
-  {
-    input: 'src/index.ts',
-    external: ['react', 'redux'],
-    plugins: [
-      resolve(), 
-      commonjs(), 
-      typescript() 
-    ],
-    output: [
-      { file: pkg.main, format: 'cjs' },
-      { file: pkg.module, format: 'es' }
-    ]
-  }
-];
+    { 
+      file: pkg.module, 
+      format: 'es', 
+      sourcemap: true 
+    },
+    { 
+      file: pkg.main, 
+      format: 'cjs', 
+      sourcemap: true 
+    }
+  ],
+  plugins: [
+    resolve(), 
+    commonjs(), 
+    typescript()
+  ]
+}
+

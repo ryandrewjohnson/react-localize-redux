@@ -43,7 +43,7 @@ export function languages(state = [], action) {
           : { ...language, active: isActive(language.code) }; // language objects
       });
     case SET_ACTIVE_LANGUAGE:
-      return state.map(language => {
+      return state.map((language: any) => {
         return language.code === action.payload.languageCode
           ? { ...language, active: true }
           : { ...language, active: false };
@@ -171,7 +171,7 @@ export const initialize = payload => ({
   payload
 });
 
-export const addTranslation = (translation, options) => ({
+export const addTranslation = (translation, options?) => ({
   type: ADD_TRANSLATION,
   payload: {
     translation,
@@ -274,7 +274,7 @@ export const getTranslate = createSelector(
   ) => {
     return (value, data = {}, translateOptions = {}) => {
       const { defaultLanguage, ...defaultOptions } = initializeOptions;
-      const overrideLanguage = translateOptions.language;
+      const overrideLanguage = (translateOptions as any).language;
 
       const translations =
         overrideLanguage !== undefined

@@ -11,8 +11,7 @@
     "dev": "rollup -c -w",
     "coverage": "jest && codecov",
     "prepublish": "npm run build",
-    "test": "cross-env BABEL_ENV=test jest",
-    "test:dev": "jest --watch",
+    "test": "jest",
     "prettier": "prettier --write src/**/*",
     "upload:demo": "codesandbox ./demo"
   },
@@ -43,39 +42,43 @@
   },
   "homepage": "https://github.com/ryandrewjohnson/react-localize-redux#readme",
   "peerDependencies": {
-    "react": "^16.0.0"
+    "react": "^16.8.0"
   },
   "devDependencies": {
+    "@types/enzyme": "^3.1.18",
     "@types/flat": "0.0.28",
     "@types/hoist-non-react-statics": "^3.0.1",
+    "@types/jest": "^24.0.6",
     "@types/react": "^16.8.3",
+    "@types/reselect": "^2.2.0",
     "codecov": "^3.0.2",
     "codesandbox": "^1.2.10",
     "cross-env": "^3.1.4",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.9.1",
     "immutable": "^3.8.2",
-    "jest": "^24.0.0",
+    "jest": "^24.1.0",
     "jest-dom": "^3.0.2",
     "json-loader": "^0.5.4",
-    "prettier": "1.12.1",
+    "prettier": "^1.16.4",
     "react": "^16.8.2",
     "react-dom": "^16.8.2",
-    "react-testing-library": "^5.5.3",
+    "react-testing-library": "^5.9.0",
     "redux": "^3.6.0",
-    "reselect": "^4.0.0",
     "rollup": "^1.2.1",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-json": "^3.1.0",
     "rollup-plugin-node-resolve": "^4.0.0",
-    "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-typescript": "^1.0.0",
+    "ts-jest": "^24.0.0",
     "ts-node": "^7.0.1",
     "tslib": "^1.9.3",
     "typescript": "^3.3.3"
   },
   "jest": {
-    "verbose": true,
+    "transform": {
+      ".(ts|tsx)": "ts-jest"
+    },
     "roots": [
       "tests/"
     ],
@@ -84,15 +87,13 @@
       "node_modules"
     ],
     "setupFiles": [
-      "<rootDir>/jest.setup.js",
-      "raf/polyfill"
-    ],
-    "coverageDirectory": "./coverage/",
-    "collectCoverage": false
+      "<rootDir>/jest.setup.js"
+    ]
   },
   "dependencies": {
     "flat": "^4.1.0",
     "hoist-non-react-statics": "^3.3.0",
-    "prop-types": "^15.6.1"
+    "prop-types": "^15.6.1",
+    "reselect": "^4.0.0"
   }
 }

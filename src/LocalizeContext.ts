@@ -9,7 +9,8 @@ import {
   setActiveLanguage,
   getLanguages,
   getActiveLanguage,
-  getOptions
+  getOptions,
+  defaultTranslateOptions
 } from './localize';
 
 const dispatchInitialize = dispatch => payload => {

@@ -1,10 +1,7 @@
 import React from 'react';
-import Enzyme, { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import { render } from 'react-testing-library';
-import Adapter from 'enzyme-adapter-react-16';
-import * as utils from 'utils';
-
-Enzyme.configure({ adapter: new Adapter() });
+import * as utils from '../src/utils';
 
 describe('locale utils', () => {
   const defaultLanguage = { code: 'en' };
@@ -20,12 +17,10 @@ describe('locale utils', () => {
 
     it('should render inner HTML when renderInnerHtml = true', () => {
       const translation = '<h1>Here</h1> is my <strong>test</strong>';
-      const wrapper = shallow(
-        utils.getLocalizedElement({
-          translation,
-          renderInnerHtml: true
-        })
-      );
+      const wrapper = shallow(utils.getLocalizedElement({
+        translation,
+        renderInnerHtml: true
+      }) as any);
 
       expect(wrapper.find('span').exists()).toBe(true);
       expect(wrapper.html()).toEqual(`<span>${translation}</span>`);
@@ -53,7 +48,7 @@ describe('locale utils', () => {
     it('should handle React in data', () => {
       const Comp = () => <div>ReactJS</div>;
       const translation = 'Hello ${ comp } data';
-      const result = utils.getLocalizedElement({
+      const result: any = utils.getLocalizedElement({
         translation,
         data: { comp: <Comp /> }
       });

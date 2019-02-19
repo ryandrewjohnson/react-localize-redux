@@ -1,8 +1,5 @@
 import React from 'react';
-import Enzyme, { shallow, mount } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
-Enzyme.configure({ adapter: new Adapter() });
+import { shallow } from 'enzyme';
 
 const defaultContext = {
   translate: jest.fn(),
@@ -19,9 +16,9 @@ const getWithLocalizeWithContext = () => {
   jest.doMock('../src/LocalizeContext', () => {
     return {
       LocalizeContext: {
-        Consumer: (props) => props.children(defaultContext)
+        Consumer: props => props.children(defaultContext)
       }
-    }
+    };
   });
 
   return require('withLocalize').withLocalize;
@@ -47,7 +44,7 @@ describe('withLocalize', () => {
     const Wrapped = withLocalize(WrapperComponent);
 
     const result = shallow(<Wrapped name="Testy McTest" />);
-    const wrapper = result.dive();
+    const wrapper: any = result.dive();
     expect(wrapper.props().name).toEqual('Testy McTest');
   });
 
@@ -58,12 +55,10 @@ describe('withLocalize', () => {
         return 'hello';
       }
       render() {
-        return (
-          <h1>Hello You!</h1>
-        );
+        return <h1>Hello You!</h1>;
       }
-    };
+    }
     const Wrapped = withLocalize(WrapperComponent);
-    expect(Wrapped.sayHello()).toEqual('hello')
+    expect(Wrapped.sayHello()).toEqual('hello');
   });
 });

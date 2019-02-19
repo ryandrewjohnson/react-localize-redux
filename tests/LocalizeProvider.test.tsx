@@ -1,17 +1,13 @@
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
-import Enzyme, { shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import { createStore, combineReducers } from 'redux';
-import Adapter from 'enzyme-adapter-react-16';
 import { Map } from 'immutable';
 import { LocalizeProvider } from '../src/LocalizeProvider';
 import { localizeReducer } from '../src/localize';
 import { getTranslate, getLanguages, withLocalize, Translate } from '../src';
 import { defaultTranslateOptions } from '../src/localize';
-
 import { render } from 'react-testing-library';
-
-Enzyme.configure({ adapter: new Adapter() });
 
 describe('<LocalizeProvider />', () => {
   const initialState = {
@@ -48,7 +44,7 @@ describe('<LocalizeProvider />', () => {
   });
 
   it.skip('should set default context props', () => {
-    const wrapper = shallow(
+    const wrapper: any = shallow(
       <LocalizeProvider>
         <div>Hello</div>
       </LocalizeProvider>
@@ -90,7 +86,7 @@ describe('<LocalizeProvider />', () => {
   });
 
   it('should work with SSR', () => {
-    class App extends React.Component {
+    class App extends React.Component<any, any> {
       constructor(props) {
         super(props);
 
@@ -144,7 +140,7 @@ describe('<LocalizeProvider />', () => {
   });
 
   it('should work when store and initialize are passed to Provider', () => {
-    const store = getMockStore();
+    const store: any = getMockStore();
     const initializePayload = {
       languages: [
         { name: 'English', code: 'en' },

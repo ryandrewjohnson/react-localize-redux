@@ -1,5 +1,4 @@
 import Enzyme, { shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
 import {
   languages,
   translations,
@@ -12,16 +11,14 @@ import {
   defaultTranslateOptions,
   options,
   localizeReducer
-} from 'localize';
+} from '../src/localize';
 import {
   INITIALIZE,
   SET_ACTIVE_LANGUAGE,
   ADD_TRANSLATION,
-  ADD_TRANSLATION_FOR_LANGUAGE
-} from 'localize';
-import { initialize } from '../src/localize';
-
-Enzyme.configure({ adapter: new Adapter() });
+  ADD_TRANSLATION_FOR_LANGUAGE,
+  initialize
+} from '../src/localize';
 
 describe('localize', () => {
   const transformFunction = (data, codes) => {
@@ -43,7 +40,7 @@ describe('localize', () => {
   };
 
   describe('reducer: languages', () => {
-    let initialState = [];
+    let initialState: any = [];
 
     beforeEach(() => {
       initialState = [
@@ -435,7 +432,7 @@ describe('localize', () => {
         }
       };
 
-      const result = options({}, action);
+      const result = options({} as any, action);
       expect(result.translationTransform).toBeDefined();
       expect(typeof result.translationTransform).toEqual('function');
     });
@@ -455,7 +452,7 @@ describe('localize', () => {
         }
       };
 
-      const result = options({}, action);
+      const result = options({} as any, action);
       const value = result.onMissingTranslation();
 
       expect(result.onMissingTranslation).toBeDefined();
@@ -473,7 +470,7 @@ describe('localize', () => {
           }
         }
       };
-      const result = options({}, action);
+      const result = options({} as any, action);
       expect(result.renderToStaticMarkup).toEqual(
         action.payload.options.renderToStaticMarkup
       );
@@ -489,7 +486,7 @@ describe('localize', () => {
           }
         }
       };
-      const result = options({}, action);
+      const result = options({} as any, action);
       expect(result.renderToStaticMarkup).toBe(false);
     });
 
@@ -501,7 +498,7 @@ describe('localize', () => {
           options: {}
         }
       };
-      const result = () => options({}, action);
+      const result = () => options({} as any, action);
       expect(result).toThrow();
     });
 
@@ -516,7 +513,7 @@ describe('localize', () => {
           }
         }
       };
-      const result = options({}, action);
+      const result = options({} as any, action);
       expect(result.ignoreTranslateChildren).toBe(true);
     });
 
@@ -526,7 +523,7 @@ describe('localize', () => {
         languageCodes: ['en', 'fr', 'ne'],
         payload: { options: { renderToStaticMarkup: false } }
       };
-      const result = options({}, action);
+      const result = options({} as any, action);
       expect(result.defaultLanguage).toBe('en');
     });
   });
@@ -581,7 +578,7 @@ describe('localize', () => {
 
   describe('getTranslationsForActiveLanguage', () => {
     it('should return translations only for the active language', () => {
-      const state = {
+      const state: any = {
         languages: [
           { code: 'en', active: false },
           { code: 'fr', active: true }
@@ -644,7 +641,7 @@ describe('localize', () => {
   });
 
   describe('getTranslate', () => {
-    let state = {};
+    let state: any = {};
 
     beforeEach(() => {
       state = {
@@ -750,16 +747,13 @@ describe('localize', () => {
     });
 
     it('should set first language available as default when no default is set', () => {
-      state = localizeReducer(
-        { languages: [] },
-        {
-          type: INITIALIZE,
-          payload: {
-            languages: ['en', 'fr', 'es'],
-            options: { renderToStaticMarkup: false }
-          }
+      state = localizeReducer({ languages: [] } as any, {
+        type: INITIALIZE,
+        payload: {
+          languages: ['en', 'fr', 'es'],
+          options: { renderToStaticMarkup: false }
         }
-      );
+      });
 
       const options = getOptions(state);
       expect(options.defaultLanguage).toBe(state.languages[0].code);
@@ -767,7 +761,7 @@ describe('localize', () => {
 
     it('should return value using default language when missing a translation with USD hard coded into translation', () => {
       state = localizeReducer(
-        { languages: [], translations: state.translations },
+        { languages: [], translations: state.translations } as any,
         {
           type: INITIALIZE,
           payload: {
