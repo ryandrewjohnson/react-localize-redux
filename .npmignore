@@ -8,15 +8,14 @@ coverage
 demo
 docs
 examples
-flow-typed
 site
 src
 tests
 
 .babelrc
-.flowconfig
 .gitignore
 .travis.yml
 mkdocs.yml
 package-lock.json
-webpack.config.babel.js
+rollup.config.js
+tsconfig.json

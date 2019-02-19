@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import hoistNonReactStatic from 'hoist-non-react-statics';
 import { LocalizeContext } from './LocalizeContext';
+const hoistNonReactStatic = require('hoist-non-react-statics');
 
 export function withLocalize(WrappedComponent) {
   class LocalizedComponent extends Component {

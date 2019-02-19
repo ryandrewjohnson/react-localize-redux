@@ -1,4 +1,4 @@
-import { flatten } from 'flat';
+// import { flatten } from 'flat';
 import {
   createSelector,
   createSelectorCreator,
@@ -11,6 +11,8 @@ import {
   getTranslationsForLanguage,
   getSingleToMultilanguageTranslation
 } from './utils';
+
+const { flatten } = require('flat');
 
 /**
  * ACTIONS
