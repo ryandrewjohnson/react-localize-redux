@@ -305,7 +305,7 @@ export const defaultTranslateOptions: InitializeOptionsRequired = {
   ignoreTranslateChildren: false,
   defaultLanguage: '',
   onMissingTranslation: ({ translationId, languageCode }) =>
-    'Missing translationId: ${ translationId } for language: ${ languageCode }'
+    `Missing translationId: ${translationId} for language: ${languageCode}`
 };
 
 const initialState: LocalizeState = {
