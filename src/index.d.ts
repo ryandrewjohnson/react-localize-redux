@@ -35,7 +35,7 @@ type MissingTranslationOptions = {
 
 export type onMissingTranslationFunction = (
   options: MissingTranslationOptions
-) => string;
+) => string | LocalizedElement;
 
 type renderToStaticMarkupFunction = (element: any) => string;
 
