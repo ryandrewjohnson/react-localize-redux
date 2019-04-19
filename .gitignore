@@ -17,5 +17,6 @@ es
 dist
 site
 .vscode
+.DS_Store
 demo/build
 testing
