@@ -1,5 +1,6 @@
 // @flow
 export { Translate } from './Translate';
+export { useTranslate } from './useTranslate';
 export { withLocalize } from './withLocalize';
 export { LocalizeProvider } from './LocalizeProvider';
 export { LocalizeContext } from './LocalizeContext';

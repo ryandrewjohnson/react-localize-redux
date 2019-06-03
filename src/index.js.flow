@@ -84,6 +84,8 @@ declare export function getActiveLanguage(state: LocalizeState): Language;
 
 declare export function getTranslate(state: LocalizeState): TranslateFunction;
 
+declare export function useTranslate(): LocalizeContextProps;
+
 declare export function withLocalize<Props: {}>(
   WrappedComponent: ComponentType<Props>
 ): ComponentType<$Diff<Props, { ...LocalizeContextProps }>>;
