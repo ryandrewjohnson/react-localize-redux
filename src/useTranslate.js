@@ -1,5 +1,5 @@
 // @flow
 import { useContext } from 'react';
-import { LocalizeContext, LocalizeContextProps } from './LocalizeContext';
+import { LocalizeContext } from './LocalizeContext';
 
 export const useTranslate = () => useContext(LocalizeContext);
