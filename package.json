@@ -13,7 +13,8 @@
     "prepublish": "npm run build",
     "test": "jest",
     "prettier": "prettier --write src/**/*",
-    "upload:demo": "codesandbox ./demo"
+    "upload:demo": "codesandbox ./demo",
+    "types": "tsc --declaration"
   },
   "repository": {
     "type": "git",
@@ -45,35 +46,35 @@
     "react": "^16.8.0"
   },
   "devDependencies": {
-    "@types/enzyme": "^3.1.18",
+    "@types/enzyme": "^3.9.3",
     "@types/flat": "0.0.28",
-    "@types/hoist-non-react-statics": "^3.0.1",
-    "@types/jest": "^24.0.6",
-    "@types/react": "^16.8.3",
+    "@types/hoist-non-react-statics": "^3.3.1",
+    "@types/jest": "^24.0.13",
+    "@types/react": "^16.8.19",
     "@types/reselect": "^2.2.0",
-    "codecov": "^3.0.2",
-    "codesandbox": "^1.2.10",
+    "codecov": "^3.5.0",
+    "codesandbox": "^1.3.8",
     "cross-env": "^3.1.4",
-    "enzyme": "^3.9.0",
-    "enzyme-adapter-react-16": "^1.9.1",
+    "enzyme": "^3.10.0",
+    "enzyme-adapter-react-16": "^1.14.0",
     "immutable": "^3.8.2",
-    "jest": "^24.1.0",
-    "jest-dom": "^3.0.2",
+    "jest": "^24.8.0",
+    "jest-dom": "^3.4.0",
     "json-loader": "^0.5.4",
-    "prettier": "^1.16.4",
-    "react": "^16.8.2",
-    "react-dom": "^16.8.2",
+    "prettier": "^1.17.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-testing-library": "^5.9.0",
     "redux": "^3.6.0",
-    "rollup": "^1.2.1",
-    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup": "^1.13.1",
+    "rollup-plugin-commonjs": "^9.3.4",
     "rollup-plugin-json": "^3.1.0",
-    "rollup-plugin-node-resolve": "^4.0.0",
-    "rollup-plugin-typescript": "^1.0.0",
-    "ts-jest": "^24.0.0",
+    "rollup-plugin-node-resolve": "^4.2.4",
+    "rollup-plugin-typescript": "^1.0.1",
+    "ts-jest": "^24.0.2",
     "ts-node": "^7.0.1",
     "tslib": "^1.9.3",
-    "typescript": "^3.3.3"
+    "typescript": "^3.5.1"
   },
   "jest": {
     "transform": {
@@ -93,7 +94,7 @@
   "dependencies": {
     "flat": "^4.1.0",
     "hoist-non-react-statics": "^3.3.0",
-    "prop-types": "^15.6.1",
+    "prop-types": "^15.7.2",
     "reselect": "^4.0.0"
   }
 }

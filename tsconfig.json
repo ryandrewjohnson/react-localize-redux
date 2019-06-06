@@ -3,11 +3,17 @@
     "target": "es5",
     "module":"commonjs" ,
     "lib": ["es2015", "es2017", "dom"],  
-    "allowJs": false,                 
+    // "allowJs": true,                 
     "jsx": "react",                       
     "noImplicitAny": false,                
     "moduleResolution": "node",         
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
-  }
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }
