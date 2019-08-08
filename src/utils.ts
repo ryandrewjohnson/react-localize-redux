@@ -1,4 +1,5 @@
 import React from 'react';
+import { Language, Translations } from './localize';
 
 export const getLocalizedElement = options => {
   const { translation, data, renderInnerHtml } = options;
@@ -77,7 +78,16 @@ export const templater = (strings, data = {}) => {
   }, '');
 };
 
-export const getIndexForLanguageCode = (code, languages) => {
+/**
+ * Given an array of Languages return the index of the language
+ * that matches the provided langauge code.
+ * @param code
+ * @param languages
+ */
+export const getIndexForLanguageCode = (
+  code: string,
+  languages: Language[]
+): number => {
   return languages.map(language => language.code).indexOf(code);
 };
 
@@ -112,11 +122,17 @@ export const validateOptions = options => {
   return options;
 };
 
+/**
+ * Return an object with only the translations for the provided language.
+ * @param language - The language to match
+ * @param languages - Array of all languages
+ * @param translations - Translation data for all languages
+ */
 export const getTranslationsForLanguage = (
-  language,
-  languages,
-  translations
-) => {
+  language: Language,
+  languages: Language[],
+  translations: Translations
+): Translations => {
   // no language! return no translations
   if (!language) {
     return {};

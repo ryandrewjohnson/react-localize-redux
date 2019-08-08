@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import React, { createContext } from 'react';
 import { createSelector } from 'reselect';
 import {
   localizeReducer,
@@ -10,8 +10,57 @@ import {
   getLanguages,
   getActiveLanguage,
   getOptions,
-  defaultTranslateOptions
+  defaultTranslateOptions,
+  InitializeAction,
+  AddTranslationAction,
+  AddTranslationForLanguageAction,
+  SetActiveLanguageAction,
+  Language,
+  onMissingTranslationFunction,
+  InitializePayload,
+  MultiLanguageTranslationData,
+  SingleLanguageTranslationData,
+  renderToStaticMarkupFunction
 } from './localize';
+
+export interface TranslateOptions {
+  language?: string;
+  renderInnerHtml?: boolean;
+  onMissingTranslation?: onMissingTranslationFunction;
+  ignoreTranslateChildren?: boolean;
+}
+
+type LocalizedElement =
+  | string
+  | React.DetailedReactHTMLElement<any, HTMLElement>;
+
+type LocalizedElementMap = {
+  [key: string]: LocalizedElement;
+};
+
+export type TranslateResult = LocalizedElement | LocalizedElementMap;
+
+export type TranslateFunction = (
+  value: string | string[],
+  data?: { [key: string]: string },
+  options?: TranslateOptions
+) => TranslateResult;
+
+export type LocalizeContextType = {
+  initialize: (payload: InitializePayload) => void;
+  addTranslation: (payload: MultiLanguageTranslationData) => void;
+  addTranslationForLanguage: (
+    translation: SingleLanguageTranslationData,
+    language: string
+  ) => void;
+  setActiveLanguage: (languageCode: string) => void;
+  translate: TranslateFunction;
+  languages: Language[];
+  activeLanguage: Language;
+  defaultLanguage: string;
+  renderToStaticMarkup: renderToStaticMarkupFunction | boolean;
+  ignoreTranslateChildren: boolean;
+};
 
 const dispatchInitialize = dispatch => payload => {
   return dispatch(initialize(payload));
@@ -65,4 +114,6 @@ export const getContextPropsFromState = dispatch =>
 const defaultLocalizeState = localizeReducer(undefined, {});
 const defaultContext = getContextPropsFromState(() => {})(defaultLocalizeState);
 
-export const LocalizeContext = createContext(defaultContext);
+export const LocalizeContext = createContext<LocalizeContextType>(
+  defaultContext
+);

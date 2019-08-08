@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { LocalizeContext } from './LocalizeContext';
-// const hoistNonReactStatic = require('hoist-non-react-statics');
+import { LocalizeContext, LocalizeContextType } from './LocalizeContext';
 import hoistNonReactStatic from 'hoist-non-react-statics';
 
-export function withLocalize(WrappedComponent) {
-  class LocalizedComponent extends Component {
+export function withLocalize<P extends object>(
+  WrappedComponent: React.ComponentType<P>
+): React.ComponentType<P & LocalizeContextType> {
+  class LocalizedComponent extends Component<P & LocalizeContextType> {
     render() {
       return (
         <LocalizeContext.Consumer>

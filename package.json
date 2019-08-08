@@ -14,7 +14,7 @@
     "test": "jest",
     "prettier": "prettier --write src/**/*",
     "upload:demo": "codesandbox ./demo",
-    "types": "tsc --declaration"
+    "types": "tsc --declaration --emitDeclarationOnly --declarationDir types/"
   },
   "repository": {
     "type": "git",
@@ -92,6 +92,7 @@
     ]
   },
   "dependencies": {
+    "apollo-client": "^2.6.1",
     "flat": "^4.1.0",
     "hoist-non-react-statics": "^3.3.0",
     "prop-types": "^15.7.2",
