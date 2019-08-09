@@ -127,12 +127,12 @@ const { flatten } = require('flat');
 /**
  * ACTIONS
  */
-export const INITIALIZE = '@@localize/INITIALIZE';
-export const ADD_TRANSLATION = '@@localize/ADD_TRANSLATION';
-export const ADD_TRANSLATION_FOR_LANGUAGE =
-  '@@localize/ADD_TRANSLATION_FOR_LANGUAGE';
-export const SET_ACTIVE_LANGUAGE = '@@localize/SET_ACTIVE_LANGUAGE';
-export const TRANSLATE = '@@localize/TRANSLATE';
+export const ACTION_PREFIX = '@@localize/';
+export const INITIALIZE = `${ACTION_PREFIX}INITIALIZE`;
+export const ADD_TRANSLATION = `${ACTION_PREFIX}ADD_TRANSLATION`;
+export const ADD_TRANSLATION_FOR_LANGUAGE = `${ACTION_PREFIX}ADD_TRANSLATION_FOR_LANGUAGE`;
+export const SET_ACTIVE_LANGUAGE = `${ACTION_PREFIX}SET_ACTIVE_LANGUAGE`;
+export const TRANSLATE = `${ACTION_PREFIX}TRANSLATE`;
 
 /**
  * REDUCERS
@@ -282,14 +282,19 @@ export const localizeReducer = (
   const languagesState = languages(state.languages, action);
   const languageCodes = languagesState.map(language => language.code);
 
-  return {
-    languages: languagesState,
-    translations: translations(state.translations, {
-      ...action,
-      languageCodes
-    }),
-    options: options(state.options, { ...action, languageCodes })
-  };
+  // mutate state only if appropriate action has been fired
+  if (action && action.type && action.type.includes(ACTION_PREFIX)) {
+    return {
+      languages: languagesState,
+      translations: translations(state.translations, {
+        ...action,
+        languageCodes
+      }),
+      options: options(state.options, { ...action, languageCodes })
+    };
+  }
+
+  return state;
 };
 
 /**
