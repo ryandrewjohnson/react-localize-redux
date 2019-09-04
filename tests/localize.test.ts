@@ -20,7 +20,7 @@ import {
   initialize
 } from '../src/localize';
 
-describe('localize', () => {
+describe.only('localize', () => {
   const transformFunction = (data, codes) => {
     ``;
     return Object.keys(data).reduce((prev, cur, index) => {
@@ -59,7 +59,7 @@ describe('localize', () => {
               languages: ['en', 'fr', 'ne']
             }
           };
-          const result = languages([], action);
+          const result = languages([], action as any);
           expect(result).toEqual([
             { code: 'en', active: true },
             { code: 'fr', active: false },
@@ -75,7 +75,7 @@ describe('localize', () => {
               options: { defaultLanguage: 'ne' }
             }
           };
-          const result = languages([], action);
+          const result = languages([], action as any);
           expect(result).toEqual([
             { code: 'en', active: false },
             { code: 'fr', active: false },
@@ -94,7 +94,7 @@ describe('localize', () => {
           }
         };
 
-        const result = languages(initialState, action);
+        const result = languages(initialState, action as any);
         expect(result).toEqual([
           { code: 'en', active: false },
           { code: 'fr', active: false },
@@ -111,7 +111,7 @@ describe('localize', () => {
         };
 
         initialState[1].active = true;
-        const result = languages(initialState, action);
+        const result = languages(initialState, action as any);
         expect(result).toEqual([
           { code: 'en', active: true },
           { code: 'fr', active: false },
@@ -137,7 +137,7 @@ describe('localize', () => {
           languages: ['en', 'fr', 'ne']
         });
 
-        const result = translations(initialState, action);
+        const result = translations(initialState, action as any);
         expect(result).toEqual(initialState);
       });
 
@@ -147,7 +147,7 @@ describe('localize', () => {
           translation: initialState
         });
 
-        const result = translations({}, action);
+        const result = translations({}, action as any);
         expect(result).toEqual(initialState);
       });
 
@@ -164,7 +164,7 @@ describe('localize', () => {
           languageCodes: ['en', 'fr', 'ne']
         };
 
-        const result = translations({}, action);
+        const result = translations({}, action as any);
         expect(result).toEqual({
           greeting: ['hello', undefined, undefined],
           bye: ['goodbye', undefined, undefined]
@@ -185,7 +185,7 @@ describe('localize', () => {
           languageCodes: ['en', 'fr', 'ne']
         };
 
-        const result = translations({}, action);
+        const result = translations({}, action as any);
         expect(result).toEqual({
           greeting: [undefined, 'hello', undefined],
           bye: [undefined, 'goodbye', undefined]
@@ -205,7 +205,7 @@ describe('localize', () => {
           }
         };
 
-        const result = translations({}, action);
+        const result = translations({}, action as any);
         expect(result).toEqual({
           test: ['test'],
           test2: ['test2']
@@ -220,7 +220,7 @@ describe('localize', () => {
           }
         };
 
-        const result = translations(initialState, action);
+        const result = translations(initialState, action as any);
         expect(result).toEqual({
           ...initialState,
           new: ['new']
@@ -235,7 +235,7 @@ describe('localize', () => {
           }
         };
 
-        const result = translations(initialState, action);
+        const result = translations(initialState, action as any);
         expect(result).toEqual({
           ...initialState,
           hi: ['new']
@@ -253,7 +253,7 @@ describe('localize', () => {
           }
         };
 
-        const result = translations({}, action);
+        const result = translations({}, action as any);
         expect(result).toEqual({
           'first.second.third': ['nested'],
           'more.nested': ['one']
@@ -283,7 +283,7 @@ describe('localize', () => {
           languageCodes: ['en', 'fr']
         };
 
-        const result = translations({}, action);
+        const result = translations({}, action as any);
         expect(result).toEqual({
           title: ['Title', 'FR - Title'],
           subtitle: ['Subtitle', 'FR - Subtitle']
@@ -302,7 +302,7 @@ describe('localize', () => {
           languageCodes: ['en', 'fr']
         };
 
-        const result = translations({}, action);
+        const result = translations({}, action as any);
         expect(result).toEqual({
           title: ['title', undefined],
           description: ['description', undefined]
@@ -321,7 +321,7 @@ describe('localize', () => {
           languageCodes: ['en', 'fr']
         };
 
-        const result = translations({}, action);
+        const result = translations({}, action as any);
         expect(result).toEqual({
           'movie.title': ['title', undefined],
           'movie.description': ['description', undefined]
@@ -343,7 +343,7 @@ describe('localize', () => {
             title: [undefined, 'titlefr'],
             description: [undefined, 'descriptionfr']
           },
-          action
+          action as any
         );
 
         expect(result).toEqual({
@@ -367,7 +367,7 @@ describe('localize', () => {
             title: [undefined, 'titlefr'],
             description: [undefined, 'descriptionfr']
           },
-          action
+          action as any
         );
 
         expect(result).toEqual({
@@ -391,7 +391,7 @@ describe('localize', () => {
             }
           }
         };
-        const result = options(defaultTranslateOptions, action);
+        const result = options(defaultTranslateOptions, action as any);
         expect(result).toEqual({
           ...defaultTranslateOptions,
           defaultLanguage: 'fr',
@@ -410,7 +410,7 @@ describe('localize', () => {
             }
           }
         };
-        const result = options(defaultTranslateOptions, action);
+        const result = options(defaultTranslateOptions, action as any);
         expect(result).toEqual({
           ...defaultTranslateOptions,
           defaultLanguage: 'en',
@@ -432,7 +432,7 @@ describe('localize', () => {
         }
       };
 
-      const result = options({} as any, action);
+      const result: any = options({} as any, action as any);
       expect(result.translationTransform).toBeDefined();
       expect(typeof result.translationTransform).toEqual('function');
     });
@@ -452,7 +452,7 @@ describe('localize', () => {
         }
       };
 
-      const result = options({} as any, action);
+      const result: any = options({} as any, action as any);
       const value = result.onMissingTranslation();
 
       expect(result.onMissingTranslation).toBeDefined();
@@ -470,7 +470,7 @@ describe('localize', () => {
           }
         }
       };
-      const result = options({} as any, action);
+      const result = options({} as any, action as any);
       expect(result.renderToStaticMarkup).toEqual(
         action.payload.options.renderToStaticMarkup
       );
@@ -486,7 +486,7 @@ describe('localize', () => {
           }
         }
       };
-      const result = options({} as any, action);
+      const result = options({} as any, action as any);
       expect(result.renderToStaticMarkup).toBe(false);
     });
 
@@ -498,7 +498,7 @@ describe('localize', () => {
           options: {}
         }
       };
-      const result = () => options({} as any, action);
+      const result = () => options({} as any, action as any);
       expect(result).toThrow();
     });
 
@@ -513,7 +513,7 @@ describe('localize', () => {
           }
         }
       };
-      const result = options({} as any, action);
+      const result = options({} as any, action as any);
       expect(result.ignoreTranslateChildren).toBe(true);
     });
 
@@ -523,7 +523,7 @@ describe('localize', () => {
         languageCodes: ['en', 'fr', 'ne'],
         payload: { options: { renderToStaticMarkup: false } }
       };
-      const result = options({} as any, action);
+      const result = options({} as any, action as any);
       expect(result.defaultLanguage).toBe('en');
     });
   });
@@ -537,7 +537,7 @@ describe('localize', () => {
           { code: 'ne', active: false }
         ]
       };
-      const result = getActiveLanguage(state);
+      const result = getActiveLanguage(state as any);
       expect(result.code).toBe('fr');
     });
 
@@ -548,7 +548,7 @@ describe('localize', () => {
           { code: 'fr', active: false }
         ]
       };
-      const result = getActiveLanguage(state);
+      const result = getActiveLanguage(state as any);
       expect(result).toBe(undefined);
     });
 
@@ -556,7 +556,7 @@ describe('localize', () => {
       const state = {
         languages: []
       };
-      const result = getActiveLanguage(state);
+      const result = getActiveLanguage(state as any);
       expect(result).toBe(undefined);
     });
 
@@ -567,7 +567,7 @@ describe('localize', () => {
           { code: 'fr', name: 'French', active: true }
         ]
       };
-      const result = getActiveLanguage(state);
+      const result = getActiveLanguage(state as any);
       expect(result).toEqual({
         code: 'fr',
         name: 'French',
@@ -603,7 +603,7 @@ describe('localize', () => {
           bye: ['bye-en', 'bye-fr']
         }
       };
-      const result = getTranslationsForActiveLanguage(state);
+      const result = getTranslationsForActiveLanguage(state as any);
       expect(result).toEqual({});
     });
   });
@@ -620,7 +620,7 @@ describe('localize', () => {
           bye: ['bye-en', 'bye-fr']
         }
       };
-      const result = getTranslationsForSpecificLanguage(state)('en');
+      const result = getTranslationsForSpecificLanguage(state as any)('en');
       expect(result).toEqual({
         hi: 'hi-en',
         bye: 'bye-en'
@@ -635,7 +635,9 @@ describe('localize', () => {
           bye: ['bye-en', 'bye-fr']
         }
       };
-      const result = getTranslationsForSpecificLanguage(state)({ code: 'ze' });
+      const result = getTranslationsForSpecificLanguage(state as any)({
+        code: 'ze'
+      });
       expect(result).toEqual({});
     });
   });
@@ -663,7 +665,7 @@ describe('localize', () => {
 
     it('should throw an error when invalid key provided to translate function', () => {
       const translate = getTranslate(state);
-      expect(() => translate(23)).toThrow();
+      expect(() => translate(23 as any)).toThrow();
     });
 
     it('should return single translated element when valid key provided', () => {
@@ -683,7 +685,7 @@ describe('localize', () => {
     it('should render inner html if renderInnerHtml option is true', () => {
       const stateWithOpts = { ...state, options: { renderInnerHtml: true } };
       const translate = getTranslate(stateWithOpts);
-      const wrapper = shallow(translate('html'));
+      const wrapper = shallow(translate('html') as any);
 
       expect(wrapper.find('span').exists()).toBe(true);
       expect(wrapper.html()).toEqual(`<span><b>hi-fr</b></span>`);
@@ -692,9 +694,9 @@ describe('localize', () => {
     it('should override renderInnerHtml to true when passed to translate', () => {
       const newState = { ...state, options: { renderInnerHtml: false } };
       const translate = getTranslate(newState);
-      const wrapper = shallow(
-        translate('html', null, { renderInnerHtml: true })
-      );
+      const wrapper = shallow(translate('html', null, {
+        renderInnerHtml: true
+      }) as any);
 
       expect(wrapper.find('span').exists()).toBe(true);
       expect(wrapper.html()).toEqual(`<span><b>hi-fr</b></span>`);

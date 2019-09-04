@@ -67,7 +67,7 @@ describe('<Translate />', () => {
   describe('handle adding translations', () => {
     it("should add <Translate>'s children to translations under languages[0].code for id", () => {
       const context = getTranslateWithContext();
-      const { container } = render(<Translate id="hello">Hey</Translate>);
+      render(<Translate id="hello">Hey</Translate>);
 
       expect(context.addTranslationForLanguage).toHaveBeenLastCalledWith(
         { hello: 'Hey' },
@@ -245,10 +245,7 @@ describe('<Translate />', () => {
           Override
         </Translate>
       );
-      expect(context.addTranslationForLanguage).toHaveBeenLastCalledWith(
-        { hello: 'Override' },
-        'en'
-      );
+      expect(container.textContent).toEqual('Hello');
     });
 
     it('should just pass through string when options.renderToStaticMarkup=false', () => {
@@ -281,7 +278,11 @@ describe('<Translate />', () => {
       let context = getTranslateWithContext();
       context.translate = jest.fn(() => 'Test');
       render(<Translate id="test">Test</Translate>);
-      expect(context.translate).toHaveBeenCalledWith('test', undefined, {});
+      expect(context.translate).toHaveBeenCalledWith(
+        'test',
+        undefined,
+        undefined
+      );
     });
 
     it('should call render with renderProps and provide context as argument', () => {

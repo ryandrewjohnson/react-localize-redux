@@ -42,7 +42,7 @@ export type TranslateResult = LocalizedElement | LocalizedElementMap;
 
 export type TranslateFunction = (
   value: string | string[],
-  data?: { [key: string]: string },
+  data?: { [key: string]: string | React.ReactNode },
   options?: TranslateOptions
 ) => TranslateResult;
 

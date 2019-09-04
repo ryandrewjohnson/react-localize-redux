@@ -78,7 +78,7 @@ export interface AddTranslationOptions {
 }
 
 export type InitializePayload = {
-  languages: NamedLanguage[];
+  languages: NamedLanguage[] | string[];
   translation?: Object;
   options?: InitializeOptions;
 };
@@ -144,7 +144,8 @@ export function languages(
   switch (action.type) {
     case INITIALIZE:
       const isOptionsDefined = action.payload.options !== undefined;
-      return action.payload.languages.map((language: NamedLanguage, index) => {
+      const actionLanguages = action.payload.languages;
+      return (actionLanguages as any).map((language, index) => {
         const isActive = code => {
           return isOptionsDefined &&
             action.payload.options.defaultLanguage !== undefined
@@ -158,7 +159,8 @@ export function languages(
       });
     case SET_ACTIVE_LANGUAGE:
       return state.map((language: Language) => {
-        return language.code === action.payload.languageCode
+        return language.code ===
+          (action as SetActiveLanguageAction).payload.languageCode
           ? { ...language, active: true }
           : { ...language, active: false };
       });
@@ -190,7 +192,7 @@ export function translations(
       const firstLanguage =
         typeof action.payload.languages[0] === 'string'
           ? action.payload.languages[0]
-          : action.payload.languages[0].code;
+          : (action.payload.languages[0] as NamedLanguage).code;
       const defaultLanguage = isOptionsDefined
         ? action.payload.options.defaultLanguage
         : firstLanguage;
@@ -249,11 +251,18 @@ export function options(
 ): InitializeOptions {
   switch (action.type) {
     case INITIALIZE:
-      const isOptionsDefined = action.payload.options !== undefined;
-      const defaultLanguage = isOptionsDefined
-        ? action.payload.options
+      const isDefaultLanguageDefined =
+        action.payload.options !== undefined &&
+        action.payload.options.defaultLanguage;
+      const defaultLanguage = isDefaultLanguageDefined
+        ? action.payload.options.defaultLanguage
         : action.languageCodes[0];
-      return { ...state, ...validateOptions(options), defaultLanguage };
+
+      return {
+        ...state,
+        ...validateOptions(action.payload.options),
+        defaultLanguage
+      };
     default:
       return state;
   }
@@ -412,7 +421,7 @@ export const getTranslate = createSelector(
   ) => {
     return (
       value: string | string[],
-      data: { [key: string]: string } = {},
+      data: { [key: string]: string | React.ReactNode } = {},
       translateOptions: TranslateOptions = {}
     ): TranslateResult => {
       const { defaultLanguage, ...defaultOptions } = initializeOptions;

@@ -4,7 +4,7 @@ import { isEmpty } from './utils';
 
 type Props = {
   id?: string;
-  data?: { [key: string]: string };
+  data?: { [key: string]: string | React.ReactNode };
   options?: TranslateOptions;
   children?: React.ReactNode;
 };
@@ -15,9 +15,10 @@ export const Translate: React.FC<Props> = props => {
   const defaultLanguage =
     options !== undefined ? options.language : context.defaultLanguage;
   const hasFunctionAsChild = typeof props.children === 'function';
-  const ignoreTranslateChildren = isEmpty(options.ignoreTranslateChildren)
-    ? context.ignoreTranslateChildren
-    : options.ignoreTranslateChildren;
+  const ignoreTranslateChildren =
+    options !== undefined && !isEmpty(options.ignoreTranslateChildren)
+      ? options.ignoreTranslateChildren
+      : context.ignoreTranslateChildren;
   const isValidDefaultTranslation =
     !isEmpty(props.children) && !isEmpty(id) && !isEmpty(defaultLanguage);
 
@@ -40,7 +41,7 @@ export const Translate: React.FC<Props> = props => {
           defaultLanguage
         );
     }
-  }, [id, context.defaultLanguage, options.language]);
+  }, [id, defaultLanguage]);
 
   return typeof props.children === 'function'
     ? props.children(context)
