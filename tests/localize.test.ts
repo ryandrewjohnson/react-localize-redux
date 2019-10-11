@@ -19,8 +19,9 @@ import {
   ADD_TRANSLATION_FOR_LANGUAGE,
   initialize
 } from '../src/localize';
+const mockLargeTranslation = require('../__mocks__/large-translation.json');
 
-describe.only('localize', () => {
+describe('localize', () => {
   const transformFunction = (data, codes) => {
     ``;
     return Object.keys(data).reduce((prev, cur, index) => {
@@ -890,6 +891,42 @@ describe.only('localize', () => {
       selector({});
       selector({});
       expect(result).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('performance tests', () => {
+    it('should test add translation performance', () => {
+      const action = {
+        type: ADD_TRANSLATION,
+        payload: {
+          translation: mockLargeTranslation
+        }
+      };
+
+      const result = translations({}, action as any);
+    });
+
+    it('should test add translation performance', () => {
+      const state = {
+        languages: [
+          { code: 'en', active: false },
+          { code: 'fr', active: true }
+        ],
+        translations: mockLargeTranslation,
+        options: defaultTranslateOptions
+      };
+
+      const state2 = {
+        languages: [
+          { code: 'en', active: false },
+          { code: 'fr', active: true }
+        ],
+        translations: {},
+        options: defaultTranslateOptions
+      };
+
+      getTranslate(state);
+      getTranslate(state2);
     });
   });
 });

@@ -20,7 +20,8 @@ import {
   InitializePayload,
   MultiLanguageTranslationData,
   SingleLanguageTranslationData,
-  renderToStaticMarkupFunction
+  renderToStaticMarkupFunction,
+  TranslateResult
 } from './localize';
 
 export interface TranslateOptions {
@@ -29,16 +30,6 @@ export interface TranslateOptions {
   onMissingTranslation?: onMissingTranslationFunction;
   ignoreTranslateChildren?: boolean;
 }
-
-type LocalizedElement =
-  | string
-  | React.DetailedReactHTMLElement<any, HTMLElement>;
-
-type LocalizedElementMap = {
-  [key: string]: LocalizedElement;
-};
-
-export type TranslateResult = LocalizedElement | LocalizedElementMap;
 
 export type TranslateFunction = (
   value: string | string[],

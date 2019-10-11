@@ -75,7 +75,7 @@ describe('locale utils', () => {
       expect(result).toEqual(after);
     });
 
-    it('should replace all variables in the string even when variable are stucked together', () => {
+    it('should replace all variables in the string even when variable are adjacent', () => {
       const data = { name: 'Ryan', type: 'Air' };
       const before = 'Hi my airline company is ${name}${type}';
       const after = 'Hi my airline company is RyanAir';
@@ -118,32 +118,6 @@ describe('locale utils', () => {
       const languages = [{ code: 'en' }, { code: 'fr' }, { code: 'ne' }];
       const result = utils.getIndexForLanguageCode('zw', languages as any);
       expect(result).toBe(-1);
-    });
-  });
-
-  describe('objectValuesToString', () => {
-    let translationData = {};
-
-    beforeEach(() => {
-      translationData = {
-        one: ['1', '2', '3'],
-        two: ['4', '5', '6']
-      };
-    });
-
-    describe('Object.values defined', () => {
-      it('should return an stingified array of translation array data', () => {
-        const result = utils.objectValuesToString(translationData);
-        expect(result).toEqual('1,2,3,4,5,6');
-      });
-    });
-
-    describe('Object.values undefined', () => {
-      it('should return an stingified array of translation array data', () => {
-        Object.values = undefined;
-        const result = utils.objectValuesToString(translationData);
-        expect(result).toEqual('1,2,3,4,5,6');
-      });
     });
   });
 

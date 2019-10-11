@@ -1,5 +1,8 @@
-// import { flatten } from 'flat';
-import { ReactElement } from 'react';
+import {
+  ReactHTMLElement,
+  FunctionComponent,
+  FunctionComponentElement
+} from 'react';
 import {
   createSelector,
   createSelectorCreator,
@@ -7,16 +10,12 @@ import {
 } from 'reselect';
 import {
   getLocalizedElement,
-  objectValuesToString,
   validateOptions,
   getTranslationsForLanguage,
   getSingleToMultilanguageTranslation
 } from './utils';
-import {
-  TranslateFunction,
-  TranslateResult,
-  TranslateOptions
-} from './LocalizeContext';
+import { TranslateOptions } from './LocalizeContext';
+import isEqual from 'lodash.isequal';
 
 export interface Language {
   name?: string;
@@ -36,7 +35,17 @@ export interface SingleLanguageTranslationData {
   [key: string]: SingleLanguageTranslationData | string;
 }
 
-export type LocalizedElement = ReactElement<'span'> | string;
+export type LocalizedElement =
+  | string
+  | [string | FunctionComponent<any>]
+  | FunctionComponentElement<any>
+  | ReactHTMLElement<any>;
+
+export type TranslateResult =
+  | LocalizedElement
+  | {
+      [key: string]: LocalizedElement;
+    };
 
 export type MissingTranslationOptions = {
   translationId: string;
@@ -184,7 +193,6 @@ export function translations(
       if (!action.payload.translation) {
         return state;
       }
-
       flattenedTranslations = flatten(action.payload.translation, {
         safe: true
       });
@@ -223,9 +231,12 @@ export function translations(
               action.languageCodes
             )
           : action.payload.translation;
+
+      const flattened = flatten(translationWithTransform, { safe: true });
+
       return {
         ...state,
-        ...flatten(translationWithTransform, { safe: true })
+        ...flattened
       };
     case ADD_TRANSLATION_FOR_LANGUAGE:
       flattenedTranslations = flatten(action.payload.translation, {
@@ -355,37 +366,12 @@ export const getActiveLanguage = (state: LocalizeState): Language => {
 };
 
 /**
- * A custom equality checker that checker that compares an objects keys and values instead of === comparison
- * e.g. {name: 'Ted', sport: 'hockey'} would result in 'name,sport - Ted,hockey' which would be used for comparison
- *
- * NOTE: This works with activeLanguage, languages, and translations data types.
- * If a new data type is added to selector this would need to be updated to accomodate
+ * A custom equality checker that does a deep compare on objects using
+ * lodash's isEqual
  */
 export const translationsEqualSelector = createSelectorCreator(
   defaultMemoize,
-  (prev, cur) => {
-    const prevKeys =
-      typeof prev === 'object' ? Object.keys(prev).toString() : undefined;
-    const curKeys =
-      typeof cur === 'object' ? Object.keys(cur).toString() : undefined;
-
-    const prevValues =
-      typeof prev === 'object' ? objectValuesToString(prev) : undefined;
-    const curValues =
-      typeof cur === 'object' ? objectValuesToString(cur) : undefined;
-
-    const prevCacheValue =
-      prevKeys !== undefined && prevValues !== undefined
-        ? `${prevKeys} - ${prevValues}`
-        : prev;
-
-    const curCacheValue =
-      curKeys !== undefined && curValues !== undefined
-        ? `${curKeys} - ${curValues}`
-        : cur;
-
-    return prevCacheValue === curCacheValue;
-  }
+  isEqual
 );
 
 export const getTranslationsForActiveLanguage = translationsEqualSelector(

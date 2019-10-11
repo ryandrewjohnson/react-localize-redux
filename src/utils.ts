@@ -1,7 +1,11 @@
-import React from 'react';
-import { Language, Translations } from './localize';
+import React, {
+  ReactComponentElement,
+  FunctionComponent,
+  ReactHTMLElement
+} from 'react';
+import { Language, Translations, LocalizedElement } from './localize';
 
-export const getLocalizedElement = options => {
+export const getLocalizedElement = (options): LocalizedElement => {
   const { translation, data, renderInnerHtml } = options;
 
   const translatedValueOrArray = templater(translation, data);
@@ -27,7 +31,7 @@ export const getLocalizedElement = options => {
   }
 
   // return as Element
-  return React.createElement('span', null, ...translatedValueOrArray);
+  return React.createElement(React.Fragment, null, ...translatedValueOrArray);
 };
 
 export const hasHtmlTags = value => {
@@ -89,14 +93,6 @@ export const getIndexForLanguageCode = (
   languages: Language[]
 ): number => {
   return languages.map(language => language.code).indexOf(code);
-};
-
-export const objectValuesToString = data => {
-  return !Object.values
-    ? Object.keys(data)
-        .map(key => data[key].toString())
-        .toString()
-    : Object.values(data).toString();
 };
 
 export const validateOptions = options => {
