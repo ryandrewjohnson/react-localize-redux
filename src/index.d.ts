@@ -219,3 +219,5 @@ export function TranslateChildFunction(
 export const Translate: React.SFC<TranslateProps>;
 
 export class LocalizeProvider extends ReactComponent<LocalizeProviderProps> {}
+
+export const LocalizeContext: React.Context<LocalizeContextProps>;
