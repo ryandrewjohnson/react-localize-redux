@@ -531,6 +531,17 @@ describe('localize', () => {
     });
   });
 
+  describe('reducer: state', () => {
+    describe('UNHANDLED_ACTION', () => {
+      it('should not make the state change in any way', () => {
+        const action = { type: 'UNHANDLED_ACTION' };
+        const initialState = localizeReducer(undefined, action);
+        const result = initialState;
+        expect(result).toBe(localizeReducer(initialState, action));
+      });
+    });
+  });
+
   describe('getActiveLanguage', () => {
     it('should return the active language object', () => {
       const state = {

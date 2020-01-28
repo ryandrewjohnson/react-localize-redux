@@ -322,14 +322,22 @@ export const localizeReducer = (
   const languagesState = languages(state.languages, action);
   const languageCodes = languagesState.map(language => language.code);
 
-  return {
-    languages: languagesState,
-    translations: translations(state.translations, {
-      ...action,
-      languageCodes
-    }),
-    options: options(state.options, { ...action, languageCodes })
-  };
+  const translationsState = translations(state.translations, {
+    ...action,
+    languageCodes
+  });
+
+  const optionsState = options(state.options, { ...action, languageCodes });
+
+  return state.languages !== languagesState ||
+    state.translations !== translationsState ||
+    state.options !== optionsState
+    ? {
+        languages: languagesState,
+        translations: translationsState,
+        options: optionsState
+      }
+    : state;
 };
 
 /**
