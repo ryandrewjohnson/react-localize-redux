@@ -8,8 +8,7 @@ import {
   type LocalizeState,
   type Action,
   initialize as initializeAC,
-  INITIALIZE,
-  InitializePayload
+  INITIALIZE
 } from './localize';
 import {
   LocalizeContext,
@@ -20,6 +19,12 @@ import { storeDidChange } from './utils';
 
 type LocalizeProviderState = {
   localize: LocalizeState
+};
+
+type InitializePayload = {
+  languages: Array<string | NamedLanguage>,
+  translation?: Object,
+  options?: InitializeOptions
 };
 
 export type LocalizeProviderProps = {
