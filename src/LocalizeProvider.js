@@ -9,7 +9,7 @@ import {
   type Action,
   initialize as initializeAC,
   INITIALIZE,
-  InitializePayload
+  type InitializePayload
 } from './localize';
 import {
   LocalizeContext,
