@@ -490,7 +490,7 @@ export const getTranslate: Selector<
               data,
               renderInnerHtml: mergedOptions.renderInnerHtml
             })
-          : "No default translation found! Ensure you've added translations for your default langauge.";
+          : "No default translation found! Ensure you've added translations for your default language.";
 
         // if translation is not valid then generate the on missing translation message in it's place
         const translation = hasValidTranslation
